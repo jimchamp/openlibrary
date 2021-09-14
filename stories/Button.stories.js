@@ -5,7 +5,16 @@ export default {
     title: 'Legacy/Button'
 };
 
-const ButtonTemplate = (classes,innerHtml) => `<div class="${classes}">${innerHtml}</div>`;
+const ButtonTemplate = (buttonType, text, badgeCount=null) => `<div class="cta-btn ${ButtonTypes[buttonType]}">${text} ${badgeCount ? BadgeTemplate(badgeCount) : ''}</div>`;
+
+const BadgeTemplate = (badgeCount) => `<span class="cta-btn__badge">${badgeCount}</span>`
+
+const ButtonTypes = {
+    default: '',
+    unavailable: ' cta-btn--unavailable',
+    available: ' cta-btn--available',
+    preview: ' cta-btn--shell cta-btn--preview'
+}
 
 export const CtaBtn = () => ButtonTemplate('cta-btn','Leave waitlist');
 
