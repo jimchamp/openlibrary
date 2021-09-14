@@ -17,15 +17,50 @@ const ButtonTypes = {
 }
 
 export const CtaBtn = () => ButtonTemplate('default','Leave waitlist');
+CtaBtn.parameters = {
+    docs: {
+        source: {
+            code: '<div class="cta-btn">Leave waitlist</div>'
+        }
+    }
+};
 
 export const CtaBtnUnavailable = () => ButtonTemplate('unavailable','Join waitlist');
+CtaBtnUnavailable.parameters = {
+    docs: {
+        source: {
+            code: '<div class="cta-btn cta-btn--unavailable">Join waitlist</div>'
+        }
+    }
+};
 
 export const CtaBtnAvailable = () => ButtonTemplate('available','Borrow');
+CtaBtnAvailable.parameters =  {
+    docs: {
+        source: {
+            code: '<div class="cta-btn cta-btn--available">Borrow</div>'
+        }
+    }
+};
 
 export const CtaBtnPreview = () => ButtonTemplate('preview','Preview');
+CtaBtnPreview.parameters = {
+    docs: {
+        source: {
+            code: '<div class="cta-btn cta-btn--shell cta-btn--preview">Preview</div>'
+        }
+    }
+}
 
 export const CtaBtnWithBadge = () =>
     ButtonTemplate('unavailable', 'Join waiting list', 4);
+CtaBtnWithBadge.parameters = {
+    docs: {
+        source: {
+            code: '<div class="cta-btn cta-btn--unavailable">Join waiting list <span class="cta-btn__badge">4</span></div>'
+        }
+    }
+}
 
 export const CtaBtnGroup = () => `<div class="cta-button-group">
 <a href="/borrow/ia/sevenhabitsofhi00cove?ref=ol" title="Borrow ebook from Internet Archive" id="borrow_ebook" data-ol-link-track="CTAClick|Borrow" class="cta-btn cta-btn--available">Borrow</a>
@@ -35,3 +70,18 @@ export const CtaBtnGroup = () => `<div class="cta-button-group">
 </a>
 </div>
 `;
+
+CtaBtnGroup.parameters = {
+    docs: {
+        source: {
+            code: `
+<div class="cta-button-group">
+    <a href="/borrow/ia/sevenhabitsofhi00cove?ref=ol" title="Borrow ebook from Internet Archive" id="borrow_ebook" data-ol-link-track="CTAClick|Borrow" class="cta-btn cta-btn--available">Borrow</a>
+    <a href="/borrow/ia/sevenhabitsofhi00cove?ref=ol&amp;_autoReadAloud=show" title="Borrow ebook from Internet Archive using Read Aloud" data-ol-link-track="CTAClick|BorrowListen" class="cta-btn cta-btn--available">
+        <span class="btn-icon read-aloud"></span>
+        <span class="btn-label">Listen</span>
+    </a>
+</div>`
+        }
+    }
+}
