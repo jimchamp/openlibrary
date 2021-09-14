@@ -15,6 +15,8 @@ from babel.messages.pofile import read_po, write_po
 from babel.messages.mofile import write_mo
 from babel.messages.extract import extract_from_file, extract_from_dir, extract_python
 
+from .validators import validate
+
 root = os.path.dirname(__file__)
 
 def _compile_translation(po, mo):
@@ -33,17 +35,16 @@ def _compile_translation(po, mo):
 def _validate_catalog(catalog, locale):
     validation_errors = []
     for message in catalog:
-        if message.fuzzy:
+        message_errors = validate(message, catalog)
+
+        if message_errors:
             if message.lineno:
                 validation_errors.append(
-                    f'openlibrary/i18n/{locale}/messages.po:{message.lineno}:'
-                    f' "{message.string}" is fuzzy.'
+                    f'openlibrary/i18n/{locale}/messages.po:'
+                    f'{message.lineno}: {message.string}'
                 )
-            else:
-                validation_errors.append(
-                    '  File is fuzzy.  Remove line containing "#, fuzzy" found near '
-                    'the beginning of the file.'
-                )
+            for e in message_errors:
+                validation_errors.append(e)
 
     if validation_errors:
         print("Validation failed...")
@@ -51,27 +52,34 @@ def _validate_catalog(catalog, locale):
         for e in validation_errors:
             print(e)
 
-    return len(validation_errors) == 0
+    return len(validation_errors)
 
 
-def validate_translations(args):
-    if args:
-        locale = args[0]
+def validate_translations(args: List[str]):
+    """Validates all locales passed in as arguments.
+
+    If no arguments are passed, all locales will be validated.
+
+    Returns a dictionary of locale-validation error count
+    key-value pairs.
+    """
+    locales = args or get_locales()
+    results = {}
+
+    for locale in locales:
         po_path = os.path.join(root, locale, 'messages.po')
 
         if os.path.exists(po_path):
             catalog = read_po(open(po_path, 'rb'))
-            is_valid = _validate_catalog(catalog, locale)
+            num_errors = _validate_catalog(catalog, locale)
 
-            if is_valid:
+            if num_errors == 0:
                 print(f'Translations for locale "{locale}" are valid!')
-            return is_valid
+            results[locale] = num_errors
         else:
             print(f'Portable object file for locale "{locale}" does not exist.')
-            return False
-    else:
-        print('Must include locale code when executing validate.')
-        return False
+
+    return results
 
 
 def get_locales():
