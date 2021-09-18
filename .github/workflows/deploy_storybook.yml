@@ -12,4 +12,4 @@ jobs:
         with:
           node-version: '14'
       - run: npm install
-      - run: npm run deploy-storybook
+      - run: npm run deploy-storybook -- --host-token-env-variable=${{ secrets.GITHUB_TOKEN }}
