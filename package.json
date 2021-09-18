@@ -32,7 +32,7 @@
     "test:js": "jest --testRegex tests/unit/**/test.*.js",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "deploy-storybook": "storybook-to-ghpages --out=.docs --ci --branch=storybook"
+    "deploy-storybook": "storybook-to-ghpages --ci --branch=storybook --out=.docs/"
   },
   "devDependencies": {
     "@babel/core": "7.14.8",
