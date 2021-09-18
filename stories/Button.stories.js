@@ -85,12 +85,3 @@ CtaBtnGroup.parameters = {
         }
     }
 }
-
-export const CtaBtnFake = () => ButtonTemplate('default','Leave waitlist');
-CtaBtnFake.parameters = {
-    docs: {
-        source: {
-            code: '<div class="cta-btn">Leave waitlist</div>'
-        }
-    }
-};
