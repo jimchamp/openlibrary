@@ -4,7 +4,7 @@ import '../static/css/components/buttonCta--js.less';
 export default {
     title: 'Legacy/Button'
 };
-// test comment
+// test comment two
 const ButtonTemplate = (buttonType, text, badgeCount=null) => `<div class="cta-btn ${ButtonTypes[buttonType]}">${text} ${badgeCount ? BadgeTemplate(badgeCount) : ''}</div>`;
 
 const BadgeTemplate = (badgeCount) => `<span class="cta-btn__badge">${badgeCount}</span>`

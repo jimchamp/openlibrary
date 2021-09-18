@@ -13,3 +13,5 @@ jobs:
           node-version: '14'
       - run: npm install
       - run: npm run deploy-storybook
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
