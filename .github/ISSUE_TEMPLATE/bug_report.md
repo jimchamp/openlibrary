@@ -27,7 +27,7 @@ assignees: ''
 - **Logged in (Y/N)?**
 - **Browser type/version?**
 - **Operating system?**
-- **Environment (prod/dev/local)?** prod
+- **Environment (prod/dev/local)?** pro
 <!-- If not sure, put prod -->
 
 ### Proposal & Constraints
