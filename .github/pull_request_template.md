@@ -14,3 +14,6 @@ Closes #
 
 ### Stakeholders
 <!-- @ tag stakeholders of this bug -->
+
+<!-- Uncomment the next line if GitHub Copilot suggested code for this PR -->
+<!--Assisted by copilot-->
