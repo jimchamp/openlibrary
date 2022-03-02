@@ -360,9 +360,10 @@ class account_login(delegate.page):
         return render.login(f)
 
     def GET(self):
-        referer = web.ctx.env.get('HTTP_REFERER', '/')
+        referer = web.ctx.env.get('HTTP_REFERER', '')
         # Don't set referer if request is from offsite
-        if 'openlibrary.org' not in referer:
+        if ('openlibrary.org' not in referer
+            or referer.endswith('openlibrary.org/')):
             referer = None
         i = web.input(redirect=referer)
         f = forms.Login()
@@ -393,15 +394,13 @@ class account_login(delegate.page):
         if error:
             return self.render_error(error, i)
 
-        expires = 3600 * 24 * 7 if i.remember else ""
+        expires = 3600 * 24 * 365 if i.remember else ""
         web.setcookie('pd', int(audit.get('special_access')) or '', expires=expires)
         web.setcookie(
             config.login_cookie_name, web.ctx.conn.get_auth_token(), expires=expires
         )
         blacklist = [
             "/account/login",
-            "/account/password",
-            "/account/email",
             "/account/create",
         ]
         if i.redirect == "" or any([path in i.redirect for path in blacklist]):
