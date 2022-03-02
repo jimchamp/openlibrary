@@ -503,6 +503,8 @@ $if is_privileged_user:
 
   $ component_times['TotalTime'] = time() - component_times['TotalTime']
 
+  $ set_stats('ol.template.edition-view.load-time', component_times['TotalTime'])
+
   $if query_param('debug'):
     $:macros.Profile(component_times)
 

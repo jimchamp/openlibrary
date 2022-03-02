@@ -35,7 +35,7 @@ from infogami.infobase.client import Thing, Changeset, storify
 
 from openlibrary.core.helpers import commify, parse_datetime, truncate
 from openlibrary.core.middleware import GZipMiddleware
-from openlibrary.core import cache, ab
+from openlibrary.core import cache, ab, stats as ol_stats
 
 
 class MultiDict(MutableMapping):
@@ -981,6 +981,13 @@ def render_once(key):
 @public
 def today():
     return datetime.datetime.today()
+
+
+@public
+def set_stats(stats_key, value):
+    """ Creates statsd entry.
+    """
+    ol_stats.put(stats_key, value)
 
 
 class HTMLTagRemover(HTMLParser):
