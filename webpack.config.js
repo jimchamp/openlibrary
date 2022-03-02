@@ -42,6 +42,9 @@ module.exports = {
             $: 'jquery',
             jQuery: 'jquery'
         }),
+        new webpack.DefinePlugin({
+            PRODUCTION: JSON.stringify(prod)
+        })
     ],
     module: {
         rules: [{
