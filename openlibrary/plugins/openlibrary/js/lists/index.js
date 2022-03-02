@@ -416,3 +416,11 @@ function updateAlreadyList(listKey, listTitle, coverUrl) {
 
     return li;
 }
+
+export let internals
+
+if (!PRODUCTION) {
+    internals = {
+        clearCreateListForm: clearCreateListForm
+    }
+}
