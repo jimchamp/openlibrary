@@ -1008,13 +1008,22 @@ def get_cached_relatedcarousels_component(*args, **kwargs):
 class Partials(delegate.page):
     path = '/partials'
 
+    def RelatedWorkCarousel(self, i):
+        return _get_relatedcarousels_component(i.work_id)
+
     def GET(self):
         i = web.input(workid=None, _component=None)
         component = i.pop("_component")
         partial = {}
-        if component == "RelatedWorkCarousel":
-            partial = _get_relatedcarousels_component(i.workid)
-        return delegate.RawText(json.dumps(partial), content_type="application/json")
+        try:
+            partial = getattr(self, component)(i)
+        except AttributeError as e:
+            pass
+        return delegate.RawText(
+            json.dumps(partial),
+            content_type="application/json"
+        )
+
 
 
 def is_bot():

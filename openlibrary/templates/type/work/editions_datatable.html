@@ -16,6 +16,8 @@ $if editions and len(editions):
           $ index_padding = len(str(len(editions)))
           $for book in editions:
               $ book_keys.append(book['key'].replace('/books/', ''))
+
+              $# sort field is treated as a string so we pad
               $ edition_sort_key = str(loop.index0+1).zfill(index_padding)
               $if book.key == edition.key:
                 <tr class="highlight">
