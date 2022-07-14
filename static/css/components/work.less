@@ -1,5 +1,10 @@
 @import (less) "base/dl.less";
 
+@sidebar-width: 225px;
+@sidebar-width-with-margin: 60px + @sidebar-width;
+@compact-title-height: 35px;
+@test-body-mobile-width: 1060px;
+
 /* stylelint-disable no-descending-specificity */
 .workDetails {
   padding: 20px 0;
@@ -39,6 +44,9 @@ div.editionAbout {
     margin: 0;
   }
 
+  p.featured-count {
+    margin-bottom: 10px;
+  }
 }
 
 .work-title{
@@ -57,7 +65,6 @@ div.editionAbout {
 }
 
 .workFooter {
-  border-top: 1px solid @lighter-grey;
   ul.listLists {
     display: flex;
   }
@@ -81,6 +88,21 @@ div.editionAbout {
 
 .checkboxes input {
   vertical-align: middle;
+}
+
+.clamp {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.clamp::before {
+  content: attr(data-before);
 }
 
 .restricted-view{
@@ -129,48 +151,83 @@ h2.edition-byline {
   color: @grey;
 }
 
+.nav-bar,
 .work-menu {
   border-bottom: 1px solid @lighter-grey;
-  padding-bottom: 5px;
   font-weight: bold;
-  margin-top: 20px;
+
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+  scroll-behavior: smooth;
 
   &.sticky {
     position: sticky;
-    top: 0;
-    display: block;
+    top: 50px;
     background: @white;
     z-index: @z-index-level-3;
-    padding-top: 10px;
+    // Make tab bar full width on mobile
+    margin-left: -@contentBody-padding;
+    margin-right: -@contentBody-padding;
+
+    // indent it a bit to make it look more scrollable
+    &:before, &:after {
+      display: inline-block;
+      content: "";
+      width: 10%;
+    }
   }
 }
 
+@media (min-width: @width-breakpoint-mobile) {
+  .nav-bar.sticky,
+  .work-menu.sticky {
+    &:before, &:after {
+      display: none;
+    }
+  }
+}
+
+@media only screen and (min-width: @width-breakpoint-tablet) {
+  .nav-bar.sticky,
+  .work-menu.sticky {
+    top: @compact-title-height;
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+  }
+}
+
+.nav-bar li,
 .work-menu li {
   display: inline;
-  padding: 0 15px;
-  padding-bottom: 5px;
   font-size: 13px;
 }
 
+.nav-bar li a,
 .work-menu li a {
   text-decoration: none;
   color: @grey;
+  padding: 12px 15px 8px;
+  display: inline-block;
+  @media only screen and (min-width: @width-breakpoint-tablet) {
+    padding-top: 4px;
+  }
 }
 
-.work-menu li.selected {
-  border-bottom: 2px solid @link-blue;
-}
-
-.work-menu li:hover {
-  border-bottom: 2px solid @link-blue;
-}
-
+.nav-bar li.selected a,
 .work-menu li.selected a {
   color: @link-blue;
+  border-bottom: 2px solid @link-blue;
+}
+
+.nav-bar li:hover a,
+.work-menu li:hover a {
+  border-bottom: 2px solid @link-blue;
 }
 
 a.section-anchor {
-  height: 45px;
+  height: 20px;
   display: block;
 }
 
@@ -212,7 +269,7 @@ div.editionTools {
   }
   div.edition {
     &Cover {
-      width: 225px;
+      width: @sidebar-width;
       margin-right: 1.5em;
       margin-bottom: 0;
     }
@@ -247,8 +304,22 @@ div.editionTools {
 
 .edition-omniline {
   display: flex;
+  flex-direction: column;
+  padding: 10px;
   border-bottom: 1px solid @lighter-grey;
   margin-bottom: 10px;
+  background: @grey-fafafa;
+
+  &-item {
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
+    font-size: .8em;
+
+    div {
+      font-weight: bold;
+    }
+  }
 
   h4 {
     padding-right: 5px;
@@ -256,6 +327,20 @@ div.editionTools {
 
   h4:last-child {
     padding-right: 0;
+  }
+}
+
+@media only screen and (min-width: @width-breakpoint-tablet) {
+  .edition-omniline {
+    flex-direction: row;
+    justify-content: space-between;
+    overflow-x: auto;
+
+    &-item {
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+    }
   }
 }
 
@@ -267,7 +352,6 @@ div.editionTools {
 }
 
 .preview-languages {
-  margin-bottom: -30px !important;
   font-size: .8em;
   color: @grey;
 }
@@ -285,3 +369,22 @@ div.editionTools {
   justify-content: center;
   background: @lightest-grey;
 }
+
+.list-heading {
+  font-size: 1.2em;
+  font-weight: normal;
+  color: @link-blue;
+}
+@media only screen and (max-width: @width-breakpoint-desktop){
+  .desktop-book-header{
+    display: none;
+  }
+}
+
+.mobile-book-header {
+  h1 {
+    line-height: normal;
+  }
+}
+
+@import (less) "components/compact-title.less";

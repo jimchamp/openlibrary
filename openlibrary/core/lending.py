@@ -1,11 +1,12 @@
 """Module for providing core functionality of lending on Open Library.
 """
-from typing import Literal, Optional, List
+from typing import Literal, Optional
 
 import web
 import datetime
-import time
 import logging
+import random
+import time
 import uuid
 
 import eventer
@@ -116,6 +117,7 @@ def compose_ia_url(
     _type: Literal['authors', 'subjects'] = None,
     sorts=None,
     advanced=True,
+    rate_limit_exempt=True,
 ) -> Optional[str]:
     """This needs to be exposed by a generalized API endpoint within
     plugins/api/browse which lets lazy-load more items for
@@ -196,6 +198,8 @@ def compose_ia_url(
         ('page', page),
         ('output', 'json'),
     ]
+    if rate_limit_exempt:
+        params.append(('service', 'metadata__unlimited'))
     if not sorts or not isinstance(sorts, list):
         sorts = ['']
     for sort in sorts:
@@ -204,21 +208,22 @@ def compose_ia_url(
     return base_url + '?' + urlencode(params)
 
 
-def get_random_available_ia_edition():
+def get_random_available_ia_edition() -> str:
     """uses archive advancedsearch to raise a random book"""
     try:
         url = (
             "http://%s/advancedsearch.php?q=_exists_:openlibrary_work"
-            "+AND+(lending___available_to_borrow:true OR lending___available_to_browse:true)"
+            "+AND+(lending___available_to_borrow:true"
+            " OR lending___available_to_browse:true)"
             "&fl=identifier,openlibrary_edition"
-            "&output=json&rows=1&sort[]=random" % (config_bookreader_host)
-        )
+            "&output=json&rows=25&sort[]=random" % (config_bookreader_host)
+        )  # internetarchive/openlibrary#6592: Request 25 editions and randomly choose
         response = requests.get(url, timeout=config_http_request_timeout)
         items = response.json().get('response', {}).get('docs', [])
-        return items[0]["openlibrary_edition"]
+        return random.choice(items)["openlibrary_edition"]
     except Exception:  # TODO: Narrow exception scope
-        logger.exception("get_random_available_ia_edition(%s)" % url)
-        return None
+        logger.exception(f"get_random_available_ia_edition({url})")
+        return ''
 
 
 @public
@@ -239,7 +244,7 @@ def get_groundtruth_availability(ocaid, s3_keys=None):
         response.raise_for_status()
     except requests.HTTPError:
         pass  # TODO: Handle unexpected responses from the availability server.
-    data = response.json().get('lending_status')
+    data = response.json().get('lending_status', {})
     # For debugging
     data['__src__'] = 'core.models.lending.get_groundtruth_availability'
     return data
@@ -308,7 +313,7 @@ def get_available(
         headers = {
             "x-client-id": client_ip,
             "x-preferred-client-id": client_ip,
-            "x-application-id": "openlibrary"
+            "x-application-id": "openlibrary",
         }
         response = requests.get(
             url, headers=headers, timeout=config_http_request_timeout
@@ -337,17 +342,14 @@ def get_availability(key, ids):
         return {}
 
     def update_availability_schema_to_v2(v1_resp, ocaid):
-        collections = v1_resp.get('collection', [])
+        """This functionattempts to take the output of e.g. Bulk Availability
+        API and add/infer attributes which are missing (but are
+        present on Ground Truth API)
+        """
+        # TODO: Make less brittle; maybe add simplelists/copy counts to Bulk Availability
         v1_resp['identifier'] = ocaid
         v1_resp['is_restricted'] = v1_resp['status'] != 'open'
-        v1_resp['is_printdisabled'] = 'printdisabled' in collections
-        v1_resp['is_lendable'] = 'inlibrary' in collections
-        v1_resp['is_readable'] = v1_resp['status'] == 'open'
-        # TODO: Make less brittle; maybe add simplelists/copy counts to IA availability
-        # endpoint
-        v1_resp['is_browseable'] = (
-            v1_resp['is_lendable'] and v1_resp['status'] == 'error'
-        )
+        v1_resp['is_browseable'] = v1_resp.get('available_to_browse', False)
         # For debugging
         v1_resp['__src__'] = 'core.models.lending.get_availability'
         return v1_resp
@@ -562,10 +564,7 @@ def get_loans_of_user(user_key):
     account = OpenLibraryAccount.get(username=user_key.split('/')[-1])
 
     loandata = web.ctx.site.store.values(type='/type/loan', name='user', value=user_key)
-    loans = [Loan(d) for d in loandata] + (
-        _get_ia_loans_of_user(account.itemname)
-        + _get_ia_loans_of_user(userkey2userid(user_key))
-    )
+    loans = [Loan(d) for d in loandata] + (_get_ia_loans_of_user(account.itemname))
     return loans
 
 

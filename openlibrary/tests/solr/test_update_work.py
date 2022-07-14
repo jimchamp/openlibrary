@@ -1,11 +1,18 @@
+import json
+import httpx
+from httpx import ConnectError, Response
 import pytest
+from unittest.mock import MagicMock
 
 from openlibrary.solr import update_work
 from openlibrary.solr.data_provider import DataProvider
 from openlibrary.solr.update_work import (
+    CommitRequest,
+    SolrProcessor,
     build_data,
     pick_cover_edition,
     pick_number_of_pages_median,
+    solr_update,
 )
 
 author_counter = 0
@@ -75,8 +82,8 @@ def make_work(**kw):
 class FakeDataProvider(DataProvider):
     """Stub data_provider and methods which are used by build_data."""
 
-    docs = []  # type: ignore
-    docs_by_key = {}  # type: ignore
+    docs: list = []
+    docs_by_key: dict = {}
 
     def __init__(self, docs=None):
         docs = docs or []
@@ -89,7 +96,7 @@ class FakeDataProvider(DataProvider):
     def find_redirects(self, key):
         return []
 
-    def get_document(self, key):
+    async def get_document(self, key):
         return self.docs_by_key.get(key)
 
     def get_editions_of_work(self, work):
@@ -106,47 +113,51 @@ class Test_build_data:
     def setup_class(cls):
         update_work.data_provider = FakeDataProvider()
 
-    def test_simple_work(self):
+    @pytest.mark.asyncio
+    async def test_simple_work(self):
         work = {"key": "/works/OL1M", "type": {"key": "/type/work"}, "title": "Foo"}
 
-        d = build_data(work)
+        d = await build_data(work)
         assert d["key"] == "/works/OL1M"
         assert d["title"] == "Foo"
         assert d["has_fulltext"] is False
         assert d["edition_count"] == 0
 
-    def test_edition_count_when_editions_on_work(self):
+    @pytest.mark.asyncio
+    async def test_edition_count_when_editions_on_work(self):
         work = make_work()
 
-        d = build_data(work)
+        d = await build_data(work)
         assert d['edition_count'] == 0
 
         work['editions'] = [make_edition()]
-        d = build_data(work)
+        d = await build_data(work)
         assert d['edition_count'] == 1
 
         work['editions'] = [make_edition(), make_edition()]
-        d = build_data(work)
+        d = await build_data(work)
         assert d['edition_count'] == 2
 
-    def test_edition_count_when_editions_in_data_provider(self):
+    @pytest.mark.asyncio
+    async def test_edition_count_when_editions_in_data_provider(self):
         work = make_work()
-        d = build_data(work)
+        d = await build_data(work)
         assert d['edition_count'] == 0
 
         update_work.data_provider = FakeDataProvider([work, make_edition(work)])
 
-        d = build_data(work)
+        d = await build_data(work)
         assert d['edition_count'] == 1
 
         update_work.data_provider = FakeDataProvider(
             [work, make_edition(work), make_edition(work)]
         )
 
-        d = build_data(work)
+        d = await build_data(work)
         assert d['edition_count'] == 2
 
-    def test_edition_key(self):
+    @pytest.mark.asyncio
+    async def test_edition_key(self):
         work = make_work()
         update_work.data_provider = FakeDataProvider(
             [
@@ -157,10 +168,11 @@ class Test_build_data:
             ]
         )
 
-        d = build_data(work)
+        d = await build_data(work)
         assert d['edition_key'] == ["OL1M", "OL2M", "OL3M"]
 
-    def test_publish_year(self):
+    @pytest.mark.asyncio
+    async def test_publish_year(self):
         test_dates = [
             "2000",
             "Another 2000",
@@ -176,25 +188,27 @@ class Test_build_data:
             [work] + [make_edition(work, publish_date=date) for date in test_dates]
         )
 
-        d = build_data(work)
+        d = await build_data(work)
         assert sorted(d['publish_year']) == ["2000", "2001", "2002", "2003", "2004"]
         assert d["first_publish_year"] == 2000
 
-    def test_isbns(self):
+    @pytest.mark.asyncio
+    async def test_isbns(self):
         work = make_work()
         update_work.data_provider = FakeDataProvider(
             [work, make_edition(work, isbn_10=["123456789X"])]
         )
-        d = build_data(work)
+        d = await build_data(work)
         assert sorted(d['isbn']) == ['123456789X', '9781234567897']
 
         update_work.data_provider = FakeDataProvider(
             [work, make_edition(work, isbn_10=["9781234567897"])]
         )
-        d = build_data(work)
+        d = await build_data(work)
         assert sorted(d['isbn']) == ['123456789X', '9781234567897']
 
-    def test_other_identifiers(self):
+    @pytest.mark.asyncio
+    async def test_other_identifiers(self):
         work = make_work()
         update_work.data_provider = FakeDataProvider(
             [
@@ -203,11 +217,12 @@ class Test_build_data:
                 make_edition(work, oclc_numbers=["234"], lccn=["lccn-2", "lccn-3"]),
             ]
         )
-        d = build_data(work)
+        d = await build_data(work)
         assert sorted(d['oclc']) == ['123', '234']
         assert sorted(d['lccn']) == ['lccn-1', 'lccn-2', 'lccn-3']
 
-    def test_identifiers(self):
+    @pytest.mark.asyncio
+    async def test_identifiers(self):
         work = make_work()
         update_work.data_provider = FakeDataProvider(
             [
@@ -216,91 +231,75 @@ class Test_build_data:
                 make_edition(work, identifiers={"librarything": ["lt-2"]}),
             ]
         )
-        d = build_data(work)
+        d = await build_data(work)
         assert sorted(d['id_librarything']) == ['lt-1', 'lt-2']
 
-    def test_ia_boxid(self):
+    @pytest.mark.asyncio
+    async def test_ia_boxid(self):
         w = make_work()
         update_work.data_provider = FakeDataProvider([w, make_edition(w)])
-        d = build_data(w)
+        d = await build_data(w)
         assert 'ia_box_id' not in d
 
         w = make_work()
         update_work.data_provider = FakeDataProvider(
             [w, make_edition(w, ia_box_id='foo')]
         )
-        d = build_data(w)
+        d = await build_data(w)
         assert 'ia_box_id' in d
         assert d['ia_box_id'] == ['foo']
 
-    def test_with_one_lending_edition(self):
+    @pytest.mark.asyncio
+    async def test_with_one_lending_edition(self):
         w = make_work()
         update_work.data_provider = FakeDataProvider(
-            [
-                w,
-                make_edition(
-                    w,
-                    key="/books/OL1M",
-                    ocaid='foo00bar',
-                    _ia_meta={"collection": ['lendinglibrary', 'americana']},
-                ),
-            ]
+            [w, make_edition(w, key="/books/OL1M", ocaid='foo00bar')]
         )
-        d = build_data(w)
+        ia_metadata = {"foo00bar": {"collection": ['inlibrary', 'americana']}}
+        d = await build_data(w, ia_metadata)
         assert d['has_fulltext'] is True
         assert d['public_scan_b'] is False
         assert 'printdisabled_s' not in d
         assert d['lending_edition_s'] == 'OL1M'
         assert d['ia'] == ['foo00bar']
-        assert sss(d['ia_collection_s']) == sss("americana;lendinglibrary")
+        assert sss(d['ia_collection_s']) == sss("americana;inlibrary")
         assert d['edition_count'] == 1
         assert d['ebook_count_i'] == 1
 
-    def test_with_two_lending_editions(self):
+    @pytest.mark.asyncio
+    async def test_with_two_lending_editions(self):
         w = make_work()
         update_work.data_provider = FakeDataProvider(
             [
                 w,
-                make_edition(
-                    w,
-                    key="/books/OL1M",
-                    ocaid='foo01bar',
-                    _ia_meta={"collection": ['lendinglibrary', 'americana']},
-                ),
-                make_edition(
-                    w,
-                    key="/books/OL2M",
-                    ocaid='foo02bar',
-                    _ia_meta={"collection": ['lendinglibrary', 'internetarchivebooks']},
-                ),
+                make_edition(w, key="/books/OL1M", ocaid='foo01bar'),
+                make_edition(w, key="/books/OL2M", ocaid='foo02bar'),
             ]
         )
-        d = build_data(w)
+        ia_metadata = {
+            "foo01bar": {"collection": ['inlibrary', 'americana']},
+            "foo02bar": {"collection": ['inlibrary', 'internetarchivebooks']},
+        }
+        d = await build_data(w, ia_metadata)
         assert d['has_fulltext'] is True
         assert d['public_scan_b'] is False
         assert 'printdisabled_s' not in d
         assert d['lending_edition_s'] == 'OL1M'
         assert sorted(d['ia']) == ['foo01bar', 'foo02bar']
         assert sss(d['ia_collection_s']) == sss(
-            "lendinglibrary;americana;internetarchivebooks"
+            "inlibrary;americana;internetarchivebooks"
         )
         assert d['edition_count'] == 2
         assert d['ebook_count_i'] == 2
 
-    def test_with_one_inlibrary_edition(self):
+    @pytest.mark.asyncio
+    async def test_with_one_inlibrary_edition(self):
         w = make_work()
         update_work.data_provider = FakeDataProvider(
-            [
-                w,
-                make_edition(
-                    w,
-                    key="/books/OL1M",
-                    ocaid='foo00bar',
-                    _ia_meta={"collection": ['printdisabled', 'inlibrary']},
-                ),
-            ]
+            [w, make_edition(w, key="/books/OL1M", ocaid='foo00bar')]
         )
-        d = build_data(w)
+        ia_metadata = {"foo00bar": {"collection": ['printdisabled', 'inlibrary']}}
+        d = await build_data(w, ia_metadata)
         assert d['has_fulltext'] is True
         assert d['public_scan_b'] is False
         assert d['printdisabled_s'] == 'OL1M'
@@ -310,20 +309,14 @@ class Test_build_data:
         assert d['edition_count'] == 1
         assert d['ebook_count_i'] == 1
 
-    def test_with_one_printdisabled_edition(self):
+    @pytest.mark.asyncio
+    async def test_with_one_printdisabled_edition(self):
         w = make_work()
         update_work.data_provider = FakeDataProvider(
-            [
-                w,
-                make_edition(
-                    w,
-                    key="/books/OL1M",
-                    ocaid='foo00bar',
-                    _ia_meta={"collection": ['printdisabled', 'americana']},
-                ),
-            ]
+            [w, make_edition(w, key="/books/OL1M", ocaid='foo00bar')]
         )
-        d = build_data(w)
+        ia_metadata = {"foo00bar": {"collection": ['printdisabled', 'americana']}}
+        d = await build_data(w, ia_metadata)
         assert d['has_fulltext'] is True
         assert d['public_scan_b'] is False
         assert d['printdisabled_s'] == 'OL1M'
@@ -333,48 +326,50 @@ class Test_build_data:
         assert d['edition_count'] == 1
         assert d['ebook_count_i'] == 1
 
-    def test_with_multiple_editions(self):
+    def test_get_alternate_titles(self):
+        f = SolrProcessor.get_alternate_titles
+
+        no_title = {}
+        only_title = {'title': 'foo'}
+        with_subtitle = {'title': 'foo 2', 'subtitle': 'bar'}
+
+        assert f([]) == set()
+        assert f([no_title]) == set()
+        assert f([only_title, no_title]) == {'foo'}
+        assert f([with_subtitle, only_title]) == {'foo 2: bar', 'foo'}
+
+    @pytest.mark.asyncio
+    async def test_with_multiple_editions(self):
         w = make_work()
         update_work.data_provider = FakeDataProvider(
             [
                 w,
                 make_edition(w, key="/books/OL1M"),
-                make_edition(
-                    w,
-                    key="/books/OL2M",
-                    ocaid='foo00bar',
-                    _ia_meta={"collection": ['americana']},
-                ),
-                make_edition(
-                    w,
-                    key="/books/OL3M",
-                    ocaid='foo01bar',
-                    _ia_meta={"collection": ['lendinglibrary', 'americana']},
-                ),
-                make_edition(
-                    w,
-                    key="/books/OL4M",
-                    ocaid='foo02bar',
-                    _ia_meta={"collection": ['printdisabled', 'inlibrary']},
-                ),
+                make_edition(w, key="/books/OL2M", ocaid='foo00bar'),
+                make_edition(w, key="/books/OL3M", ocaid='foo01bar'),
+                make_edition(w, key="/books/OL4M", ocaid='foo02bar'),
             ]
         )
-        d = build_data(w)
+        ia_metadata = {
+            "foo00bar": {"collection": ['americana']},
+            "foo01bar": {"collection": ['inlibrary', 'americana']},
+            "foo02bar": {"collection": ['printdisabled', 'inlibrary']},
+        }
+        d = await build_data(w, ia_metadata)
         assert d['has_fulltext'] is True
         assert d['public_scan_b'] is True
         assert d['printdisabled_s'] == 'OL4M'
-        assert d['lending_edition_s'] == 'OL3M'
+        assert d['lending_edition_s'] == 'OL2M'
         assert sorted(d['ia']) == ['foo00bar', 'foo01bar', 'foo02bar']
-        assert sss(d['ia_collection_s']) == sss(
-            "americana;inlibrary;lendinglibrary;printdisabled"
-        )
+        assert sss(d['ia_collection_s']) == sss("americana;inlibrary;printdisabled")
 
         assert d['edition_count'] == 4
         assert d['ebook_count_i'] == 3
 
-    def test_subjects(self):
+    @pytest.mark.asyncio
+    async def test_subjects(self):
         w = make_work(subjects=["a", "b c"])
-        d = build_data(w)
+        d = await build_data(w)
 
         assert d['subject'] == ['a', "b c"]
         assert d['subject_facet'] == ['a', "b c"]
@@ -390,17 +385,15 @@ class Test_build_data:
             subject_people=["a", "b c"],
             subject_times=["a", "b c"],
         )
-        d = build_data(w)
+        d = await build_data(w)
 
         for k in ['subject', 'person', 'place', 'time']:
             assert d[k] == ['a', "b c"]
             assert d[k + '_facet'] == ['a', "b c"]
             assert d[k + '_key'] == ['a', "b_c"]
 
-    def test_language(self):
-        pass
-
-    def test_author_info(self):
+    @pytest.mark.asyncio
+    async def test_author_info(self):
         w = make_work(
             authors=[
                 {
@@ -413,7 +406,7 @@ class Test_build_data:
                 {"author": make_author(key="/authors/OL2A", name="Author Two")},
             ]
         )
-        d = build_data(w)
+        d = await build_data(w)
         assert d['author_name'] == ["Author One", "Author Two"]
         assert d['author_key'] == ['OL1A', 'OL2A']
         assert d['author_facet'] == ['OL1A Author One', 'OL2A Author Two']
@@ -447,10 +440,11 @@ class Test_build_data:
         ),
     }
 
+    @pytest.mark.asyncio
     @pytest.mark.parametrize(
         "doc_lccs,solr_lccs,sort_lcc_index", LCC_TESTS.values(), ids=LCC_TESTS.keys()
     )
-    def test_lccs(self, doc_lccs, solr_lccs, sort_lcc_index):
+    async def test_lccs(self, doc_lccs, solr_lccs, sort_lcc_index):
         work = make_work()
         update_work.data_provider = FakeDataProvider(
             [
@@ -458,7 +452,7 @@ class Test_build_data:
                 make_edition(work, lc_classifications=doc_lccs),
             ]
         )
-        d = build_data(work)
+        d = await build_data(work)
         if solr_lccs:
             assert sorted(d.get('lcc')) == solr_lccs
             if sort_lcc_index is not None:
@@ -488,10 +482,11 @@ class Test_build_data:
         'Skips 092s': (['092', '123.5'], ['123.5'], 0),
     }
 
+    @pytest.mark.asyncio
     @pytest.mark.parametrize(
         "doc_ddcs,solr_ddcs,sort_ddc_index", DDC_TESTS.values(), ids=DDC_TESTS.keys()
     )
-    def test_ddcs(self, doc_ddcs, solr_ddcs, sort_ddc_index):
+    async def test_ddcs(self, doc_ddcs, solr_ddcs, sort_ddc_index):
         work = make_work()
         update_work.data_provider = FakeDataProvider(
             [
@@ -499,7 +494,7 @@ class Test_build_data:
                 make_edition(work, dewey_decimal_class=doc_ddcs),
             ]
         )
-        d = build_data(work)
+        d = await build_data(work)
         if solr_ddcs:
             assert sorted(d.get('ddc')) == solr_ddcs
             assert d.get('ddc_sort') == solr_ddcs[sort_ddc_index]
@@ -522,21 +517,24 @@ class Test_update_items:
     def setup_class(cls):
         update_work.data_provider = FakeDataProvider()
 
-    def test_delete_author(self):
+    @pytest.mark.asyncio
+    async def test_delete_author(self):
         update_work.data_provider = FakeDataProvider(
             [make_author(key='/authors/OL23A', type={'key': '/type/delete'})]
         )
-        requests = update_work.update_author('/authors/OL23A')
+        requests = await update_work.update_author('/authors/OL23A')
         assert requests[0].to_json_command() == '"delete": ["/authors/OL23A"]'
 
-    def test_redirect_author(self):
+    @pytest.mark.asyncio
+    async def test_redirect_author(self):
         update_work.data_provider = FakeDataProvider(
             [make_author(key='/authors/OL24A', type={'key': '/type/redirect'})]
         )
-        requests = update_work.update_author('/authors/OL24A')
+        requests = await update_work.update_author('/authors/OL24A')
         assert requests[0].to_json_command() == '"delete": ["/authors/OL24A"]'
 
-    def test_update_author(self, monkeypatch):
+    @pytest.mark.asyncio
+    async def test_update_author(self, monkeypatch):
         update_work.data_provider = FakeDataProvider(
             [make_author(key='/authors/OL25A', name='Somebody')]
         )
@@ -557,7 +555,7 @@ class Test_update_items:
         monkeypatch.setattr(
             update_work.requests, 'get', lambda url, **kwargs: empty_solr_resp
         )
-        requests = update_work.update_author('/authors/OL25A')
+        requests = await update_work.update_author('/authors/OL25A')
         assert len(requests) == 1
         assert isinstance(requests[0], update_work.AddRequest)
         assert requests[0].doc['key'] == "/authors/OL25A"
@@ -573,45 +571,50 @@ class TestUpdateWork:
     def setup_class(cls):
         update_work.data_provider = FakeDataProvider()
 
-    def test_delete_work(self):
-        requests = update_work.update_work(
+    @pytest.mark.asyncio
+    async def test_delete_work(self):
+        requests = await update_work.update_work(
             {'key': '/works/OL23W', 'type': {'key': '/type/delete'}}
         )
         assert len(requests) == 1
         assert requests[0].to_json_command() == '"delete": ["/works/OL23W"]'
 
-    def test_delete_editions(self):
-        requests = update_work.update_work(
+    @pytest.mark.asyncio
+    async def test_delete_editions(self):
+        requests = await update_work.update_work(
             {'key': '/works/OL23M', 'type': {'key': '/type/delete'}}
         )
         assert len(requests) == 1
         assert requests[0].to_json_command() == '"delete": ["/works/OL23M"]'
 
-    def test_redirects(self):
-        requests = update_work.update_work(
+    @pytest.mark.asyncio
+    async def test_redirects(self):
+        requests = await update_work.update_work(
             {'key': '/works/OL23W', 'type': {'key': '/type/redirect'}}
         )
         assert len(requests) == 1
         assert requests[0].to_json_command() == '"delete": ["/works/OL23W"]'
 
-    def test_no_title(self):
-        requests = update_work.update_work(
+    @pytest.mark.asyncio
+    async def test_no_title(self):
+        requests = await update_work.update_work(
             {'key': '/books/OL1M', 'type': {'key': '/type/edition'}}
         )
         assert len(requests) == 1
         assert requests[0].doc['title'] == "__None__"
-        requests = update_work.update_work(
+        requests = await update_work.update_work(
             {'key': '/works/OL23W', 'type': {'key': '/type/work'}}
         )
         assert len(requests) == 1
         assert requests[0].doc['title'] == "__None__"
 
-    def test_work_no_title(self):
+    @pytest.mark.asyncio
+    async def test_work_no_title(self):
         work = {'key': '/works/OL23W', 'type': {'key': '/type/work'}}
         ed = make_edition(work)
         ed['title'] = 'Some Title!'
         update_work.data_provider = FakeDataProvider([work, ed])
-        requests = update_work.update_work(work)
+        requests = await update_work.update_work(work)
         assert len(requests) == 1
         assert requests[0].doc['title'] == "Some Title!"
 
@@ -664,3 +667,203 @@ class Test_pick_number_of_pages_median:
         assert pick_number_of_pages_median(eds) == 122
         eds = [{}, {}] + [{'number_of_pages': n} for n in [123, 122, 1]]
         assert pick_number_of_pages_median(eds) == 122
+
+
+class Test_Sort_Editions_Ocaids:
+    def test_sort(self):
+        editions = [
+            {"key": "/books/OL789M", "ocaid": "ocaid_restricted"},
+            {"key": "/books/OL567M", "ocaid": "ocaid_printdisabled"},
+            {"key": "/books/OL234M", "ocaid": "ocaid_borrowable"},
+            {"key": "/books/OL123M", "ocaid": "ocaid_open"},
+        ]
+        ia_md = {
+            "ocaid_restricted": {
+                "access_restricted_item": "true",
+                'collection': [],
+            },
+            "ocaid_printdisabled": {
+                "access_restricted_item": "true",
+                "collection": ["printdisabled"],
+            },
+            "ocaid_borrowable": {
+                "access_restricted_item": "true",
+                "collection": ["inlibrary"],
+            },
+            "ocaid_open": {
+                "access_restricted_item": "false",
+                "collection": ["americanlibraries"],
+            },
+        }
+
+        assert SolrProcessor.get_ebook_info(editions, ia_md)['ia'] == [
+            "ocaid_open",
+            "ocaid_borrowable",
+            "ocaid_printdisabled",
+            "ocaid_restricted",
+        ]
+
+    def test_goog_deprioritized(self):
+        editions = [
+            {"key": "/books/OL789M", "ocaid": "foobargoog"},
+            {"key": "/books/OL789M", "ocaid": "foobarblah"},
+        ]
+        assert SolrProcessor.get_ebook_info(editions, {})['ia'] == [
+            "foobarblah",
+            "foobargoog",
+        ]
+
+    def test_excludes_fav_ia_collections(self):
+        doc = {}
+        editions = [
+            {"key": "/books/OL789M", "ocaid": "foobargoog"},
+            {"key": "/books/OL789M", "ocaid": "foobarblah"},
+        ]
+        ia_md = {
+            "foobargoog": {"collection": ['americanlibraries', 'fav-foobar']},
+            "foobarblah": {"collection": ['fav-bluebar', 'blah']},
+        }
+
+        doc = SolrProcessor.get_ebook_info(editions, ia_md)
+        assert doc['ia_collection_s'] == "americanlibraries;blah"
+
+
+class TestSolrUpdate:
+    def sample_response_200(self):
+        return Response(
+            200,
+            request=MagicMock(),
+            content=json.dumps(
+                {
+                    "responseHeader": {
+                        "errors": [],
+                        "maxErrors": -1,
+                        "status": 0,
+                        "QTime": 183,
+                    }
+                }
+            ),
+        )
+
+    def sample_global_error(self):
+        return Response(
+            400,
+            request=MagicMock(),
+            content=json.dumps(
+                {
+                    'responseHeader': {
+                        'errors': [],
+                        'maxErrors': -1,
+                        'status': 400,
+                        'QTime': 76,
+                    },
+                    'error': {
+                        'metadata': [
+                            'error-class',
+                            'org.apache.solr.common.SolrException',
+                            'root-error-class',
+                            'org.apache.solr.common.SolrException',
+                        ],
+                        'msg': "Unknown key 'key' at [14]",
+                        'code': 400,
+                    },
+                }
+            ),
+        )
+
+    def sample_individual_error(self):
+        return Response(
+            400,
+            request=MagicMock(),
+            content=json.dumps(
+                {
+                    'responseHeader': {
+                        'errors': [
+                            {
+                                'type': 'ADD',
+                                'id': '/books/OL1M',
+                                'message': '[doc=/books/OL1M] missing required field: type',
+                            }
+                        ],
+                        'maxErrors': -1,
+                        'status': 0,
+                        'QTime': 10,
+                    }
+                }
+            ),
+        )
+
+    def sample_response_503(self):
+        return Response(
+            503,
+            request=MagicMock(),
+            content=b"<html><body><h1>503 Service Unavailable</h1>",
+        )
+
+    def test_successful_response(self, monkeypatch, monkeytime):
+        mock_post = MagicMock(return_value=self.sample_response_200())
+        monkeypatch.setattr(httpx, "post", mock_post)
+
+        solr_update(
+            [CommitRequest()],
+            solr_base_url="http://localhost:8983/solr/foobar",
+        )
+
+        assert mock_post.call_count == 1
+
+    def test_non_json_solr_503(self, monkeypatch, monkeytime):
+        mock_post = MagicMock(return_value=self.sample_response_503())
+        monkeypatch.setattr(httpx, "post", mock_post)
+
+        solr_update(
+            [CommitRequest()],
+            solr_base_url="http://localhost:8983/solr/foobar",
+        )
+
+        assert mock_post.call_count > 1
+
+    def test_solr_offline(self, monkeypatch, monkeytime):
+        mock_post = MagicMock(side_effect=ConnectError('', request=None))
+        monkeypatch.setattr(httpx, "post", mock_post)
+
+        solr_update(
+            [CommitRequest()],
+            solr_base_url="http://localhost:8983/solr/foobar",
+        )
+
+        assert mock_post.call_count > 1
+
+    def test_invalid_solr_request(self, monkeypatch, monkeytime):
+        mock_post = MagicMock(return_value=self.sample_global_error())
+        monkeypatch.setattr(httpx, "post", mock_post)
+
+        solr_update(
+            [CommitRequest()],
+            solr_base_url="http://localhost:8983/solr/foobar",
+        )
+
+        assert mock_post.call_count == 1
+
+    def test_bad_apple_in_solr_request(self, monkeypatch, monkeytime):
+        mock_post = MagicMock(return_value=self.sample_individual_error())
+        monkeypatch.setattr(httpx, "post", mock_post)
+
+        solr_update(
+            [CommitRequest()],
+            solr_base_url="http://localhost:8983/solr/foobar",
+        )
+
+        assert mock_post.call_count == 1
+
+    def test_other_non_ok_status(self, monkeypatch, monkeytime):
+        mock_post = MagicMock(
+            return_value=Response(500, request=MagicMock(), content="{}")
+        )
+        monkeypatch.setattr(httpx, "post", mock_post)
+
+        solr_update(
+            [CommitRequest()],
+            solr_base_url="http://localhost:8983/solr/foobar",
+        )
+
+        assert mock_post.call_count > 1

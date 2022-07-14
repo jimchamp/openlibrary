@@ -140,7 +140,7 @@ stats: # This section is used to state what stats need to be gathered.
       pattern: /api/volumes/.*
       time: total
 
-# prefixes ignored for /books/ia:xxx URLs and new-solr-updater.py
+# prefixes ignored for /books/ia:xxx URLs and solr_updater.py
 ia_ignore_prefixes:
     - "jstor-"
     - "imslp-"
@@ -177,6 +177,12 @@ ia_civicrm_api:
     auth: XXX
 
 sentry:
+    enabled: false
+    # Dummy endpoint; where sentry logs are sent to
+    dsn: 'https://examplePublicKey@o0.ingest.sentry.io/0'
+    environment: 'local'
+
+sentry_cron_jobs:
     enabled: false
     # Dummy endpoint; where sentry logs are sent to
     dsn: 'https://examplePublicKey@o0.ingest.sentry.io/0'

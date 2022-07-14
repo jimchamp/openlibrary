@@ -2,21 +2,22 @@
 """
 import json
 import random
+import tempfile
 import web
 
 from infogami.utils import delegate
 from infogami.utils.view import render_template, public
 from infogami.infobase import client, common
 
-import six
-
 from openlibrary.accounts import get_current_user
 from openlibrary.core import formats, cache
+from openlibrary.core.lists.model import ListMixin
 import openlibrary.core.helpers as h
 from openlibrary.utils import dateutil
 from openlibrary.plugins.upstream import spamcheck
 from openlibrary.plugins.upstream.account import MyBooksTemplate
 from openlibrary.plugins.worksearch import subjects
+from openlibrary.coverstore.code import render_list_preview_image
 
 
 class lists_home(delegate.page):
@@ -173,7 +174,7 @@ class lists_json(delegate.page):
             )
         except client.ClientException as e:
             headers = {"Content-Type": self.get_content_type()}
-            data = {"message": e.message}
+            data = {"message": str(e)}
             raise web.HTTPError(e.status, data=self.dumps(data), headers=headers)
 
         web.header("Content-Type", self.get_content_type())
@@ -424,7 +425,8 @@ class list_subjects_json(delegate.page):
         return {"name": s['name'], "count": s['count'], "url": key}
 
 
-class list_editions_yaml(list_subjects_json):
+# This class is defined twice in this file. Should this be list_subjects_yaml() ?
+class list_editions_yaml(list_subjects_json):  # type: ignore[no-redef]
     encoding = "yml"
     content_type = 'text/yaml; charset="utf-8"'
 
@@ -451,12 +453,22 @@ class export(delegate.page):
 
         if format == "html":
             data = self.get_exports(lst)
-            html = render_template("lists/export_as_html", lst, data["editions"], data["works"], data["authors"])
+            html = render_template(
+                "lists/export_as_html",
+                lst,
+                data["editions"],
+                data["works"],
+                data["authors"],
+            )
             return delegate.RawText(html)
         elif format == "bibtex":
             data = self.get_exports(lst)
             html = render_template(
-                "lists/export_as_bibtex", lst, data["editions"], data["works"], data["authors"]
+                "lists/export_as_bibtex",
+                lst,
+                data["editions"],
+                data["works"],
+                data["authors"],
             )
             return delegate.RawText(html)
         elif format == "json":
@@ -470,7 +482,7 @@ class export(delegate.page):
         else:
             raise web.notfound()
 
-    def get_exports(self, lst: list, raw: bool = False) -> dict[str, list]:
+    def get_exports(self, lst: ListMixin, raw: bool = False) -> dict[str, list]:
         export_data = lst.get_export_list()
         if "editions" in export_data:
             export_data["editions"] = sorted(
@@ -493,7 +505,9 @@ class export(delegate.page):
 
         if not raw:
             if "editions" in export_data:
-                export_data["editions"] = [self.make_doc(e) for e in export_data["editions"]]
+                export_data["editions"] = [
+                    self.make_doc(e) for e in export_data["editions"]
+                ]
                 lst.preload_authors(export_data["editions"])
             else:
                 export_data["editions"] = []
@@ -503,7 +517,9 @@ class export(delegate.page):
             else:
                 export_data["works"] = []
             if "authors" in export_data:
-                export_data["authors"] = [self.make_doc(e) for e in export_data["authors"]]
+                export_data["authors"] = [
+                    self.make_doc(e) for e in export_data["authors"]
+                ]
                 lst.preload_authors(export_data["authors"])
             else:
                 export_data["authors"] = []
@@ -641,3 +657,12 @@ def get_active_lists_in_random(limit=20, preload=True):
     lists = f(limit=limit, preload=preload)
     # convert rawdata into models.
     return [web.ctx.site.new(xlist['key'], xlist) for xlist in lists]
+
+
+class lists_preview(delegate.page):
+    path = r"(/people/[^/]+/lists/OL\d+L)/preview.png"
+
+    def GET(self, lst_key):
+        image_bytes = render_list_preview_image(lst_key)
+        web.header("Content-Type", "image/png")
+        return delegate.RawText(image_bytes)

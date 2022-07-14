@@ -2,9 +2,15 @@
   "extends": [
     "config:base"
   ],
+  "git-submodules": {
+    "enabled": true
+  },
+  "pip_requirements": {
+    "fileMatch": ["(^|/)requirements[^/]*\\.txt$"]
+  },
   "packageRules": [
     {
-      "matchPackageNames": ["eslint", "babel-eslint", "eslint-plugin-no-jquery", "eslint-plugin-vue"],
+      "matchPackageNames": ["eslint", "@babel/eslint-parser", "eslint-plugin-no-jquery", "eslint-plugin-vue"],
       "groupName": "eslint",
       "automerge": true
     },
@@ -17,7 +23,7 @@
       "automerge": true
     },
     {
-      "matchDatasources": ["github-actions"],
+      "matchPackagePatterns": ["^actions/"],
       "automerge": true
     }
   ]

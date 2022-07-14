@@ -18,8 +18,6 @@ from openlibrary.utils import olmemcache
 from openlibrary.utils.dateutil import MINUTE_SECS
 from openlibrary.core.helpers import NothingEncoder
 
-import six
-
 
 __all__ = [
     "cached_property",
@@ -193,7 +191,11 @@ class memcache_memoize:
 
         memcache doesn't like spaces in the key.
         """
-        return json.dumps([] if isinstance(value, Nothing) else value, separators=(",", ":"), cls=NothingEncoder)
+        return json.dumps(
+            [] if isinstance(value, Nothing) else value,
+            separators=(",", ":"),
+            cls=NothingEncoder,
+        )
 
     def memcache_set(self, args, kw, value, time):
         """Adds value and time to memcache. Key is computed from the arguments."""
@@ -557,6 +559,7 @@ class PrefixKeyFunc:
         memcache doesn't like spaces in the key.
         """
         return json.dumps(value, separators=(",", ":"), sort_keys=True)
+
 
 def method_memoize(f):
     """

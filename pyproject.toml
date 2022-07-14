@@ -1,0 +1,38 @@
+# Minimal configuration to ensure that Black does not convert quotes.
+# Black does not support reading its configuration from `setup.cfg`.
+# This file can be deleted when we convert to favoring double quotes.
+# https://black.readthedocs.io/en/stable/usage_and_configuration/the_basics.html
+
+# NOTE: You have to use single-quoted strings in TOML for regular expressions.
+# It's the equivalent of r-strings in Python.  Multiline strings are treated as
+# verbose regular expressions by Black.  Use [ ] to denote a significant space
+# character.
+
+[tool.black]
+skip-string-normalization = true
+target-version = ['py39', 'py310']
+force-exclude = '''
+(
+    ^/openlibrary/book_providers.py
+    | ^/openlibrary/core/db.py
+    | ^/openlibrary/core/lists/model.py
+    | ^/openlibrary/core/observations.py
+    | ^/openlibrary/coverstore/code.py
+    | ^/openlibrary/plugins/admin/code.py
+    | ^/openlibrary/plugins/openlibrary/api.py
+    | ^/openlibrary/plugins/upstream/covers.py
+    | ^/openlibrary/plugins/upstream/models.py
+    | ^/openlibrary/plugins/upstream/mybooks.py
+    | ^/openlibrary/plugins/worksearch/code.py
+    | ^/openlibrary/views/loanstats.py
+    | ^/scripts/coverstore-server
+    | ^/scripts/i18n-messages
+    | ^/scripts/import_standard_ebooks.py
+    | ^/scripts/infobase-server
+    | ^/scripts/openlibrary-server
+    | ^/scripts/solr_builder/solr_builder/fn_to_cli.py
+    | ^/scripts/sync
+    | ^/scripts/tests/test_copydocs.py
+    | ^/vendor/js/wmd/jsmin.py
+)
+'''

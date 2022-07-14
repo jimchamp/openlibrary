@@ -25,7 +25,6 @@ A record is loaded by calling the load function.
 import json
 import re
 
-import unicodedata as ucd
 import web
 
 from collections import defaultdict
@@ -40,6 +39,7 @@ from openlibrary import accounts
 from openlibrary.catalog.merge.merge_marc import build_marc
 from openlibrary.catalog.utils import mk_norm
 from openlibrary.core import lending
+from openlibrary.plugins.upstream.utils import strip_accents
 from openlibrary.utils import uniq, dicthash
 from openlibrary.utils.isbn import normalize_isbn
 
@@ -103,15 +103,6 @@ bad_titles = {
 }
 
 subject_fields = ['subjects', 'subject_places', 'subject_times', 'subject_people']
-
-
-def strip_accents(s):
-    """http://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-in-a-python-unicode-string"""
-    try:
-        s.encode('ascii')
-        return s
-    except UnicodeEncodeError:
-        return ''.join(c for c in ucd.normalize('NFD', s) if ucd.category(c) != 'Mn')
 
 
 def normalize(s):
@@ -808,10 +799,11 @@ def load(rec, account_key=None):
         'local_id',
         'lccn',
         'lc_classifications',
+        'oclc_numbers',
         'source_records',
     ]
     for f in edition_fields:
-        if f not in rec:
+        if f not in rec or not rec[f]:
             continue
         # ensure values is a list
         values = rec[f] if isinstance(rec[f], list) else [rec[f]]
@@ -822,6 +814,16 @@ def load(rec, account_key=None):
         else:
             e[f] = to_add = values
         if to_add:
+            need_edition_save = True
+
+    # Add new identifiers
+    if 'identifiers' in rec:
+        identifiers = defaultdict(list, e.dict().get('identifiers', {}))
+        for k, vals in rec['identifiers'].items():
+            identifiers[k].extend(vals)
+            identifiers[k] = list(set(identifiers[k]))
+        if e.dict().get('identifiers') != identifiers:
+            e['identifiers'] = identifiers
             need_edition_save = True
 
     edits = []

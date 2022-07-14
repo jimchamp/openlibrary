@@ -196,9 +196,18 @@ jQuery(function () {
             .then(module => module.initRealTimeValidation());
     }
     // conditionally load readmore button based on class in the page
-    if (document.getElementsByClassName('read-more-button').length) {
+    const readMoreButtons = document.getElementsByClassName('read-more-button');
+    const clampers = document.querySelectorAll('.clamp');
+    if (readMoreButtons.length || clampers.length) {
         import(/* webpackChunkName: "readmore" */ './readmore.js')
-            .then(module => module.initReadMoreButton());
+            .then(module => {
+                if (readMoreButtons.length) {
+                    module.initReadMoreButton();
+                }
+                if (clampers.length) {
+                    module.initClampers(clampers);
+                }
+            });
     }
     // conditionally loads Goodreads import based on class in the page
     if (document.getElementsByClassName('import-table').length) {
@@ -247,8 +256,9 @@ jQuery(function () {
 
     const $observationModalLinks = $('.observations-modal-link');
     const $notesModalLinks = $('.notes-modal-link');
-    const $notesPageButtons = $('.note-page-buttons')
-    if ($observationModalLinks.length || $notesModalLinks.length || $notesPageButtons.length) {
+    const $notesPageButtons = $('.note-page-buttons');
+    const $shareModalLinks = $('.share-modal-link');
+    if ($observationModalLinks.length || $notesModalLinks.length || $notesPageButtons.length || $shareModalLinks) {
         import(/* webpackChunkName: "modal-links" */ './modals')
             .then(module => {
                 if ($observationModalLinks.length) {
@@ -260,8 +270,12 @@ jQuery(function () {
                 if ($notesPageButtons.length) {
                     module.addNotesPageButtonListeners();
                 }
+                if ($shareModalLinks.length) {
+                    module.initShareModal($shareModalLinks)
+                }
             });
     }
+
 
     const manageCoversElement = document.getElementsByClassName('manageCovers').length;
     const addCoversElement = document.getElementsByClassName('imageIntro').length;
@@ -292,9 +306,18 @@ jQuery(function () {
         document.getElementById('password').value = 'admin123'
         document.getElementById('remember').checked = true
     }
-    if (document.getElementById('adminLinks')) {
+    const anonymizationButton = document.querySelector('.account-anonymization-button')
+    const adminLinks = document.getElementById('adminLinks')
+    if (adminLinks || anonymizationButton) {
         import(/* webpackChunkName: "admin" */ './admin')
-            .then((module) => module.initAdmin());
+            .then(module => {
+                if (adminLinks) {
+                    module.initAdmin();
+                }
+                if (anonymizationButton) {
+                    module.initAnonymizationButton(anonymizationButton);
+                }
+            });
     }
 
     if (window.matchMedia('(display-mode: standalone)').matches) {
@@ -305,6 +328,12 @@ jQuery(function () {
     if (document.getElementById('searchFacets')) {
         import(/* webpackChunkName: "search" */ './search')
             .then((module) => module.initSearchFacets());
+    }
+
+    // Conditionally load Integrated Librarian Environment
+    if (document.getElementsByClassName('show-librarian-tools').length) {
+        import(/* webpackChunkName: "ile" */ './ile')
+            .then((module) => module.init());
     }
 
     if ($('#cboxPrevious').length) {
@@ -359,7 +388,40 @@ jQuery(function () {
 
     const navbar = document.querySelector('.work-menu');
     if (navbar) {
+        const compactTitle = document.querySelector('.compact-title')
+        // Add position-aware navbar JS:
         import(/* webpackChunkName: "nav-bar" */ './edition-nav-bar')
             .then((module) => module.initNavbar(navbar));
+        // Add sticky title component animations:
+        import(/* webpackChunkName: "compact-title" */ './compact-title')
+            .then((module) => module.initCompactTitle(navbar, compactTitle))
+    }
+
+    // Add functionality for librarian merge request table:
+    const mergeRequestCloseLinks = document.querySelectorAll('.mr-close-link')
+    const mergeRequestResolveLinks = document.querySelectorAll('.mr-resolve-link')
+    const mergeRequestCommentButtons = document.querySelectorAll('.mr-comment-btn')
+    const showCommentsLinks = document.querySelectorAll('.comment-expand')
+    const unassignElements = document.querySelectorAll('.mr-unassign')
+
+    if (mergeRequestCloseLinks || mergeRequestCommentButtons || showCommentsLinks || mergeRequestResolveLinks || unassignElements) {
+        import(/* webpackChunkName: "merge-request-table" */'./merge-request-table')
+            .then(module => {
+                if (mergeRequestCloseLinks) {
+                    module.initCloseLinks(mergeRequestCloseLinks)
+                }
+                if (mergeRequestCommentButtons) {
+                    module.initCommenting(mergeRequestCommentButtons)
+                }
+                if (showCommentsLinks) {
+                    module.initShowAllCommentsLinks(showCommentsLinks)
+                }
+                if (mergeRequestResolveLinks) {
+                    module.initRequestClaiming(mergeRequestResolveLinks)
+                }
+                if (unassignElements) {
+                    module.initUnassignment(unassignElements)
+                }
+            })
     }
 });
