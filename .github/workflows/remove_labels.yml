@@ -1,0 +1,18 @@
+name: remove_labels
+on:
+  pull_request:
+    types: [synchronize]
+jobs:
+  remove_on_testing_labels:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo github.event.number = ${{ github.event.number }}
+          echo github.event.pull_request.number = ${{ github.event.pull_request.number }}
+          echo PR_NUM = $PR_NUM
+          echo REPO = $REPO
+          gh pr edit $PR_NUM --remove-label "On testing.openlibrary.org","On ol-mek (http://ol-dev1.us.archive.org:1337)","On ol-jchamp" --repo $REPO
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUM: ${{ github.event.pull_request.nuber }}
+          REPO: ${{ github.event.repository.name }}
