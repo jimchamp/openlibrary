@@ -16,7 +16,7 @@ async function main() {
   console.log(result)
 
   // XXX : Is it possible that data or items is undefined?
-  issues = result.data.items
+  const issues = result.data.items
   console.log('issues:')
   console.log(issues)
 
