@@ -1,4 +1,4 @@
-import {Octokit} from "@octokit/action";
+import { Octokit } from "@octokit/action";
 
 console.log('starting...')
 // Octokit is authenticated with the `GITHUB_TOKEN` that is added to the
@@ -55,7 +55,7 @@ async function main() {
         return
     }
 
-    const actionableIssues = await filterIssues(issues)
+    const actionableIssues = await filterIssues(issues, filters)
     console.log('\nactionableIssues:')
     console.log(actionableIssues)
     console.log('exiting main()')
@@ -108,9 +108,6 @@ async function filterIssues(issues, filters) {
  */
 async function assigneeExistsFilter(issues) {
     return issues
-    // return issues.filter((issue) => {
-    //
-    // })
 }
 
 /**
