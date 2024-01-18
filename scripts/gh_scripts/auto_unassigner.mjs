@@ -48,7 +48,7 @@ async function main() {
     console.log(result)
 
     // XXX : Is it possible that data or items is undefined?
-    const issues = result.data.items
+    const issues = result.data?.items
 
     if (!issues) {
         console.log('No issues were returned by the initial query')
@@ -64,11 +64,14 @@ async function main() {
 
 async function fetchIssues(query) {
     console.log('entered fetchIssues()')
-    const result = await octokit.request('GET /search/issues', {
+    const result = await octokit('GET /repos/{owner}/{repo}/issues', {
+        owner: 'jimchamp',
+        repo: 'openlibrary',
         headers: {
             'X-GitHub-Api-Version': '2022-11-28'
         },
-        q: query,
+        assignee: '*',
+        state: 'open',
         per_page: 100
     })
 
@@ -89,7 +92,7 @@ async function filterIssues(issues, filters) {
     for (const f of filters) {
         console.log(`entering ${f}`)
         results = await f()
-        console.log(`exited ${f}`)
+        console.log(`\nexited f()`)
     }
     console.log('exiting filterIssues()')
     return results
@@ -98,6 +101,7 @@ async function filterIssues(issues, filters) {
 // Filters:
 
 /**
+ * Filters given issues, returning issues that have at least one assignee.
  *
  * @param issues {Array<Record>}
  * @returns {Promise<Array<Record>>}
