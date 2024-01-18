@@ -55,7 +55,7 @@ async function main() {
         return
     }
 
-    const actionableIssues = await filterIssues(issues)
+    const actionableIssues = await filterIssues(issues, filters)
     console.log('\nactionableIssues:')
     console.log(actionableIssues)
     console.log('exiting main()')
