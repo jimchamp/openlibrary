@@ -64,7 +64,7 @@ async function main() {
 
 async function fetchIssues(query) {
     console.log('entered fetchIssues()')
-    const result = await octokit('GET /repos/{owner}/{repo}/issues', {
+    const result = await octokit.request('GET /repos/{owner}/{repo}/issues', {
         owner: 'jimchamp',
         repo: 'openlibrary',
         headers: {
