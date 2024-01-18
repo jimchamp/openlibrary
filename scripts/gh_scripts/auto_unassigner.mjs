@@ -7,7 +7,7 @@ const octokit = new Octokit();
 
 const query = 'repo:jimchamp/openlibrary is:open is:issue'
 
-main()
+await main()
 
 async function main() {
   console.log('entered main()')
