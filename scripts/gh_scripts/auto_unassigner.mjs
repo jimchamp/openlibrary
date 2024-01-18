@@ -65,7 +65,7 @@ async function main() {
 async function fetchIssues(query) {
     console.log('entered fetchIssues()')
     const result = await octokit.request('GET /repos/{owner}/{repo}/issues', {
-        owner: 'jimchamp',
+        owner: 'internetarchive',
         repo: 'openlibrary',
         headers: {
             'X-GitHub-Api-Version': '2022-11-28'
