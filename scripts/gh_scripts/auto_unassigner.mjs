@@ -1,4 +1,4 @@
-import {Octokit} from "@octokit/action";
+import { Octokit } from "@octokit/action";
 
 console.log('starting...')
 // Octokit is authenticated with the `GITHUB_TOKEN` that is added to the
