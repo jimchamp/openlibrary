@@ -139,11 +139,11 @@ async function filterIssues(issues, filters) {
     console.log('entered filterIssues()')
     console.log('\nissues:')
     console.log(issues)
-    let results = []
+    let results = issues
 
     for (const f of filters) {
         console.log(`\nentering ${f}`)
-        results = await f()
+        results = await f(results)
         console.log(`\nexited f()`)
         console.log('results:')
         console.log(results)
