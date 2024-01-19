@@ -56,7 +56,7 @@ const octokit = new Octokit();
  * @type {String[]}
  * @see {excludeAssigneesFilter}
  */
-const excludeAssignees = []
+const excludeAssignees = ['jimchamp']
 
 /**
  * List of GitHub labels that, if on an issue, excludes the issue from automation.
@@ -115,7 +115,12 @@ async function main() {  // XXX : Inject octokit for easier testing
 
     const actionableIssues = await filterIssues(issues, filters)
     console.log('\nactionableIssues:')
-    console.log(actionableIssues)
+    console.log(`length: ${actionableIssues.length}`)
+    console.log('assignees:')
+    for (const issue of actionableIssues) {
+        console.log(issue.assignees)
+        console.log('\n')
+    }
     console.log('exiting main()')
 }
 
