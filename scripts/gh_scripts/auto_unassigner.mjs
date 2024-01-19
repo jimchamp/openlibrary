@@ -94,15 +94,12 @@ async function main(options) {  // XXX : Inject octokit for easier testing
     console.log(`repoOwner: ${repoOwner}`)
     console.log(`type: ${repoOwner}`)
 
-    const result = await fetchIssues(repoOwner)
+    const issues = await fetchIssues(repoOwner)
+    console.log('\nissues:')
+    console.log(issues)
+    console.log(`length: ${issues.length}`)
 
-    console.log('\nresult:')
-    console.log(result)
-
-    // XXX : Is it possible that data or items is undefined?
-    const issues = result.data?.items
-
-    if (!issues) {
+    if (issues.length === 0) {
         console.log('No issues were returned by the initial query')
         return
     }
