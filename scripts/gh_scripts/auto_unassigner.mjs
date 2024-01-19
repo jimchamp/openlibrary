@@ -1,6 +1,46 @@
-import { Octokit } from "@octokit/action";
-
+/**
+ * Runs the auto-unassigner script.
+ *
+ * Optional parameters:
+ * --daysSince : Number : Issues that have had the same assignee for at least this many days are candidates for unassignment
+ * --repoOwner : String : Pass to run on a specific OpenLibrary fork
+ */
+import {Octokit} from "@octokit/action";
 console.log('starting...')
+
+const DEFAULT_OPTIONS = {
+    daysSince: 14,
+    repoOwner: 'internetarchive'
+}
+
+const passedArguments = parseArgs()
+
+/**
+ * Parses any arguments that were passed when this script was executed, and returns
+ * an object containing the arguments.
+ *
+ * @returns {Record}
+ */
+function parseArgs() {
+    const result = {}
+    if (process.argv.length % 2 !== 0) {
+        console.log('Unexpected number of arguments')
+        process.exit(1)
+    }
+    if (process.argv.length > 2) {
+        for (let i = 2, j = 3; i < process.argv.length; i+=2, j+=2) {
+            let arg = process.argv[i]
+            // Remove leading `-` characters
+            while (arg.charAt(0) === '-') {
+                arg = arg.substring(1)
+            }
+            result[arg] = process.argv[j]
+        }
+    }
+
+    return result
+}
+
 // Octokit is authenticated with the `GITHUB_TOKEN` that is added to the
 // environment in the `auto_unassigner` workflow
 const octokit = new Octokit();
@@ -29,21 +69,33 @@ const excludeLabels = []
  * @see {filterIssues}
  */
 const filters = [
-    assigneeExistsFilter,
     excludeAssigneesFilter,
     excludeLabelsFilter,
     recentAssigneeFilter,
     linkedPullRequestFilter
 ]
 
-const query = 'repo:jimchamp/openlibrary is:open is:issue'
+const mainOptions = Object.assign({}, DEFAULT_OPTIONS, passedArguments)
+await main(mainOptions)
 
-
-await main()
-
-async function main() {
+/**
+ * Runs the auto-unassigner job.
+ *
+ * @param options {Record}
+ * @returns {Promise<void>}
+ */
+async function main(options) {  // XXX : Inject octokit for easier testing
     console.log('entered main()')
-    const result = await fetchIssues(query)
+    const daysSince = Number(options.daysSince)
+    const repoOwner = options.repoOwner
+
+    console.log(`daysSince: ${daysSince}`)
+    console.log(`type: ${typeof daysSince}`)
+    console.log(`repoOwner: ${repoOwner}`)
+    console.log(`type: ${repoOwner}`)
+
+    const result = await fetchIssues(repoOwner)
+
     console.log('\nresult:')
     console.log(result)
 
@@ -62,18 +114,19 @@ async function main() {
 }
 
 
-async function fetchIssues(query) {
+async function fetchIssues(repoOwner) {
     console.log('entered fetchIssues()')
-    const result = await octokit.request('GET /repos/{owner}/{repo}/issues', {
-        owner: 'internetarchive',
-        repo: 'openlibrary',
-        headers: {
-            'X-GitHub-Api-Version': '2022-11-28'
-        },
-        assignee: '*',
-        state: 'open',
-        per_page: 100
-    })
+    const result = await octokit.paginate('GET /repos/{owner}/{repo}/issues', {
+                owner: repoOwner,
+                repo: 'openlibrary',
+                headers: {
+                    'X-GitHub-Api-Version': '2022-11-28'
+                },
+                assignee: '*',
+                state: 'open',
+                per_page: 100
+            }
+    )
 
     console.log('exiting fetchIssues()')
     return result
@@ -99,16 +152,6 @@ async function filterIssues(issues, filters) {
 }
 
 // Filters:
-
-/**
- * Filters given issues, returning issues that have at least one assignee.
- *
- * @param issues {Array<Record>}
- * @returns {Promise<Array<Record>>}
- */
-async function assigneeExistsFilter(issues) {
-    return issues
-}
 
 /**
  *
