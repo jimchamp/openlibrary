@@ -95,6 +95,7 @@ async function main(options) {  // XXX : Inject octokit for easier testing
     console.log(`type: ${repoOwner}`)
 
     const result = await fetchIssues(repoOwner)
+
     console.log('\nresult:')
     console.log(result)
 
