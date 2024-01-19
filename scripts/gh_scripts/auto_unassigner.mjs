@@ -28,7 +28,7 @@ const passedArguments = parseArgs()
  */
 function parseArgs() {
     const result = {}
-    // XXX : Does this check make sense?f
+    // XXX : Does this check make sense?
     if (process.argv.length % 2 !== 0) {
         console.log('Unexpected number of arguments')
         process.exit(1)
