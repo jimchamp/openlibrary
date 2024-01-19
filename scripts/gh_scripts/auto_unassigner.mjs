@@ -137,12 +137,16 @@ async function fetchIssues(repoOwner) {
  */
 async function filterIssues(issues, filters) {
     console.log('entered filterIssues()')
+    console.log('\nissues:')
+    console.log(issues)
     let results = []
 
     for (const f of filters) {
-        console.log(`entering ${f}`)
+        console.log(`\nentering ${f}`)
         results = await f()
         console.log(`\nexited f()`)
+        console.log('results:')
+        console.log(results)
     }
     console.log('exiting filterIssues()')
     return results
