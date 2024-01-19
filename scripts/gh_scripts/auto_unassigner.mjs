@@ -185,7 +185,7 @@ async function filterIssues(issues, filters) {
 async function excludePullRequestsFilter(issues) {
     return issues.filter((issue) => {
         console.log(`pull_request in issue: ${'pull_request' in issue}`)
-        return !'pull_request' in issue
+        return !('pull_request' in issue)
     })
 }
 /**
