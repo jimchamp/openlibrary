@@ -137,15 +137,15 @@ async function main() {  // XXX : Inject octokit for easier testing
 async function fetchIssues() {
     console.log('entered fetchIssues()')
     const result = await octokit.paginate('GET /repos/{owner}/{repo}/issues', {
-                owner: mainOptions.repoOwner,
-                repo: 'openlibrary',
-                headers: {
-                    'X-GitHub-Api-Version': '2022-11-28'
-                },
-                assignee: '*',
-                state: 'open',
-                per_page: 100
-            }
+            owner: mainOptions.repoOwner,
+            repo: 'openlibrary',
+            headers: {
+                'X-GitHub-Api-Version': '2022-11-28'
+            },
+            assignee: '*',
+            state: 'open',
+            per_page: 100
+        }
     )
 
     console.log('exiting fetchIssues()')
@@ -163,7 +163,10 @@ async function filterIssues(issues, filters) {
     let results = issues
 
     for (const f of filters) {
+        console.log(`entering ${f}`)
         results = await f(results)
+        console.log('exiting f()')
+        console.log(`results.length: ${results.length}\n`)
     }
     console.log('exiting filterIssues()')
     return results
