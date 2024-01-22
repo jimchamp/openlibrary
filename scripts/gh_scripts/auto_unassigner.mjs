@@ -107,7 +107,7 @@ async function main() {  // XXX : Inject octokit for easier testing
     console.log('entered main()')
 
     await fetchIssues()
-        .then(issues => filterIssues(issues))
+        .then(issues => filterIssues(issues, filters))
     /*
     console.log('\nissues:')
     console.log(issues)
