@@ -274,7 +274,7 @@ async function filterIssues(issues, filters) {
 
     for (const f of filters) {
         console.log(`entering ${f}`)
-        results = await f(results)
+        results = await Promise.all(results.filter(f))
         console.log('exiting f()')
         console.log(`results.length: ${results.length}\n`)
     }
