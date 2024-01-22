@@ -104,7 +104,12 @@ await main()
  * @returns {Promise<void>}
  */
 async function main() {  // XXX : Inject octokit for easier testing
+    console.log('entered main()')
+
     const issues = await fetchIssues()
+    console.log('\nissues:')
+    console.log(issues)
+    console.log(`length: ${issues.length}`)
 
     if (issues.length === 0) {
         console.log('No issues were returned by the initial query')
@@ -112,10 +117,20 @@ async function main() {  // XXX : Inject octokit for easier testing
     }
 
     const actionableIssues = await filterIssues(issues, filters)
+    console.log('\nactionableIssues:')
+    console.log(`length: ${actionableIssues.length}`)
+    console.log('assignees:')
+    for (const issue of actionableIssues) {
+        console.log(issue.assignees)
+        console.log('\n')
+    }
 
+    await commentOnIssue(180, 'Comment from automated workflow')
 
+    console.log('exiting main()')
 }
 
+// START: API Calls
 /**
  * Returns all GitHub issues that are open and one or more assignees.
  *
@@ -127,6 +142,7 @@ async function main() {  // XXX : Inject octokit for easier testing
  * @see  [GitHub REST documentation]{@link https://docs.github.com/en/rest/issues/issues?apiVersion=2022-11-28#list-repository-issues}
  */
 async function fetchIssues() {
+    console.log('entered fetchIssues()')
     const result = await octokit.paginate('GET /repos/{owner}/{repo}/issues', {
             owner: mainOptions.repoOwner,
             repo: 'openlibrary',
@@ -136,9 +152,9 @@ async function fetchIssues() {
             assignee: '*',
             state: 'open',
             per_page: 100
-        }
-    )
+        })
 
+    console.log('exiting fetchIssues()')
     return result
 }
 
@@ -154,11 +170,17 @@ async function fetchIssues() {
  * @see {issueTimelines}
  */
 async function getTimeline(issue) {
+    console.log('entered getTimeline()')
+
     const issueNumber = issue.number
     if (issueTimelines[issueNumber]) {
+        console.log('  found cached timeline')
+        console.log('exiting getTimeline()')
         return issueTimelines[issueNumber]
     }
     // Fetching timeline:
+    console.log('  fetching timeline from API')
+
     const repoUrl = issue.repository_url
     const splitUrl = repoUrl.split('/')
     const repoOwner = splitUrl[splitUrl.length - 2]
@@ -173,11 +195,70 @@ async function getTimeline(issue) {
         })
     )
 
+    console.log('  storing timeline')
     issueTimelines[issueNumber] = timeline
 
+    console.log('exiting getTimeline()')
     return timeline
 }
 
+/**
+ *
+ * @param issueNumber
+ * @param assignees
+ * @returns {Promise<boolean>}
+ */
+async function unassignFromIssue(issueNumber, assignees) {
+    console.log('entered unassignFromIssue()')
+    const wasDeleted = await octokit.request('DELETE /repos/{owner}/{repo}/issues/{issue_number}/assignees', {
+        owner: mainOptins.repoOwner,
+        repo: 'openlibrary',
+        issue_number: issueNumber,
+        assignees: assignees,
+        headers: {
+            'X-GitHub-Api-Version': '2022-11-28'
+        }
+    })
+        .then((response) => {
+            if (!response.ok) {
+                console.log(`Failed to remove assignees from issue #${issueNumber}`)
+                console.log(`${response.status} ${response.statusText}`)
+                throw new Error('Remove assignees call is not ok')
+            }
+            return true
+        })
+        .catch(() => false)
+
+    console.log('exiting unassignFromIssue()')
+    return wasDeleted
+}
+
+async function commentOnIssue(issueNumber, comment) {
+    console.log('entered commentOnIssue()')
+    const commentSucceeded = await octokit.request('POST /repos/{owner}/{repo}/issues/{issue_number}/comments', {
+        owner: mainOptions.repoOwner,
+        repo: 'openlibrary',
+        issue_number: issueNumber,
+        body: comment,
+        headers: {
+            'X-GitHub-Api-Version': '2022-11-28'
+        },
+    })
+        .then((response) => {
+            if (!response.ok) {
+                console.log(`Failed to comment on issue #${issueNumber}`)
+                console.log(`${response.status} ${response.statusText}`)
+                throw new Error('Comment on issue call is not ok')
+            }
+            return true
+        })
+        .catch(() => false)
+    console.log('exiting commentOnIssue()')
+    return commentSucceeded
+}
+// END: API Calls
+
+// START: Issue Filtering
 /**
  * Returns the results of filtering the given issues.
  *
@@ -188,11 +269,17 @@ async function getTimeline(issue) {
  * @returns {Promise<Array<Record>>}
  */
 async function filterIssues(issues, filters) {
+    console.log('entered filterIssues()')
     let results = issues
 
     for (const f of filters) {
+        console.log(`entering ${f}`)
+        // results = results.filter(f)
         results = await f(results)
+        console.log('exiting f()')
+        console.log(`results.length: ${results.length}\n`)
     }
+    console.log('exiting filterIssues()')
     return results
 }
 
@@ -207,6 +294,7 @@ async function filterIssues(issues, filters) {
  * @returns {Promise<boolean>}
  */
 async function excludePullRequestsFilter(issue) {
+    console.log(`pull_request in issue: ${'pull_request' in issue}`)
     return !('pull_request' in issue)
 }
 
@@ -223,6 +311,7 @@ async function excludeLabelsFilter(issue) {
     const labels = issue.labels
     for (const label of labels) {
         if (excludeLabels.includes(label.name.toLowerCase())) {
+            console.log('label matched')
             return false
         }
     }
@@ -246,8 +335,10 @@ async function excludeAssigneesFilter(issue) {
     for (const assignee of assignees) {
         const username = assignee.login
         if (!excludeAssignees.includes(username)) {
+            console.log('found non-excluded assignee')
             allAssigneesExcluded = false
         } else {
+            console.log('flagging to ignore')
             // Flag excluded assignees
             assignee.ol_unassign_ignore = true
         }
@@ -303,10 +394,12 @@ function getAssignmentDate(assignee, issueTimeline) {
     })
 
     if (!assignmentEvent) {  // Somehow, the assignment event was not found
+        console.log('No assignment event found in issue timeline')
         // Avoid accidental unassignment by sending the current time
         return new Date()
     }
 
+    console.log(`Assigned on ${assignmentEvent.created_at}`)
     return new Date(assignmentEvent.created_at)
 }
 
@@ -336,5 +429,6 @@ async function linkedPullRequestFilter(issue) {
 
     return true
 }
+// END: Issue Filtering
 
 console.log('finished....')
