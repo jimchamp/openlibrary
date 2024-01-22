@@ -106,7 +106,9 @@ await main()
 async function main() {  // XXX : Inject octokit for easier testing
     console.log('entered main()')
 
-    const issues = await fetchIssues()
+    await fetchIssues()
+        .then(issues => filterIssues(issues))
+    /*
     console.log('\nissues:')
     console.log(issues)
     console.log(`length: ${issues.length}`)
@@ -125,6 +127,7 @@ async function main() {  // XXX : Inject octokit for easier testing
         console.log('\n')
     }
     console.log('exiting main()')
+    */
 }
 
 // START: API Calls
