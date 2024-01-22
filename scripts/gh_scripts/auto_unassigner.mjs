@@ -271,7 +271,6 @@ async function filterIssues(issues, filters) {
 
     for (const f of filters) {
         console.log(`entering ${f}`)
-        // results = results.filter(f)
         results = await f(results)
         console.log('exiting f()')
         console.log(`results.length: ${results.length}\n`)
