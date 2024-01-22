@@ -107,6 +107,7 @@ async function main() {  // XXX : Inject octokit for easier testing
     console.log('entered main()')
 
     const issues = await fetchIssues()
+
     console.log('\nissues:')
     console.log(issues)
     console.log(`length: ${issues.length}`)
@@ -274,8 +275,7 @@ async function filterIssues(issues, filters) {
 
     for (const f of filters) {
         console.log(`entering ${f}`)
-        // results = results.filter(f)
-        results = await f(results)
+        results = await Promise.all(results.filter(f))
         console.log('exiting f()')
         console.log(`results.length: ${results.length}\n`)
     }
