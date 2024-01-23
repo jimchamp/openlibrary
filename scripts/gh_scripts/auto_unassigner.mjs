@@ -188,16 +188,17 @@ async function getTimeline(issue) {
     console.log(repoOwner)
     console.log('issueNumber:')
     console.log(issueNumber)
-    const timeline = await octokit.paginate(
+    const timeline = await //octokit.paginate(
         octokit.request('GET /repos/{owner}/{repo}/issues/{issue_number}/timeline', {
             owner: repoOwner,
             repo: 'openlibrary',
             issue_number: issueNumber,
+            per_page: 100,
             headers: {
                 'X-GitHub-Api-Version': '2022-11-28'
             }
         })
-    )
+    // )
     console.log('timeline:')
     console.log(timeline)
 
@@ -381,11 +382,9 @@ async function excludeAssigneesFilter(issues) {
 async function recentAssigneeFilter(issues) {
     const results = []
     const daysSince = mainOptions.daysSince
-    console.log(`daysSince: ${daysSince}`)    
-
+    console.log(`daysSince: ${daysSince}`)  
     for (const issue of issues) {
         const timeline = await getTimeline(issue)
-
         const currentDate = new Date()
         const assignees = issue.assignees
         let staleAssigneeFound = false
@@ -425,8 +424,6 @@ async function recentAssigneeFilter(issues) {
  * @returns {Date}
  */
 function getAssignmentDate(assignee, issueTimeline) {
-    console.log('issueTimeline:')
-    console.log(issueTimeline)
     const assigneeName = assignee.login
     const assignmentEvent = issueTimeline.findLast((event) => {
         return event.event === 'assigned' && event.assignee.login === assigneeName
