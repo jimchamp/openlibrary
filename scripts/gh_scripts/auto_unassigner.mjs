@@ -415,6 +415,8 @@ async function recentAssigneeFilter(issues) {
  * @returns {Date}
  */
 function getAssignmentDate(assignee, issueTimeline) {
+    console.log('issueTimeline:')
+    console.log(issueTimeline)
     const assigneeName = assignee.login
     const assignmentEvent = issueTimeline.findLast((event) => {
         return event.event === 'assigned' && event.assignee.login === assigneeName
