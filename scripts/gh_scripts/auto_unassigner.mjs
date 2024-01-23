@@ -270,9 +270,11 @@ async function commentOnIssue(issueNumber, comment) {
 async function filterIssues(issues, filters) {
     let results = issues
 
+    console.log('before filterIssues for loop')
     for (const f of filters) {
         results = await f(results)
     }
+    console.log('after filterIssues for loop')
     return results
 }
 
