@@ -277,6 +277,7 @@ async function commentOnIssue(issueNumber, comment) {
 async function filterIssues(issues, filters) {
     let results = issues
 
+    console.log('before filterIssues for loop')
     for (const f of filters) {
         console.log(`before ${f.name}()`)
         console.log(`results.length: ${results.length}`)
@@ -284,6 +285,7 @@ async function filterIssues(issues, filters) {
         console.log(`after ${f.name}()`)
         console.log(`results.length: ${results.length}`)
     }
+    console.log('after filterIssues for loop')
     return results
 }
 
@@ -379,11 +381,10 @@ async function excludeAssigneesFilter(issues) {
  */
 async function recentAssigneeFilter(issues) {
     const results = []
-
+    const daysSince = mainOptions.daysSince
+    console.log(`daysSince: ${daysSince}`)  
     for (const issue of issues) {
         const timeline = await getTimeline(issue)
-        const daysSince = mainOptions.daysSince
-
         const currentDate = new Date()
         const assignees = issue.assignees
         let staleAssigneeFound = false
@@ -395,6 +396,11 @@ async function recentAssigneeFilter(issues) {
             const assignmentDate = getAssignmentDate(assignee, timeline)
             const timeDelta = currentDate.getTime() - assignmentDate.getTime()
             const daysPassed = timeDelta/(1000 * 60 * 60 * 24)
+            console.log('currentDate:')
+            console.log(currentDate)
+            console.log('assignmentDate:')
+            console.log(assignmentDate)
+            console.log(`daysPassed: ${daysPassed}`)
             if (daysPassed > daysSince) {
                 staleAssigneeFound = true
             } else {
@@ -423,6 +429,8 @@ function getAssignmentDate(assignee, issueTimeline) {
         return event.event === 'assigned' && event.assignee.login === assigneeName
     })
 
+    console.log('assignmentEvent:')
+    console.log(assignmentEvent)
     if (!assignmentEvent) {  // Somehow, the assignment event was not found
         // Avoid accidental unassignment by sending the current time
         return new Date()
