@@ -184,6 +184,10 @@ async function getTimeline(issue) {
     const repoUrl = issue.repository_url
     const splitUrl = repoUrl.split('/')
     const repoOwner = splitUrl[splitUrl.length - 2]
+    console.log('repoOwner:')
+    console.log(repoOwner)
+    console.log('issueNumber:')
+    console.log(issueNumber)
     const timeline = await octokit.paginate(
         octokit.request('GET /repos/{owner}/{repo}/issues/{issue_number}/timeline', {
             owner: repoOwner,
@@ -194,6 +198,8 @@ async function getTimeline(issue) {
             }
         })
     )
+    console.log('timeline:')
+    console.log(timeline)
 
     // Store timeline for future use:
     issueTimelines[issueNumber] = timeline
@@ -272,7 +278,11 @@ async function filterIssues(issues, filters) {
 
     console.log('before filterIssues for loop')
     for (const f of filters) {
+        console.log(`before ${f.name}()`)
+        console.log(`results.length: ${results.length}`)
         results = await f(results)
+        console.log(`after ${f.name}()`)
+        console.log(`results.length: ${results.length}`)
     }
     console.log('after filterIssues for loop')
     return results
@@ -371,7 +381,7 @@ async function excludeAssigneesFilter(issues) {
 async function recentAssigneeFilter(issues) {
     const results = []
     const daysSince = mainOptions.daysSince
-    console.log(`daysSince: ${daysSince}`)
+    console.log(`daysSince: ${daysSince}`)    
 
     for (const issue of issues) {
         const timeline = await getTimeline(issue)
