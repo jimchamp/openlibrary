@@ -6,6 +6,7 @@ on:
 permissions:
   contents: read  # Double-check perms
   issues: write
+  pull-requests: read
 
 jobs:
   auto_unassigner:
