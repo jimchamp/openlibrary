@@ -272,9 +272,7 @@ async function filterIssues(issues, filters) {
 
     console.log('before filterIssues for loop')
     for (const f of filters) {
-        console.log(`before entering ${f.name}()`)
         results = await f(results)
-        console.log(`after leaving ${f.name}()`)
     }
     console.log('after filterIssues for loop')
     return results
