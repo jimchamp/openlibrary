@@ -370,10 +370,11 @@ async function excludeAssigneesFilter(issues) {
  */
 async function recentAssigneeFilter(issues) {
     const results = []
+    const daysSince = mainOptions.daysSince
+    console.log(`daysSince: ${daysSince}`)
 
     for (const issue of issues) {
         const timeline = await getTimeline(issue)
-        const daysSince = mainOptions.daysSince
 
         const currentDate = new Date()
         const assignees = issue.assignees
@@ -386,6 +387,11 @@ async function recentAssigneeFilter(issues) {
             const assignmentDate = getAssignmentDate(assignee, timeline)
             const timeDelta = currentDate.getTime() - assignmentDate.getTime()
             const daysPassed = timeDelta/(1000 * 60 * 60 * 24)
+            console.log('currentDate:')
+            console.log(currentDate)
+            console.log('assignmentDate:')
+            console.log(assignmentDate)
+            console.log(`daysPassed: ${daysPassed}`)
             if (daysPassed > daysSince) {
                 staleAssigneeFound = true
             } else {
