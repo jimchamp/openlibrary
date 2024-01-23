@@ -420,6 +420,8 @@ function getAssignmentDate(assignee, issueTimeline) {
         return event.event === 'assigned' && event.assignee.login === assigneeName
     })
 
+    console.log('assignmentEvent:')
+    console.log(assignmentEvent)
     if (!assignmentEvent) {  // Somehow, the assignment event was not found
         // Avoid accidental unassignment by sending the current time
         return new Date()
