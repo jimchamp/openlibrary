@@ -354,7 +354,7 @@ async function excludeAssigneesFilter(issues) {
         }
 
         if (!allAssigneesExcluded) {
-            results.append(issue)
+            results.push(issue)
         }
     }
 
