@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <MergeTable :olids="olids" :show_diffs="show_diffs" :primary="primary" ref="mergeTable"/>
+    <MergeTable :olids="olids" :show_diffs="show_diffs" :primary="primary" ref="mergeTable" />
     <div class="action-bar">
         <div class="comment-input">
             <label for="comment">Comment: </label>
@@ -11,12 +11,13 @@
             <button class="reject-btn" v-if="showRejectButton" @click="rejectMerge">Reject Merge</button>
         </div>
         <div id="diffs-toggle">
-        <label>
-            <input type="checkbox" title="Show textual differences" v-model="show_diffs" />
-            Show text diffs
-        </label>
+          <label>
+              <input type="checkbox" title="Show textual differences" v-model="show_diffs" />
+              Show text diffs
+          </label>
+        </div>
+      <pre v-if="mergeOutput">{{mergeOutput}}</pre>
     </div>
-    <pre v-if="mergeOutput">{{mergeOutput}}</pre>
   </div>
 </template>
 
