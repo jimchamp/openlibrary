@@ -938,6 +938,23 @@ class User(Thing):
 
     def get_waitinglist(self):
         """Returns list of records for all the books the user is currently waiting for."""
+        def get_days():
+            return 3
+        def get_pos():
+            return 5
+
+        return [ web.storage({
+            # "_key": "waiting-loan-OL20431791M-openlibrary",
+            # "type": "waiting-loan",
+            # "user": "/people/openlibrary",
+            # "book": "/books/OL20431791M",
+            "status": "waiting",
+            # "since": "2013-09-16T06:09:16.577942",
+            # "last-update": "2013-10-01T06:09:16.577942",
+            "get_book": web.ctx.site.get,
+            "get_waiting_in_days": get_days,
+            "get_position": get_pos,
+        })]
         return waitinglist.get_waitinglist_for_user(self.key)
 
     def has_borrowed(self, book):

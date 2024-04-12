@@ -149,12 +149,12 @@ $else:
               <tbody>
               <!-- FIXME: Not internationalized. Uses internal status string directly -->
               $for record in waitinglist:
-                $ book = record.get_book()
+                $ book = record.get_book('/books/OL20431791M')
                 $ status = record['status']
                 $if book:
                   <tr class="row-$status">
                       <td class="cover">
-                      $:render_template('covers/book_cover_small', book)
+                      $:render_template('covers/book_cover_small', book, cover_url='/static/images/openlibrary-logo-tighter.svg')
                       </td>
                       <td class="titles">
                           <span class="book">
