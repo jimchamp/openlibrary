@@ -1,0 +1,3 @@
+"Needs: Submitter Input":
+  - changed-files:
+    - any-glob-to-any-file: dev/null/*
