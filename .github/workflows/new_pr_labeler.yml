@@ -16,8 +16,7 @@ jobs:
         with:
           node-version: '20'
       - run: npm install @octokit/action
-      - run: |
-          BODY=${{ github.event.pull_request.body }}
-          node scripts/gh_scripts/new_pr_labeler.mjs ${{ github.event.pull_request.repo.full_name }} ${{ github.event.pull_request.user.login }} ${{ github.event.pull_request.number }} $BODY
+      - run: node scripts/gh_scripts/new_pr_labeler.mjs ${{ github.event.pull_request.repo.full_name }} ${{ github.event.pull_request.user.login }} ${{ github.event.pull_request.number }} "$PR_BODY"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_BODY: ${{ github.event.pull_request.body }}
