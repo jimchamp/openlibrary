@@ -53,7 +53,7 @@ async function main() {
     const assignLead = leadName && !(leadName === prAuthor)
 
     // Update PR, adding assignee and priority label
-    if (assignLead) {
+    if (leadName) {  // XXX: DO NOT COPY: testing only
         await octokit.request('POST /repos/{owner}/{repo}/issues/{issue_number}/assignees', {
             owner: repoOwner,
             repo: repoName,
