@@ -19,7 +19,7 @@ async function main() {
         console.log('No linked issue found for this pull request.')
         return
     }
-
+    console.log(`issueNumber: ${issueNumber}`)
     // Fetch the issue
     const [repoOwner, repoName] = fullRepoName.split('/')
     const linkedIssue = await octokit.request('GET /repos/{owner}/{repo}/issues/{issue_number}', {
@@ -30,6 +30,8 @@ async function main() {
           'X-GitHub-Api-Version': '2022-11-28'
         }
       })
+    console.log('linkedIssue:')
+    console.log(linkedIssue)
     if (!linkedIssue) {
         console.log(`An issue occurred while fetching issue #${issueNumber}`)
         process.exit(1)
