@@ -1,18 +1,23 @@
 import { Octokit } from "@octokit/action";
 
 console.log('Script starting....')
-await main(new Octokit())
+const octokit = new Octokit()
+await main()
 console.log('Script terminated....')
 
-async function main(octokit) {
-    const [fullRepoName, author, prNumber, body] = parseArgs()
+async function main() {
+    const {fullRepoName, prAuthor, prNumber, prBody} = parseArgs()
 
+    console.log(`fullRepoName: ${fullRepoName}`)
+    console.log(`prAuthor: ${prAuthor}`)
+    console.log(`prNumber: ${prNumber}`)
+    console.log(`prBody: ${prBody}`)
     // Look for "Closes:" statement, storing the issue number (if present)
-    const issueNumber = findLinkedIssue(body)
+    const issueNumber = findLinkedIssue(prBody)
 
     if (!issueNumber) {
         console.log('No linked issue found for this pull request.')
-        process.exit(1)
+        return
     }
 
     // Fetch the issue
@@ -30,10 +35,6 @@ async function main(octokit) {
         process.exit(1)
     }
 
-    // Find issue's assignee, if any
-    // const assignee = linkedIssue.assignee
-    // const assigneeUserName = assignee?.login
-
     // Check the issue's labels for the priority and lead
     let leadName
     let priority
@@ -47,7 +48,7 @@ async function main(octokit) {
     }
 
     // Don't assign lead to PR if PR author is the issue lead
-    const assignLead = leadName && !(leadName === author)
+    const assignLead = leadName && !(leadName === prAuthor)
 
     // Update PR, adding assignee and priority label
     if (assignLead) {
@@ -75,32 +76,38 @@ async function main(octokit) {
     }
 }
 
+/**
+ * Returns an object containing the parsed command-line arguments.
+ * 
+ * Any newline characters in the PR's body are replaced by space characters.
+ *
+ * @returns {Record<string, string>}
+ */
 function parseArgs() {
-    if (process.argv.length !== 6) {
+    if (process.argv.length < 6) {
         console.log('Unexpected number of arguments.')
         process.exit(1)
     }
-    return [process.argv[2], process.argv[3], process.argv[4], process.argv[5]]
+    const prBody = process.argv.slice(5).join(' ')
+    return {
+        fullRepoName: process.argv[2],
+        prAuthor: process.argv[3],
+        prNumber: process.argv[4],
+        prBody: prBody
+    }
 }
 
 /**
  * Finds first "Closes" statement in the given pull request body, then
- * returns the number of the linked issue or `null`, if none exists.
+ * returns the number of the linked issue or an empty string, if none exists.
  *
  * @param {string} body The body of a GitHub pull request
- * @returns {number|null} The number of the linked issue that will be closed 
- *                        by this pull request, or `null` if no "Closes" statement
- *                        is found.
+ * @returns {string} The number of the linked issue that will be closed 
+ *                   by this pull request, or an empty string if no 
+ *                   "Closes" statement is found.
  */
 function findLinkedIssue(body) {
     let lowerBody = body.toLowerCase()
-    let closesIndex = lowerBody.search(/closes #\d+/)
-    if (closesIndex === -1) {
-        return null
-    }
-    let issueNumberString = lowerBody[closesIndex + 8]
-    for (let i = closesIndex + 9; lowerBody[i].match(/\d/); ++i) {
-        issueNumberString += lowerBody[i]
-    }
-    return Number(issueNumberString)
+    const matches = lowerBody.match(/closes #(\d+)/)
+    return matches.length ? Number(matches[1]) : ''
 }

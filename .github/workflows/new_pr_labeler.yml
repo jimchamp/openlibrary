@@ -5,6 +5,8 @@ on:
       - opened
 jobs:
   label_pr:
+    # Continue only if the PR was opened in the same repository that is running this action:
+    if: ${{ github.repository == github.event.pull_request.repo.full_name }}
     permissions:
       contents: read
       issues: read
@@ -16,7 +18,7 @@ jobs:
         with:
           node-version: '20'
       - run: npm install @octokit/action
-      - run: node scripts/gh_scripts/new_pr_labeler.mjs ${{ github.event.pull_request.repo.full_name }} ${{ github.event.pull_request.user.login }} ${{ github.event.pull_request.number }} "$PR_BODY"
+      - run: node scripts/gh_scripts/new_pr_labeler.mjs ${{ github.repository }} ${{ github.event.pull_request.user.login }} ${{ github.event.pull_request.number }} "$PR_BODY"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_BODY: ${{ github.event.pull_request.body }}
