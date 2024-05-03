@@ -40,7 +40,7 @@ async function main() {
     // Check the issue's labels for the priority and lead
     let leadName
     let priority
-    for (const label of linkedIssue.labels) {
+    for (const label of linkedIssue.data.labels) {
         if (!leadName && label.name.startsWith('Lead: @')) {
             leadName = label.name.split('@')[1]
         }
