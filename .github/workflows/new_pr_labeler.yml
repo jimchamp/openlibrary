@@ -6,7 +6,7 @@ on:
 jobs:
   label_pr:
     # Continue only if the PR was opened in the same repository that is running this action:
-    if: ${{ github.repository == github.event.pull_request.repo.full_name }}
+    #if: ${{ github.repository == github.event.pull_request.repo.full_name }}
     permissions:
       contents: read
       issues: read
@@ -22,3 +22,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_BODY: ${{ github.event.pull_request.body }}
+          REPO_FULL_NAME: ${{ github.event.pull_request.repo.full_name }}
