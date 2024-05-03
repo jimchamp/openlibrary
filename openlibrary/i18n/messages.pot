@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Open Library VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-30 10:08-0400\n"
+"POT-Creation-Date: 2024-05-01 18:58-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1353,18 +1353,6 @@ msgid ""
 msgstr ""
 
 #: account/reading_log.html
-msgid "want to read"
-msgstr ""
-
-#: account/reading_log.html
-msgid "currently reading"
-msgstr ""
-
-#: account/reading_log.html
-msgid "already read"
-msgstr ""
-
-#: account/reading_log.html
 #, python-format
 msgid "Books %(username)s is reading"
 msgstr ""
@@ -2222,6 +2210,18 @@ msgstr ""
 #: authors/index.html search/authors.html
 #, python-format
 msgid "including <i>%(topwork)s</i>"
+msgstr ""
+
+#: authors/infobox.html
+msgid "Born"
+msgstr ""
+
+#: authors/infobox.html
+msgid "Died"
+msgstr ""
+
+#: authors/infobox.html type/author/edit.html
+msgid "Date"
 msgstr ""
 
 #: book_providers/gutenberg_download_options.html
@@ -4424,6 +4424,11 @@ msgstr ""
 msgid "from <a href=\"%(link)s\">You</a>"
 msgstr ""
 
+#: lists/list_overview.html
+#, python-format
+msgid "from <a href=\"%(link)s\">%(name)s</a>"
+msgstr ""
+
 #: lists/lists.html
 #, python-format
 msgid "%(owner)s / Lists"
@@ -5269,10 +5274,6 @@ msgstr ""
 msgid ""
 "We're not storing structured dates (yet) so a date like \"21 May 2000\" "
 "is recommended."
-msgstr ""
-
-#: type/author/edit.html
-msgid "Date"
 msgstr ""
 
 #: type/author/edit.html
