@@ -5,8 +5,8 @@ const octokit = new Octokit()
 
 main()
 
-function main() {
-    const config = getConfig()
+async function main() {
+    const config = await getConfig()
     console.log(config)
 }
 
