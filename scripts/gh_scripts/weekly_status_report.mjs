@@ -15,10 +15,12 @@ function getConfig() {
       throw new Error("Unexpected amount of arguments")
     }
     const configPath = process.argv[2]
+    console.log(`configPath: ${configPath}`)
     fs.readFile(configPath, 'utf8', (err, data) => {
         if (err) {
             throw err
         }
+        console.log(data)
         return data
     })
 }
