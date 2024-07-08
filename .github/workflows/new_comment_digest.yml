@@ -37,7 +37,7 @@ env:
 jobs:
   new_comment_digest:
     # Continue only if this executed on the main repo
-    if: ${{ github.repository == 'internetarchive/openlibrary' }}
+    # if: ${{ github.repository == 'internetarchive/openlibrary' }}
     runs-on: ubuntu-latest
     outputs:
       exit_code: ${{ steps.run_bot.outputs.exit_code }}
@@ -103,7 +103,7 @@ jobs:
             now = datetime.datetime.now()
             since = now - datetime.timedelta(hours=${{ env.HOURS }})
             time_str = since.strftime('%Y-%m-%dT%H:%M:%S')
-            slack_sdk.WebClient(token=os.getenv("SLACK_TOKEN")).chat_postMessage(channel=os.getenv("SLACK_CHANNEL_ABC_TEAM_PLUS"),
+            slack_sdk.WebClient(token=os.getenv("SLACK_TOKEN")).chat_postMessage(channel="#team-abc",
               text=f"Failed to fetch issues for Slack digest. <https://github.com/internetarchive/openlibrary/issues?q=is:issue+is:open+comments:%3E0+updated:%3E{time_str}|These issues> should be manually checked and labeled"
             )
           sys.exit(1)
