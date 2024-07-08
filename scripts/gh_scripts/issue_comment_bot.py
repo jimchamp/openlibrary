@@ -450,6 +450,7 @@ def _get_parser() -> argparse.ArgumentParser:
 
 
 if __name__ == '__main__':
+    sys.exit(20)
     try:
         print('Starting job...')
         start_job()
