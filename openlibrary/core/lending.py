@@ -514,6 +514,11 @@ def get_availability_of_ocaids(ocaids: list[str]) -> dict[str, AvailabilityStatu
     """
     Retrieves availability based on ocaids/archive.org identifiers
     """
+    if 'dev' in web.ctx.features:
+        import json
+        with open('conf/mocked_availabilities.json') as f:
+            availabilities = json.load(f)
+            return availabilities
     return get_availability('identifier', ocaids)
 
 
