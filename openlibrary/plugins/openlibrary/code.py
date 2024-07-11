@@ -1190,6 +1190,7 @@ def setup():
         status,
         authors,
         swagger,
+        collections,
     )
 
     sentry.setup()
@@ -1202,6 +1203,7 @@ def setup():
     status.setup()
     authors.setup()
     swagger.setup()
+    collections.setup()
 
     from openlibrary.plugins.openlibrary import api
 
