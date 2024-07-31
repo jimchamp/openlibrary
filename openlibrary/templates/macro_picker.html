@@ -1,0 +1,332 @@
+$def with()
+
+<style>
+.macro-picker {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.macro-picker label {
+    width: min-content;
+    height: 100%;
+    margin-right: 5px;
+    white-space: nowrap;
+}
+
+.macro-picker button {
+    width: min-content;
+    margin-top: 0;
+    margin-left: 5px;
+}
+
+.macro-picker select,
+.macro-picker button {
+    height: 40px;
+}
+
+#macro-builder-ui {
+    margin-top: 5px;
+    border: 1px black solid;
+}
+
+.macro-arguments {
+    display: flex;
+    flex-direction: column;
+}
+
+.macro-form-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.macro-form-controls button {
+    width: min-content;
+}
+
+</style>
+
+$code:
+    macros = {
+        "SlowMacro": {
+            "name": "SlowMacro",
+            "description": "Renders a message... slowly...",
+            "args": [
+                {
+                    "displayName": "Seconds",
+                    "name": "num_seconds",
+                    "inputType": "number",
+                    "description": "Amount of seconds to wait before rendering"
+                }
+            ],
+            "kwargs": [
+                {
+                    "displayName": "Message",
+                    "name": "display_string",
+                    "keyword": True,
+                    "inputType": "text",
+                    "description": "The message that will be displayed"
+                },
+                {
+                    "displayName": "Debug Mode",
+                    "name": "debug_mode",
+                    "keyword": True,
+                    "inputType": "checkbox",
+                    "description": "Display amount of time it took to render the message"
+                }
+            ]
+        },
+        "PageList": {
+            "name": "PageList",
+            "description": "Lists all pages that begin with a given path.",
+            "args": [],
+            "kwargs": [
+                {
+                    "displayName": "Path",
+                    "name": "path",
+                    "keyword": True,
+                    "inputType": "text",
+                    "description": "Display links to pages starting with this."
+                },
+                {
+                    "displayName": "Limit",
+                    "name": "limit",
+                    "keyword": True,
+                    "inputType": "number",
+                    "description": "Display this many links, at most."
+                }
+            ]
+        },
+        "QueryCarousel": {
+            "name": "QueryCarousel",
+            "description": "A carousel that contains the results of a search query.",
+            "args": [
+                {
+                    "displayName": "Query",
+                    "name": "query",
+                    "inputType": "text",
+                    "description": "The search query."
+                }
+            ],
+            "kwargs": [
+                {
+                    "displayName": "Title",
+                    "name": "title",
+                    "keyword": True,
+                    "inputType": "text",
+                    "description": "Title to display above the carousel."
+                },
+                {
+                    "displayName": "Limit",
+                    "name": "limit",
+                    "keyword": True,
+                    "inputType": "number",
+                    "description": "Initial number of books in the carousel."
+                }
+            ]
+        }
+    }
+
+$def render_option(name, description, arg_list, kwarg_list):
+    $code:
+        option_data = {
+            "name": name,
+            "description": description,
+            "args": arg_list,
+            "kwargs": kwarg_list
+        }
+    <option value="$name" data-option="$json_encode(option_data)">$name</option>
+
+
+<div class="macro-picker-container">
+    <div class="macro-picker">
+        <label for="macro-list">Insert Macro
+            <select id="macro-list">
+                <option value="">Pick one...</option>
+                $for k, v in macros.items():
+                    $:render_option(v["name"], v["description"], v.get("args", []), v.get("kwargs", []))
+            </select>
+        </label>
+        <button type="button" class="cta-btn cta-btn--primary">Pick</button>
+    </div>
+    <div class="hidden" id="macro-builder-ui">
+        <div class="macro-name">
+
+        </div>
+        <div class="macro-description">
+
+        </div>
+        <div class="macro-arguments">
+
+        </div>
+        <div class="macro-form-controls">
+            <label>
+                Cache macro?
+                <input id="cache-checkbox" type="checkbox" checked>
+            </label>
+            <button type="button" class="cta-btn cta-btn--primary">Insert Macro</button>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+// imported functions and their dependencies:
+class MacroPicker {
+    constructor(rootElem) {
+        this.root = rootElem
+        this.picker = this.root.querySelector('.macro-picker')
+        this.selectButton = this.picker.querySelector('button')
+        this.selector = this.picker.querySelector('#macro-list')
+        this.macroUi = this.root.querySelector('#macro-builder-ui')
+        this.macroUiInsertButton = this.macroUi.querySelector('button')
+        this.macroUiInputs = this.macroUi.querySelector('.macro-arguments')
+        this.macroUiNameDisplay = this.macroUi.querySelector('.macro-name')
+        this.macroUiDescDisplay = this.macroUi.querySelector('.macro-description')
+        this.selectedOptionData = null
+    }
+
+    initialize() {
+        this.selectButton.addEventListener('click', () => {
+            if (this.validateSelection()) {
+                const selectedOption = this.selector.options[this.selector.selectedIndex]
+                this.selectedOptionData = JSON.parse(selectedOption.dataset.option)
+                this.updateUI(this.selectedOptionData)
+                this.toggleUI()
+            } else {
+                // XXX : tell contributor to select a macro, somehow...
+                // ...or maybe disable button when selected option's index is 0?
+            }
+        })
+
+        this.macroUiInsertButton.addEventListener('click', () => {
+            const inlineMacroString = this.generateMacroString()
+            this.insertIntoTextarea(inlineMacroString)
+            this.toggleUI()
+            this.clearUI()
+        })
+    }
+
+    /**
+     * Returns `true` if a valid macro is selected.
+     *
+     * @returns {boolean}
+     */
+    validateSelection() {
+        return Boolean(this.selector.selectedIndex)
+    }
+
+    updateUI(data) {
+        this.macroUiNameDisplay.innerText = data.name
+        this.macroUiDescDisplay.innerText = data.description
+        for (const arg of data.args) {
+            const node = this.createInput(arg)
+            this.macroUiInputs.appendChild(this.createInput(arg))
+        }
+        for (const kwarg of data.kwargs) {
+            this.macroUiInputs.appendChild(this.createInput(kwarg))
+        }
+    }
+
+    createInput(inputOptions) {
+        const templateElem = document.createElement('template')
+        let htmlTemplate = "<label>"
+        htmlTemplate += inputOptions.displayName
+        htmlTemplate += " "
+        htmlTemplate += inputOptions.keyword ? '' : '(required)'
+        htmlTemplate += "<input "
+        if (inputOptions.keyword) {
+            htmlTemplate += 'data-keyword="true" '
+        }
+        htmlTemplate += 'type="'
+        htmlTemplate += inputOptions.inputType
+        htmlTemplate += '" name="'
+        htmlTemplate += inputOptions.name
+        htmlTemplate += '"> '
+        htmlTemplate += inputOptions.description
+        htmlTemplate += "</label>"
+        templateElem.insertAdjacentHTML('afterbegin', htmlTemplate)
+        return templateElem.firstChild
+    }
+
+    toggleUI() {
+        this.macroUi.classList.toggle('hidden')
+    }
+
+    clearUI() {
+        Array.from(this.macroUiInputs.children).forEach((input) => {
+            input.remove()
+        })
+        this.macroUiNameDisplay.innerText = ''
+        this.macroUiDescDisplay.innerText = ''
+    }
+
+    generateMacroString() {
+        const cacheCheckbox = this.macroUi.querySelector('#cache-checkbox')
+        const argStrings = []
+        let result = "{{"
+        if (cacheCheckbox.checked) {
+            result += 'CacheableMacro'
+            let cachedMacroArg = '"'
+            cachedMacroArg += this.selectedOptionData.name
+            cachedMacroArg += '"'
+            argStrings.push(cachedMacroArg)
+        } else {
+            result += this.selectedOptionData.name
+        }
+
+        result += "("
+
+        const inputs = this.macroUiInputs.querySelectorAll("input");
+        for (const input of inputs) {
+            let argString = ''
+            if (input.dataset.keyword) {
+                argString += input.name
+                argString += "="
+            }
+            argString += this.renderParam(input)
+            argStrings.push(argString)
+        }
+        result += argStrings.join(', ')
+        result += ")}}";
+        return result
+    }
+
+    renderParam(input) {
+        let result = ""
+        switch (input.type) {
+            case "text":
+                result = '"'
+                result += input.value;
+                result += '"'
+                break
+            case "number":
+                result = input.value
+                break
+            case "checkbox":
+                result = input.checked ? 'True' : 'False'
+                break
+        }
+        return result
+    }
+
+    insertIntoTextarea(str) {
+        console.log(str)
+    }
+}
+
+function initMacroPicker(macroPickerElem) {
+    const picker = new MacroPicker(macroPickerElem);
+    picker.initialize()
+}
+
+// main entrypoint:
+const macroPicker = document.querySelector('.macro-picker-container');
+if (macroPicker) {
+    initMacroPicker(macroPicker);
+}
+
+</script>

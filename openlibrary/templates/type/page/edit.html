@@ -25,6 +25,7 @@ $:render_template("lib/edit_head", page)
 
     <div class="formElement">
         <div class="label"><label for="body">$_('Document Body:')</label></div>
+        $:render_template("macro_picker")
         <div class="input">
             <textarea id="body" name="body" class="markdown" rows="15" cols="80">$page.body</textarea>
         </div>
