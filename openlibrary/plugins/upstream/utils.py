@@ -1,4 +1,5 @@
 import functools
+from time import sleep
 from typing import Any, Protocol, TYPE_CHECKING, TypeVar
 from collections.abc import Callable, Iterable, Iterator
 import unicodedata
@@ -214,6 +215,11 @@ def render_component(
 
 def render_macro(name, args, **kwargs):
     return dict(web.template.Template.globals['macros'][name](*args, **kwargs))
+
+
+@public
+def wait_a_sec(num_secs: int):
+    sleep(num_secs)
 
 
 @public

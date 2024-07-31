@@ -1,0 +1,15 @@
+$def with(num_seconds, display_string="...finally...", debug_mode=False)
+
+$if debug_mode:
+    $ start_time = time()
+
+$wait_a_sec(num_seconds)
+
+<div>
+    $display_string
+    $if debug_mode:
+        $ elapsed_time = time() - start_time
+        <span>(Rendered in $elapsed_time seconds)</span>
+
+</div>
+
