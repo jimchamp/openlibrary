@@ -1,7 +1,7 @@
 """Handlers for adding and editing tags."""
 
 import web
-import json
+import json  # XXX : unused
 
 from typing import NoReturn
 
@@ -11,8 +11,8 @@ from infogami.utils.view import add_flash_message, public
 from infogami.infobase.client import ClientException
 from infogami.utils import delegate
 
-from openlibrary.plugins.openlibrary.processors import urlsafe
-from openlibrary.i18n import gettext as _
+from openlibrary.plugins.openlibrary.processors import urlsafe  # XXX : unused
+from openlibrary.i18n import gettext as _   # XXX : unused
 import logging
 
 from openlibrary.plugins.upstream import spamcheck, utils
@@ -20,11 +20,13 @@ from openlibrary.plugins.upstream.models import Tag
 from openlibrary.plugins.upstream.addbook import get_recaptcha, safe_seeother, trim_doc
 from openlibrary.plugins.upstream.utils import render_template
 
+# XXX : Nothing being logged here
 logger = logging.getLogger("openlibrary.tag")
 
 
 @public
 def get_tag_types():
+    # XXX : What is a "work" Tag?
     return ["subject", "work", "collection"]
 
 
@@ -39,11 +41,13 @@ class addtag(delegate.page):
 
         return render_template('tag/add', recaptcha=get_recaptcha())
 
+    # XXX : How is this done for books?
     def has_permission(self) -> bool:
         """
         Can a tag be added?
         """
         user = web.ctx.site.get_user()
+        # XXX : Admins, maybe?
         return user and (user.is_super_librarian())
 
     def POST(self):
@@ -51,14 +55,17 @@ class addtag(delegate.page):
             tag_name="",
             tag_type="",
             tag_description="",
+            # XXX : What type is `tag_plugins`?
             tag_plugins="",
         )
 
+        # XXX : is spam check needed?
         if spamcheck.is_spam(i, allow_privileged_edits=True):
             return render_template(
                 "message.html", "Oops", 'Something went wrong. Please try again later.'
             )
 
+        # XXX : Should non-authenticated entities be permitted to add a tag?
         if not web.ctx.site.get_user():
             recap = get_recaptcha()
             if recap and not recap.validate():
@@ -68,22 +75,29 @@ class addtag(delegate.page):
                     'Please <a href="javascript:history.back()">go back</a> and try again.',
                 )
 
+        # XXX : Let's not shackle ourselves to the conventions of the "add book" form
         i = utils.unflatten(i)
         match = self.find_match(i)  # returns None or Tag (if match found)
 
+        # XXX : `tag_match` and `no_match` functions are not well-named...
         if match:
             # tag match
+            # XXX : Should this be a `Tag` class method?
             return self.tag_match(match)
         else:
             # no match
+            # XXX : `no_match` does not tell me that a `Tag` is being created.
             return self.no_match(i)
 
+    # XXX : maybe just `find` as a name?  This should probably be a method on the `Tag` class....
     def find_match(self, i: web.utils.Storage):
         """
         Tries to find an existing tag that matches the data provided by the user.
         """
+        # XXX : oh... this is a method on the `Tag` class.... Is this `find_match` method needed?
         return Tag.find(i.tag_name, i.tag_type)
 
+    # XXX : Odd name... maybe `redirect_to_edit_page` is better?
     def tag_match(self, match: list) -> NoReturn:
         """
         Action for when an existing tag has been found.
@@ -92,6 +106,7 @@ class addtag(delegate.page):
         tag = web.ctx.site.get(match[0])
         raise safe_seeother(tag.key + "/edit")
 
+    # XXX : Odd name.  Maybe `create_tag` or something?
     def no_match(self, i: web.utils.Storage) -> NoReturn:
         """
         Action to take when no tags are found.
@@ -102,16 +117,19 @@ class addtag(delegate.page):
         raise safe_seeother(key)
 
 
+# XXX : What is the actual point of this?
 # remove existing definitions of addtag
 delegate.pages.pop('/addtag', None)
 
 
+# XXX : Why does this redirect exist?
 class addtag(delegate.page):  # type: ignore[no-redef] # noqa: F811
     def GET(self):
         raise web.redirect("/tag/add")
 
 
 class tag_edit(delegate.page):
+    # XXX : Unreachable when slugs are added
     path = r"(/tags/OL\d+T)/edit"
 
     def GET(self, key):

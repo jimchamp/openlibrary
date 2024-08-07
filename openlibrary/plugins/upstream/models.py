@@ -981,6 +981,7 @@ class AddBookChangeset(Changeset):
                 return doc
 
 
+# XXX : This seems weird...  How does one determine if specific code belongs in core/models.py or plugins/upstream/models.py
 class Tag(models.Tag):
     """Class to represent /type/tag objects in Open Library."""
 
