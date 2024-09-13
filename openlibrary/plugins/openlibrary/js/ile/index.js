@@ -71,7 +71,7 @@ export class IntegratedLibrarianEnvironment {
     createBulkTagger() {
         const target = this.$hiddenForms[0]
         target.innerHTML += renderBulkTagger()
-        const bulkTaggerElem = document.querySelector('.bulk-tagging-form')
+        const bulkTaggerElem = document.querySelector('.bulk-tagger')
         // @ts-ignore
         this.bulkTagger = new BulkTagger(bulkTaggerElem)
         this.bulkTagger.initialize()

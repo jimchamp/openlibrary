@@ -36,6 +36,8 @@ export class BulkTagger {
          */
         this.rootElement = bulkTagger
 
+        this.subjectForm = bulkTagger.querySelector('.subject-tag-form')
+
         /**
          * Reference to the Bulk Tagger's subject search box.
          * @member {HTMLInputElement}
@@ -144,7 +146,7 @@ export class BulkTagger {
         this.searchResultsOptionsContainer = new SortedMenuOptionContainer(this.rootElement.querySelector('.subjects-search-results'))
 
         // Add "hide menu" functionality:
-        const closeFormButton = this.rootElement.querySelector('.close-bulk-tagging-form')
+        const closeFormButton = this.rootElement.querySelector('.bulk-tagger__close')
         closeFormButton.addEventListener('click', () => {
             this.hideTaggingMenu()
         })
@@ -515,12 +517,12 @@ export class BulkTagger {
 
         this.submitButton.textContent = 'Submitting...';
 
-        const url = this.rootElement.action
+        const url = this.subjectForm.action
         this.prepareFormForSubmission()
 
         fetch(url, {
             method: 'post',
-            body: new FormData(this.rootElement)
+            body: new FormData(this.subjectForm)
         })
             .then(response => {
                 if (!response.ok) {

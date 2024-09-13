@@ -1,4 +1,4 @@
-.bulk-tagging-form {
+.bulk-tagger {
   width: 320px;
   height: fit-content;
   right: 30px;
@@ -6,24 +6,48 @@
   border: 1px solid @light-grey;
   box-shadow: 0 5px 5px 2px @accessible-grey;
   background-color: @white;
+  color: @black;
   border-radius: 10px;
   position: absolute;
 }
 
-.form-header {
+.bulk-tagger__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 33px;
+  height: fit-content;
   padding: 7px 15px;
   font-weight: bold;
-}
 
-.close-bulk-tagging-form {
-  cursor: pointer;
-  color: @black;
-  font-size: 17px;
-  font-weight: normal;
+  .type-selector {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+
+    .tab {
+      color: @light-grey;
+      border: 1px solid @light-grey;
+      border-radius: 4px;
+      padding: 5px;
+
+      &--selected,
+      &:hover {
+        color: @black;
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .close-bulk-tagging-form,
+  .bulk-tagger__close {
+    cursor: pointer;
+    color: @black;
+    font-size: 17px;
+    font-weight: normal;
+  }
 }
 
 .search-subject-container {
