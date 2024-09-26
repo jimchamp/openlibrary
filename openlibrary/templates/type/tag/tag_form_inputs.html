@@ -26,7 +26,7 @@ $def with (tag_name='', tag_type='', tag_description='', fkey=None, body='', sho
             <label for="page_body">$_("Page Body")</label>
         </div>
         <div class="input">
-            <textarea id="page_body" name="page_body" rows="5" cols="50" class="markdown">$body</textarea>
+            <textarea id="page_body" name="body" rows="5" cols="50" class="markdown">$body</textarea>
         </div>
     </div>
 </fieldset>
@@ -55,3 +55,5 @@ $if show_type_picker:
             </select>
         </div>
     </div>
+$else:
+    <input type="hidden" name="tag_type" value="$tag_type">
