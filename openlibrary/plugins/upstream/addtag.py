@@ -10,6 +10,7 @@ from infogami.infobase.client import ClientException
 from infogami.utils import delegate
 
 from openlibrary.accounts import get_current_user
+from openlibrary.core.helpers import json_encode
 from openlibrary.plugins.upstream import spamcheck, utils
 from openlibrary.plugins.upstream.models import Tag
 from openlibrary.plugins.upstream.addbook import safe_seeother, trim_doc
@@ -19,7 +20,7 @@ from openlibrary.plugins.worksearch.subjects import get_subject
 
 @public
 def get_tag_types():
-    return ["subject", "work", "collection"]
+    return ["subject", "person", "place", "time", "collection"]
 
 def validate_tag(tag, for_promotion=False):
     return (tag.get('name', '') and tag.get('fkey', None)) if for_promotion else (tag.get('name', '') and tag.get('tag_type', ''))
@@ -32,8 +33,22 @@ def has_permission(user) -> bool:
         user.is_librarian() or user.is_super_librarian() or user.is_admin()
     )
 
-def create_subject_tag(name: str, description: str, fkey: str | None = None, body: str = '') -> Tag:
-    tag = Tag.create(name, description, 'subject', fkey=fkey, body=body)
+def find_tag(tag_type: str, **kwargs) -> Tag:
+    q = {k:v for k, v in kwargs.items()} | {"type": "/type/tag", "tag_type": tag_type}
+    matches = web.ctx.site.things(q)
+
+    return web.ctx.site.get(matches[0]) if matches else None
+
+def create_subject_tag(name: str, description: str, fkey: str = '', body: str = '') -> Tag:
+    d = {
+        "name": name,
+        "tag_description": description,
+        "type": {"key": "/type/tag"},
+        "tag_type": 'subject',
+        "fkey": fkey,
+        "body": body,
+    }
+    tag = Tag.create(trim_doc(d))
     if fkey and not body:
         subject = get_subject(
             fkey,
@@ -45,6 +60,47 @@ def create_subject_tag(name: str, description: str, fkey: str | None = None, bod
             tag.body = str(render_template('subjects', page=subject))
             tag._save()
     return tag
+
+
+class test_find_method(delegate.page):
+    path = "/_test/find"
+
+    def GET(self):
+        i = web.input(fkey="")
+        tag = find_tag("subject", fkey=i.fkey)
+        return delegate.RawText(json_encode(tag.dict())) if tag else None
+
+
+class edit_subject(delegate.page):
+    path = "/subject/edit"
+
+    def GET(self):
+        i = web.input(fkey="")
+
+        # Check for edit permission
+        if not (patron := get_current_user()):
+            # TODO : The redirect path should be the subject page view
+            raise safe_seeother(f"/account/login?redirect={self.path}")
+
+        if not self.has_permission(patron):
+            raise web.unauthorized()
+
+        # Resolve code path : either Tag exists, or it doesn't
+        tag = find_tag("subject", fkey=i.fkey)
+
+        # Tag exists:
+        if tag:
+            # TODO : redirect to `/tags` edit page
+            pass
+
+        # Tag does not exist:
+        # TODO : redirect to `/tags` add page (this may be the same as the edit page)
+        return delegate.RawText('sanity')
+
+    def has_permission(self, user) -> bool:
+        return user and (
+                user.is_librarian() or user.is_super_librarian() or user.is_admin()
+        )
 
 
 class promotetag(delegate.page):

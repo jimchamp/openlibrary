@@ -1170,7 +1170,7 @@ class Tag(Thing):
 
     @classmethod
     def find(cls, tag_name, tag_type):
-        """Returns a Tag object for a given tag name and tag type."""
+        """Returns a Tag key for a given tag name and tag type."""
         q = {'type': '/type/tag', 'name': tag_name, 'tag_type': tag_type}
         match = list(web.ctx.site.things(q))
         return match[0] if match else None
@@ -1178,11 +1178,7 @@ class Tag(Thing):
     @classmethod
     def create(
         cls,
-        tag_name,
-        tag_description,
-        tag_type,
-        body='',
-        fkey=None,
+        tag,
         ip='127.0.0.1',
         comment='New Tag',
     ):
@@ -1190,23 +1186,17 @@ class Tag(Thing):
         current_user = web.ctx.site.get_user()
         patron = current_user.get_username() if current_user else 'ImportBot'
         key = web.ctx.site.new_key('/type/tag')
+        tag["key"] = key
+
         from openlibrary.accounts import RunAs
 
         with RunAs(patron):
             web.ctx.ip = web.ctx.ip or ip
             t = web.ctx.site.save(
-                {
-                    'key': key,
-                    'name': tag_name,
-                    'tag_description': tag_description,
-                    'tag_type': tag_type,
-                    'type': {"key": '/type/tag'},
-                    'fkey': fkey,
-                    'body': body.strip(),
-                },
+                tag,
                 comment=comment,
             )
-            return web.ctx.site.get(key)
+            return t
 
 
 @dataclass
