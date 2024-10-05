@@ -64,6 +64,17 @@ class promotetag(delegate.page):
         tag = create_subject_tag(i.name, i.description, fkey=i.fkey)
         raise safe_seeother(tag.key)
 
+def create_subject_tag(name: str, description: str, fkey: str, sub_type: str) -> Tag:
+    tag = {
+        'type': {'key': '/type/tag'},
+        'name': name,
+        'tag_description': description,
+        'tag_type': 'subject',
+        'fkey': fkey,
+        'sub_type': sub_type,
+    }
+    return Tag.create(tag)
+
 
 class addtag(delegate.page):
     path = '/tag/add'
@@ -134,8 +145,74 @@ class addtag(delegate.page):
         Creates a new Tag.
         Redirects the user to the tag's home page
         """
-        tag = create_subject_tag(i.name, i.tag_description, fkey=i.fkey, body=i.body)
-        raise safe_seeother(tag.key)
+        key = Tag.create(i.name, i.tag_description, i.tag_type, i.tag_plugins)
+        raise web.seeother(key)
+
+
+class add_subject_tag(delegate.page):
+    path = "/tag/subject/add"
+
+    def GET(self):
+        if not (patron := get_current_user()):
+            raise safe_seeother(f'/account/login?redirect={self.path}')
+
+        # TODO : return subject tag edit page
+
+    def POST(self):
+        i = web.input(name="", tag_type="", tag_description="", subject_type="", fkey="")
+
+        if spamcheck.is_spam(i, allow_privileged_edits=True):
+            return render_template(
+                "message.html", "Oops", 'Something went wrong. Please try again later.'
+            )
+
+        if not (patron := get_current_user()):
+            raise safe_seeother(f'/account/login?redirect={self.path}')
+
+        if not self.has_permission(patron):
+            raise web.unauthorized()
+
+        if not self.validate_input(i):
+            raise web.badrequest()
+
+        # TODO : search for existing tag by fkey
+        if self.find_tag_by_fkey(i.fkey):
+            raise web.conflict(message='Tag with identical fkey already exists')
+
+        # create tag and redirect to tag's page
+        tag = create_subject_tag(i.name, i.tag_description, i.fkey, i.subject_type)
+        raise web.seeother(tag.key)
+
+    def has_permission(self, user) -> bool:
+        return user and (
+            user.is_librarian() or user.is_super_librarian() or user.is_admin()
+        )
+
+    def validate_input(self, i: web.utils.Storage) -> bool:
+        return i.name and i.tag_type and i.subject_type and i.fkey # and i.tag_description
+
+    def find_tag_by_fkey(self, fkey: str) -> Tag | None:
+        q = {"type": "/type/tag", "fkey": fkey, "tag_type": "subject"}
+        matches = web.ctx.site.things(q)
+        if matches:
+            return matches[0]
+        return None
+
+class add_collection_tag(delegate.page):
+    path = "/tag/collection/add"
+
+    def GET(self):
+        if not features.is_enabled("collection-tags"):
+            raise web.notfound()
+
+        # TODO : return collection tag edit page
+
+    def POST(self):
+        if not features.is_enabled("collection-tags"):
+            raise web.notfound()
+
+        # TODO : check for existing collection tag
+        # TODO : create tag and redirect
 
 
 class tag_edit(delegate.page):

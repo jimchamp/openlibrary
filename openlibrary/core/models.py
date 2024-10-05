@@ -39,6 +39,7 @@ from pydantic import ValidationError
 from .ia import get_metadata
 from .waitinglist import WaitingLoan
 from ..accounts import OpenLibraryAccount
+from ..plugins.upstream.addbook import trim_doc
 from ..plugins.upstream.utils import get_coverstore_url, get_coverstore_public_url
 
 logger = logging.getLogger("openlibrary.core")
@@ -1178,11 +1179,7 @@ class Tag(Thing):
     @classmethod
     def create(
         cls,
-        tag_name,
-        tag_description,
-        tag_type,
-        body='',
-        fkey=None,
+        tag,
         ip='127.0.0.1',
         comment='New Tag',
     ):
@@ -1190,23 +1187,17 @@ class Tag(Thing):
         current_user = web.ctx.site.get_user()
         patron = current_user.get_username() if current_user else 'ImportBot'
         key = web.ctx.site.new_key('/type/tag')
+        tag['key'] = key
+
         from openlibrary.accounts import RunAs
 
         with RunAs(patron):
             web.ctx.ip = web.ctx.ip or ip
             t = web.ctx.site.save(
-                {
-                    'key': key,
-                    'name': tag_name,
-                    'tag_description': tag_description,
-                    'tag_type': tag_type,
-                    'type': {"key": '/type/tag'},
-                    'fkey': fkey,
-                    'body': body.strip(),
-                },
+                trim_doc(tag),
                 comment=comment,
             )
-            return web.ctx.site.get(key)
+            return t
 
 
 @dataclass
