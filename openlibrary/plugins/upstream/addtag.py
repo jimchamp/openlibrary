@@ -19,7 +19,7 @@ from openlibrary.plugins.worksearch.subjects import get_subject
 
 @public
 def get_tag_types():
-    return ["subject", "work", "collection"]
+    return ["subject", "person", "place", "time", "collection"]
 
 
 def validate_tag(tag, for_promotion=False):
@@ -90,8 +90,7 @@ class addtag(delegate.page):
         i = web.input(name=None, type=None, sub_type=None, fkey=None)
 
         return render_template(
-            'tag/add', i.name, i.type, subject_type=i.sub_type, fkey=i.fkey
-        )
+            'tag/add', i.name, i.type)
 
     def POST(self):
         i = web.input(

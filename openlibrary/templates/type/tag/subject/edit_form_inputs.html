@@ -1,0 +1,21 @@
+$def with (fkey="", body="")
+
+<fieldset class="major">
+    <div class="formElement">
+        <div class="label">
+            <label for="page_body">$_("Page Body")</label>
+        </div>
+        <div class="input">
+            <textarea id="page_body" name="page_body" rows="5" cols="50" class="markdown">$body</textarea>
+        </div>
+    </div>
+</fieldset>
+
+<div class="formElement">
+    <div class="label">
+        <label for="fkey">$_("Subject Key")</label>
+    </div>
+    <div class="input">
+        <input type="text" value="$fkey" disabled>
+    </div>
+</div>

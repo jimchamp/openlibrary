@@ -1,4 +1,4 @@
-$def with (tag_name='', tag_type='', tag_description='', fkey=None, body='', show_type_picker=True)
+$def with (tag_name='', tag_type='', tag_description='', show_type_picker=True)
 
 <div class="formElement">
     <div class="label">
@@ -20,26 +20,6 @@ $def with (tag_name='', tag_type='', tag_description='', fkey=None, body='', sho
     </div>
 </fieldset>
 
-<fieldset class="major">
-    <div class="formElement">
-        <div class="label">
-            <label for="page_body">$_("Page Body")</label>
-        </div>
-        <div class="input">
-            <textarea id="page_body" name="page_body" rows="5" cols="50" class="markdown">$body</textarea>
-        </div>
-    </div>
-</fieldset>
-
-<div class="formElement">
-    <div class="label">
-        <label for="fkey">$_("Subject Key")</label>
-    </div>
-    <div class="input">
-        <input type="text" value="$fkey" disabled>
-    </div>
-</div>
-
 $if show_type_picker:
     <div class="formElement">
         <div class="label"><label for="tag_type">$_("Tag type")</label></div>
@@ -55,3 +35,51 @@ $if show_type_picker:
             </select>
         </div>
     </div>
+    <div class="sub-type-inputs">
+        <div class="sub-type-inputs__input-set hidden" data-input-type="subject">
+            $:render_template("type/tag/subject/edit_form_inputs")
+        </div>
+        <div class="sub-type-inputs__input-set hidden" data-input-type="collection">
+            $:render_template("type/tag/collection/edit_form_inputs")
+        </div>
+    </div>
+
+    <script>
+        const SUBJECT_TYPES = ["subject", "person", "place", "time"]
+        const tagTypeSelector = document.querySelector('#tag_type')
+        const subTypeInputs = document.querySelectorAll(".sub-type-inputs__input-set")
+        const inputSetMapping = {}
+
+        function initTagTypeSelector(selector) {
+            subTypeInputs.forEach((input) => {
+                inputSetMapping[input.dataset.inputType] = input
+            })
+
+            selector.addEventListener("change", (event) => {
+                const selectedValue = event.target.value
+                let selectedType
+                if (SUBJECT_TYPES.includes(selectedValue)) {
+                    selectedType = 'subject'
+                } else {
+                    selectedType = selectedValue
+                }
+
+                hideSubTypeInputs()
+                if (selectedType) {
+                    showSubTypeInputs(selectedType)
+                }
+            })
+        }
+
+        function hideSubTypeInputs() {
+            subTypeInputs.forEach((input) => {
+                input.classList.add('hidden')
+            })
+        }
+
+        function showSubTypeInputs(inputsToShow) {
+            inputSetMapping[inputsToShow].classList.remove('hidden')
+        }
+
+        initTagTypeSelector(tagTypeSelector)
+    </script>
