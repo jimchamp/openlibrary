@@ -17,11 +17,15 @@ from openlibrary.plugins.upstream.utils import render_template
 from openlibrary.plugins.worksearch.subjects import get_subject
 
 
+SUBJECT_SUB_TYPES = ["subject", "person", "place", "time"]
+TAG_TYPES = SUBJECT_SUB_TYPES + ["collection"]
+
+
 @public
 def get_tag_types():
-    return ["subject", "person", "place", "time", "collection"]
+    return TAG_TYPES
 
-
+# TODO : Remove or move to class-level
 def validate_tag(tag, for_promotion=False):
     return (
         (tag.get('name', '') and tag.get('fkey', None))
@@ -29,7 +33,7 @@ def validate_tag(tag, for_promotion=False):
         else (tag.get('name', '') and tag.get('tag_type', ''))
     )
 
-
+# TODO : Remove or move to class-level
 def has_permission(user) -> bool:
     """
     Can a tag be added?
@@ -39,41 +43,27 @@ def has_permission(user) -> bool:
     )
 
 
-def create_subject_tag(
-    name: str, description: str, fkey: str | None = None, body: str = ''
-) -> Tag:
-    tag = Tag.create(name, description, 'subject', fkey=fkey, body=body)
+def create_subject_tag(name: str, description: str, fkey: str = '', body: str = '') -> Tag:
+    d = {
+        "name": name,
+        "tag_description": description,
+        "type": {"key": "/type/tag"},
+        "tag_type": 'subject',  # TODO : pass type into function
+        "fkey": fkey,
+        "body": body,
+    }
+    tag = Tag.create(trim_doc(d))
     if fkey and not body:
         subject = get_subject(
             fkey,
             details=True,
             filters={'public_scan_b': 'false', 'lending_edition_s': '*'},
-            sort='readinglog',
+            sort='readinglog'
         )
         if subject and subject.work_count > 0:
-            tag.body = str(render_template('subjects', page=subject))
+            tag.body = str(render_template('subjects/default_view', subject))
             tag._save()
     return tag
-
-
-class promotetag(delegate.page):
-    path = "/tag/promote"
-
-    def GET(self):
-        if not (patron := get_current_user()):
-            raise web.seeother(f'/account/login?redirect={self.path}')
-        if not has_permission(patron):
-            raise web.unauthorized(
-                message='Permission denied to promote subject to tags'
-            )
-
-        i = web.input(name="", fkey=None, description="")
-
-        if not validate_tag(i, for_promotion=True):
-            raise web.badrequest()
-
-        tag = create_subject_tag(i.name, i.description, fkey=i.fkey)
-        raise safe_seeother(tag.key)
 
 
 class addtag(delegate.page):
@@ -165,7 +155,8 @@ class tag_edit(delegate.page):
         if tag is None:
             raise web.notfound()
 
-        return render_template('type/tag/edit', tag)
+        tag_type = "subject" if tag.tag_type in SUBJECT_SUB_TYPES else tag.tag_type
+        return render_template(f'type/tag/{tag_type}/edit', tag)
 
     def POST(self, key):
         tag = web.ctx.site.get(key)
@@ -174,6 +165,7 @@ class tag_edit(delegate.page):
 
         i = web.input(_comment=None)
         formdata = self.process_input(i)
+        # TODO : strip `formdata` of unrelated sub-type fields
         try:
             if not formdata or not validate_tag(formdata):
                 raise web.badrequest()
@@ -192,10 +184,91 @@ class tag_edit(delegate.page):
             return render_template("type/tag/edit", tag)
 
     def process_input(self, i):
+        # TODO : Remove `unflatten`, as it's not needed in this context
         i = utils.unflatten(i)
         tag = trim_doc(i)
         return tag
 
+
+def find_tag(tag_type: str, **kwargs) -> Tag:
+    q = {k:v for k, v in kwargs.items()} | {"type": "/type/tag", "tag_type": tag_type}
+    matches = web.ctx.site.things(q)
+
+    return web.ctx.site.get(matches[0]) if matches else None
+
+
+class edit_subject(delegate.page):
+    path = "/subject/edit"
+
+    def GET(self):
+        i = web.input(fkey="", name="", sub_type="")
+
+        # Check for edit permission
+        if not (patron := get_current_user()):
+            raise safe_seeother(f"/account/login?redirect={i.fkey or '/'}")
+
+        if not self.has_permission(patron):
+            raise web.unauthorized()
+
+        if not self.validate_input(i):
+            raise web.badrequest()
+
+        # Resolve code path : either Tag exists, or it doesn't
+        tag = find_tag("subject", fkey=i.fkey)
+
+        # Tag exists:
+        if tag:
+            raise web.seeother(f"{tag.key}/edit")
+
+        # Tag does not exist:
+        # TODO : Test `safe_seeother` use when i.name has non-ASCII text
+        raise safe_seeother(f"/tag/subject/add?name={i.name}&tag_type={i.sub_type}&fkey={i.fkey}")
+
+    def has_permission(self, user) -> bool:
+        return user and (
+                user.is_librarian() or user.is_super_librarian() or user.is_admin()
+        )
+
+    def validate_input(self, i) -> bool:
+        return i.get("fkey") and i.get("name") and i.get("sub_type")
+
+
+class add_subject_tag(delegate.page):
+    path = "/tag/subject/add"
+
+    def GET(self):
+        if not (patron := get_current_user()):
+            raise web.seeother(f'/account/login?redirect={self.path}')
+
+        if not self.has_permission(patron):
+            raise web.unauthorized()
+
+        i = web.input(name="", fkey="", tag_type="")
+        page = {
+            "name": i.name,
+            "tag_type": i.tag_type,
+            "fkey": i.fkey,
+        }
+
+        return render_template("type/tag/subject/edit", page)
+
+    def POST(self):
+        i = web.input()
+        if not (patron := get_current_user()):
+            # TODO : Redirect to subject page (?)
+            raise web.seeother(f'/account/login')
+
+        if not self.has_permission(patron):
+            raise web.unauthorized()
+
+        # TODO : Create tag
+        # TODO : Go to subject page, no disambiguations
+        pass
+
+    def has_permission(self, user) -> bool:
+        return user and (
+            user.is_librarian() or user.is_super_librarian() or user.is_admin()
+        )
 
 def setup():
     """Do required setup."""

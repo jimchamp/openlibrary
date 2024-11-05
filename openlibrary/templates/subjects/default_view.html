@@ -1,0 +1,13 @@
+$def with (page)
+
+$:render_template("books/custom_carousel", books=page.works, load_more={"url": page.key + ".json", "limit": len(page.works)})
+$:macros.PublishingHistory(page.publishing_history)
+
+<div class="clearfix"></div>
+$:macros.RelatedSubjects(page)
+
+<div class="clearfix"></div>
+$:macros.ProlificAuthors(page.authors)
+
+<div class="spacer"></div>
+<div class="section clearfix"></div>

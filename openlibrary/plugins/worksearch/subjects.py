@@ -23,18 +23,29 @@ __all__ = ["SubjectEngine", "get_subject", "SubjectMeta"]
 DEFAULT_RESULTS = 12
 MAX_RESULTS = 1000
 
+import logging
+logger = logging.getLogger(__name__)
 
 class subjects(delegate.page):
     path = '(/subjects/[^/]+)'
+
+    subject_prefixes = ['time', 'person', 'place']
 
     def GET(self, key):
         if (nkey := self.normalize_key(key)) != key:
             raise web.redirect(nkey)
 
-        q = {"type": "/type/tag", "fkey": key, "tag_type": "subject"}
-        if match := web.ctx.site.things(q):
-            tag = web.ctx.site.get(match[0])
-            raise web.redirect(tag.key)
+        subj_name = key[len('/subjects/'):]
+        if ":" in subj_name and subj_name.split(":")[0] in self.subject_prefixes:
+            subj_name = subj_name.split(":")[1]
+
+        # TODO : search for all subject types with given label
+        # Do not redirect --- pass all found keys to subject page
+        q = {"type": "/type/tag", "name": subj_name}
+        results = web.ctx.site.things(q)
+        logger.info('*' * 77)
+        logger.info('results:')
+        logger.info(results)
 
         # this needs to be updated to include:
         # q=public_scan_b:true+OR+lending_edition_s:*

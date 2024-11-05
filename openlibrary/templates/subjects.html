@@ -10,10 +10,10 @@ $ q = query_param('q')
 <div class="page-heading-search-box">
     $if can_add_tag:
       <div class="subjectTagEdit">
-        $ edit_tag_url = page.tag.get('key') + '/-/edit' if has_tag else '/tag/promote?name=%s&type=subject&sub_type=%s&fkey=%s' % (page.name, page.subject_type, page.key)
-        $ btn_cta = _("Edit") if has_tag else _("Promote to Tag")
-        $ elem_title = _("Edit Subject Tag") if has_tag else _("Create Tag from this subject")
-        $ link_track = "CTAClick|SubjectTagEdit" if has_tag else "CTAClick|SubjectTagAdd"
+        $ edit_tag_url = '/subject/edit?name=%s&sub_type=%s&fkey=%s' % (page.name, page.subject_type, page.key)
+        $ btn_cta = _("Edit")
+        $ elem_title = _("Edit Subject Tag")
+        $ link_track = "CTAClick|SubjectPageEdit"
         <a
           class="editTagButton"
           href="$edit_tag_url"
@@ -39,16 +39,5 @@ $ q = query_param('q')
 </div>
 
 <div class="contentBody">
-
-    $:render_template("books/custom_carousel", books=page.works, load_more={"url": page.key + ".json", "limit": len(page.works)})
-    $:macros.PublishingHistory(page.publishing_history)
-
-    <div class="clearfix"></div>
-    $:macros.RelatedSubjects(page)
-
-    <div class="clearfix"></div>
-    $:macros.ProlificAuthors(page.authors)
-
-    <div class="spacer"></div>
-    <div class="section clearfix"></div>
+    $:render_template("subjects/default_view", page)
 </div>
