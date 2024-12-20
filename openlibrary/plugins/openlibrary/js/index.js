@@ -553,4 +553,10 @@ jQuery(function () {
         import (/* webpackChunkName: "go-back-links" */ './go-back-links')
             .then(module => module.initGoBackLinks(backLinks))
     }
+
+    const macroPicker = document.querySelector(".macro-picker-container")
+    if (macroPicker) {
+        import("./macro-picker")
+            .then(module => module.initMacroPicker(macroPicker))
+    }
 });

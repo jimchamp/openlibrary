@@ -4,8 +4,13 @@ $ _x = ctx.setdefault('cssfile', 'edit')
 
 $var title: $_("Edit %(title)s", title=page.title or page.key)
 
-$:render_template("lib/edit_head", page)
+$code:
+    def show_macro_picker():
+        if not ctx.path.startswith("/collections/"):
+            return False
+        return ctx.user and (ctx.user.is_beta_tester() or ctx.user.is_admin())
 
+$:render_template("lib/edit_head", page)
 <div id="contentBody">
 
     <form name="edit" method="post" action="" class="olform">
@@ -25,8 +30,11 @@ $:render_template("lib/edit_head", page)
 
     <div class="formElement">
         <div class="label"><label for="body">$_('Document Body:')</label></div>
+        $ textarea_id = "body"
+        $if show_macro_picker():
+            $:render_template("macro_picker", textarea_id)
         <div class="input">
-            <textarea id="body" name="body" class="markdown" rows="15" cols="80">$page.body</textarea>
+            <textarea id="body" name="$textarea_id" class="markdown" rows="15" cols="80">$page.body</textarea>
         </div>
     </div>
 

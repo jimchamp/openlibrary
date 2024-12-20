@@ -1,0 +1,108 @@
+$def with(textarea_id)
+
+$code:
+    macros = {
+        "QueryCarousel": {
+            "name": "QueryCarousel",
+            "displayName": _("Query Carousel"),
+            "description": _("A carousel that contains the results of a search query"),
+            "args": [
+                {
+                    "displayName": _("Query"),
+                    "name": "query",
+                    "inputType": "text",
+                    "description": _("The carousel will be populated with the results of a search with this query"),
+                    "required": True,
+                }
+            ],
+            "kwargs": [
+                {
+                    "displayName": _("Title"),
+                    "name": "title",
+                    "inputType": "text",
+                    "description": _("Title to display above the carousel"),
+                    "required": False,
+                },
+                {
+                    "displayName": _("Limit"),
+                    "name": "limit",
+                    "inputType": "number",
+                    "description": _("Initial number of books in the carousel"),
+                    "required": False,
+                }
+            ]
+        },
+        "ListCarousel": {
+            "name": "ListCarousel",
+            "displayName": _("List Carousel"),
+            "description": _("A carousel that displays the contents of a list"),
+            "args": [
+                {
+                    "displayName": _("List Key"),
+                    "name": "list_key",
+                    "inputType": "text",
+                    "description": _("Reference to the list that will populate this carousel"),
+                    "required": True,
+                }
+            ],
+            "kwargs": [
+                {
+                    "displayName": _("Title"),
+                    "name": "title",
+                    "inputType": "text",
+                    "description": _("Title to display above the carousel"),
+                    "required": False,
+                },
+                {
+                    "displayName": _("Limit"),
+                    "name": "limit",
+                    "inputType": "number",
+                    "description": _("Initial number of books in the carousel"),
+                    "required": False,
+                }
+            ]
+        }
+    }
+
+$def render_macro_option(macro_data):
+    $code:
+        option_data = {
+            "name": macro_data.get("name", ""),
+            "displayName": macro_data.get("displayName", ""),
+            "description": macro_data.get("description", ""),
+            "args": macro_data.get("args", []),
+            "kwargs": macro_data.get("kwargs", []),
+        }
+    <option value="$option_data.get('name')" data-option="$json_encode(option_data)">$option_data.get('displayName')</option>
+
+<div class="macro-picker-container" data-textarea-id="$textarea_id">
+    <div class="macro-picker">
+        <button type="button" class="cta-btn cta-btn--primary">Macro</button>
+    </div>
+    <dialog id="macro-builder-ui">
+        <form method="dialog">
+            <label for="macro-list">Pick Macro
+                <select id="macro-list">
+                    <option value="">Pick one...</option>
+                    $for k, v in macros.items():
+                        $:render_macro_option(v)
+                </select>
+            </label>
+            <div class="form-inputs hidden">
+                <div class="macro-name"></div>
+                <div class="macro-description"></div>
+                <div class="macro-arguments"></div>
+                <div class="macro-cache-checkbox">
+                    <label>
+                        Cache macro?
+                        <input id="cache-checkbox" type="checkbox" checked>
+                    </label>
+                </div>
+                <div class="macro-form-controls">
+                    <a href="javascript:;" class="cancel-button">Cancel</a>
+                    <button type="button" class="cta-btn cta-btn--primary">Insert Macro</button>
+                </div>
+            </div>
+        </form>
+    </dialog>
+</div>

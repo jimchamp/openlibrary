@@ -1,0 +1,57 @@
+@import (reference) "../less/colors.less";
+
+.macro-picker {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 5px;
+
+    label {
+        width: min-content;
+        height: 100%;
+        margin-right: 5px;
+        white-space: nowrap;
+    }
+
+    button {
+        width: min-content;
+        margin-top: 0;
+        margin-left: 5px;
+    }
+
+    select,
+    button {
+        height: 40px;
+    }
+}
+
+#macro-builder-ui {
+    margin-top: 5px;
+    border: 1px @black solid;
+    min-width: 60%;
+    z-index: 1;
+}
+
+.macro-arguments {
+    display: flex;
+    flex-direction: column;
+}
+
+.macro-form-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    div {
+        display: flex;
+        flex-direction: column;
+    }
+
+    a {
+      color: @red;
+    }
+
+    button {
+      width: min-content;
+    }
+}
