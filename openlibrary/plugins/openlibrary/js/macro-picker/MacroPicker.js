@@ -69,18 +69,31 @@ export class MacroPicker {
         for (const kwarg of data.kwargs) {
             this.macroUiInputs.appendChild(this.createInput(kwarg))
         }
+        const tooltips = this.macroUiInputs.querySelectorAll('.tooltip')
+        for (const tooltip of tooltips) {
+            tooltip.addEventListener('click', () => {
+                const tooltipTextElem = tooltip.querySelector('.tooltip-text')
+                tooltipTextElem.classList.toggle('visible')
+            })
+        }
         this.macroFormInputs.classList.remove('hidden')
     }
 
     createInput(inputOptions) {
         const templateElem = document.createElement('template')
-        const htmlTemplate = `<label>
-            ${inputOptions.displayName} ${inputOptions.required ? '(required)' : ''}
-            <input ${inputOptions.required ? '' : 'data-keyword="true" '}
-            type="${inputOptions.inputType}" 
-            name="${inputOptions.name}"
-            > ${inputOptions.description}
-            </label>`
+        const htmlTemplate = `<div class="macro-option">
+            <label>
+                ${inputOptions.displayName} ${inputOptions.required ? '(required)' : ''}
+                <input ${inputOptions.required ? '' : 'data-keyword="true" '}
+                type="${inputOptions.inputType}" 
+                name="${inputOptions.name}"
+                >
+            </label>
+            <span class="tooltip">
+                ?
+                <span class="tooltip-text">${inputOptions.description}</span>
+            </span>
+            </div>`
         templateElem.insertAdjacentHTML('afterbegin', htmlTemplate)
         return templateElem.firstChild
     }

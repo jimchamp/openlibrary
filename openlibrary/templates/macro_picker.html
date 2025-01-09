@@ -5,13 +5,13 @@ $code:
         "QueryCarousel": {
             "name": "QueryCarousel",
             "displayName": _("Query Carousel"),
-            "description": _("A carousel that contains the results of a search query"),
+            "description": _("A carousel that displays the results of a search"),
             "args": [
                 {
                     "displayName": _("Query"),
                     "name": "query",
                     "inputType": "text",
-                    "description": _("The carousel will be populated with the results of a search with this query"),
+                    "description": _("Search query used to populate the carousel"),
                     "required": True,
                 }
             ],
@@ -20,14 +20,14 @@ $code:
                     "displayName": _("Title"),
                     "name": "title",
                     "inputType": "text",
-                    "description": _("Title to display above the carousel"),
+                    "description": _("Title to be displayed above the carousel"),
                     "required": False,
                 },
                 {
                     "displayName": _("Limit"),
                     "name": "limit",
                     "inputType": "number",
-                    "description": _("Initial number of books in the carousel"),
+                    "description": _("Initial number of books to display in the carousel"),
                     "required": False,
                 }
             ]
@@ -41,7 +41,7 @@ $code:
                     "displayName": _("List Key"),
                     "name": "list_key",
                     "inputType": "text",
-                    "description": _("Reference to the list that will populate this carousel"),
+                    "description": _("Reference to the list that will populate this carousel, in <code>/people/{person}/lists/OL{list_id}L form</code>"),
                     "required": True,
                 }
             ],
@@ -50,14 +50,14 @@ $code:
                     "displayName": _("Title"),
                     "name": "title",
                     "inputType": "text",
-                    "description": _("Title to display above the carousel"),
+                    "description": _("Title to be displayed above the carousel"),
                     "required": False,
                 },
                 {
                     "displayName": _("Limit"),
                     "name": "limit",
                     "inputType": "number",
-                    "description": _("Initial number of books in the carousel"),
+                    "description": _("Initial number of books to display in the carousel"),
                     "required": False,
                 }
             ]

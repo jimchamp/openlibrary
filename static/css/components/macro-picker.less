@@ -30,6 +30,13 @@
     border: 1px @black solid;
     min-width: 60%;
     z-index: 1;
+
+    .macro-name {
+        margin-top: 10px;
+    }
+    .macro-name, .macro-description, .macro-option {
+        margin-bottom: 20px;
+    }
 }
 
 .macro-arguments {
@@ -55,3 +62,41 @@
       width: min-content;
     }
 }
+
+/* Tool tips */
+#macro-builder-ui {
+    .macro-option {
+        position: relative;
+    }
+    .tooltip {
+        position: relative;
+        display: inline-block;
+        border-bottom: 1px dotted black;
+        cursor: pointer;
+    }
+    .tooltip .tooltip-text {
+        visibility: hidden;
+        width: 200px;
+        background-color: white;
+        color: black;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        top: 100%;
+        left: 50%;
+        margin-left: -100px;
+    }
+
+    .tooltip-text {
+        margin-top: 5px;
+        border: 1px black solid;
+    }
+
+    .tooltip:hover .tooltip-text,
+    .tooltip-text.visible {
+      visibility: visible;
+    }
+}
+
