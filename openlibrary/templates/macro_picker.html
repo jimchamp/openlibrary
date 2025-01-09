@@ -77,13 +77,13 @@ $def render_macro_option(macro_data):
 
 <div class="macro-picker-container" data-textarea-id="$textarea_id">
     <div class="macro-picker">
-        <button type="button" class="cta-btn cta-btn--primary">Macro</button>
+        <button type="button" class="cta-btn cta-btn--primary">$_("Macro")</button>
     </div>
     <dialog id="macro-builder-ui">
         <form method="dialog">
-            <label for="macro-list">Pick Macro
+            <label for="macro-list">$_("Pick Macro")
                 <select id="macro-list">
-                    <option value="">Pick one...</option>
+                    <option value="">$_("Pick one...")</option>
                     $for k, v in macros.items():
                         $:render_macro_option(v)
                 </select>
@@ -94,13 +94,13 @@ $def render_macro_option(macro_data):
                 <div class="macro-arguments"></div>
                 <div class="macro-cache-checkbox">
                     <label>
-                        Cache macro?
+                        $_("Cache macro")
                         <input id="cache-checkbox" type="checkbox" checked>
                     </label>
                 </div>
                 <div class="macro-form-controls">
-                    <a href="javascript:;" class="cancel-button">Cancel</a>
-                    <button type="button" class="cta-btn cta-btn--primary">Insert Macro</button>
+                    <a href="javascript:;" class="cancel-button">$_("Cancel")</a>
+                    <button type="button" class="cta-btn cta-btn--primary">$_("Insert Macro")</button>
                 </div>
             </div>
         </form>
