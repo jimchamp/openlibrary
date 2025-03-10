@@ -888,6 +888,7 @@ class search_json(delegate.page):
         docs = response['docs']
         del response['docs']
         response['docs'] = docs
+        # END : extract into method
         web.header('Content-Type', 'application/json')
         return delegate.RawText(json.dumps(response, indent=4))
 

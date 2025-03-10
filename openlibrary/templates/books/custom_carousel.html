@@ -39,7 +39,10 @@ $if test or (books and len(books) >= min_books):
             'loadMore': {
               "url": load_more["url"].replace("&amp;", "&"),
               "pageMode": load_more.get("mode", "offset"),
-              "limit": load_more.get("limit", 18)
+              "limit": load_more.get("limit", 18),
+              "layout": layout,
+              "key": key,
+              "secondaryAction": secondary_action
             } if load_more else None
           }
         $ compact = "carousel--compact" if compact_mode else ""

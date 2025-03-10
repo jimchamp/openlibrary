@@ -9,7 +9,9 @@ import math
 import os
 import random
 import socket
+from abc import ABC, abstractmethod
 from time import time
+from typing import Any
 from urllib.parse import parse_qs, urlencode
 
 import requests
@@ -21,6 +23,7 @@ from openlibrary.core.batch_imports import (
     batch_import,
 )
 from openlibrary.i18n import gettext as _
+from openlibrary.plugins.openlibrary.api import browse
 from openlibrary.plugins.upstream.utils import setup_requests
 
 # make sure infogami.config.features is set
@@ -1197,6 +1200,8 @@ class Partials(delegate.page):
         partial = {}
         if component == "RelatedWorkCarousel":
             partial = _get_relatedcarousels_component(i.workid)
+        elif component == "CarouselLoadMore":
+            partial = PartialResolver.get_partial(component)
         elif component == "AffiliateLinks":
             data = json.loads(i.data)
             args = data.get('args', [])
@@ -1259,6 +1264,76 @@ class Partials(delegate.page):
             partial = {"partials": str(macro)}
 
         return delegate.RawText(json.dumps(partial))
+
+
+class PartialResolutionError(Exception):
+    pass
+
+
+class PartialSource(ABC):
+    @abstractmethod
+    def generate_partial(self) -> dict:
+        pass
+
+
+class CarouselCardQuery(ABC):
+    @abstractmethod
+    def do_query(self) -> list[str]:
+        pass
+
+class CarouselCardSource(PartialSource):
+    def __init__(self):
+        self.i = web.input(data=None)
+
+    def generate_partial(self) -> dict:
+        # Determine query type
+        params = self.i.data and self.i.data.get("params", {})
+        query_type = params.get("queryType", "")
+
+        # Return data from query
+        return self._make_book_query(query_type, params)
+
+    def _make_book_query(self, query_type: str, params: dict[str, Any]) -> dict:
+        if query_type == "SEARCH":
+            return self._do_search_query(params)
+        elif query_type == "BROWSE":
+            return self._do_browse_query(params)
+        elif query_type == "HOURLY_TRENDS":
+            return self._do_hourly_trends_query(params)
+        # TODO : Combine next two branches (same query used?)
+        elif query_type == "SUBJECTS":
+            return self._do_subjects_query(params)
+        elif query_type == "PUBLISHERS":
+            return self._do_publisher_query(params)
+
+        raise PartialResolutionError(f'Unrecognized query type "{query_type}"')
+
+    def _do_search_query(self, params) -> dict:
+        pass
+    def _do_browse_query(self, params) -> dict:
+        return browse.do_browse_query(None, None, None, None, None)
+    def _do_hourly_trends_query(self, params) -> dict:
+        pass
+    def _do_subjects_query(self, params) -> dict:
+        pass
+    def _do_publisher_query(self, params) -> dict:
+        pass
+
+class PartialResolver:
+    component_mapping = {
+        "CarouselLoadMore": CarouselCardSource,
+    }
+
+    @staticmethod
+    def get_partial(component: str) -> dict:
+        ds = PartialResolver.get_partial_source(component)
+        return ds.generate_partial()
+
+    @classmethod
+    def get_partial_source(cls, component: str) -> PartialSource:
+        if klass := cls.component_mapping.get(component, None):
+            return klass()
+        raise PartialResolutionError(f'No data source found for key "{component}"')
 
 
 def is_bot():

@@ -108,20 +108,23 @@ class browse(delegate.page):
         sorts = i.sorts.split(',')
         page = int(i.page)
         limit = int(i.limit)
+        result = self.do_browse_query(i.q, limit, page, i.subject, sorts)
+        return delegate.RawText(json.dumps(result), content_type="application/json")
+
+    @staticmethod
+    def do_browse_query(query, limit, page, subject, sorts) -> dict:
         url = lending.compose_ia_url(
-            query=i.q,
+            query=query,
             limit=limit,
             page=page,
-            subject=i.subject,
+            subject=subject,
             sorts=sorts,
         )
         works = lending.get_available(url=url) if url else []
-        result = {
+        return {
             'query': url,
             'works': [work.dict() for work in works],
         }
-        return delegate.RawText(json.dumps(result), content_type="application/json")
-
 
 class ratings(delegate.page):
     path = r"/works/OL(\d+)W/ratings"
