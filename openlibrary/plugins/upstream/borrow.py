@@ -355,6 +355,7 @@ def get_borrow_status(itemid, include_resources=True, include_ia=True, edition=N
     return web.storage(d)
 
 
+# XXX : Is this in use?
 # Handler for /borrow/receive_notification - receive ACS4 status update notifications
 class borrow_receive_notification(delegate.page):
     path = r"/borrow/receive_notification"
@@ -374,6 +375,7 @@ class borrow_receive_notification(delegate.page):
         return delegate.RawText(output, content_type='application/json')
 
 
+# XXX : Is this in use?
 class ia_borrow_notify(delegate.page):
     """Invoked by archive.org to notify about change in loan/waiting list
     status of an item.

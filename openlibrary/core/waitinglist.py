@@ -267,7 +267,7 @@ def _get_expiry_in_days(loan):
         return delta.days + 1
 
 
-# Unreferenced
+# XXX:  Unreferenced
 def _get_loan_timestamp_in_days(loan):
     t = datetime.datetime.fromtimestamp(loan['loaned_at'])
     delta = datetime.datetime.utcnow() - t
