@@ -11,7 +11,8 @@ permissions:
 jobs:
   respond:
     # Only run for issues opened in the main repository (not forks)
-    if: github.repository == 'internetarchive/openlibrary'
+    # TEMPORARILY DISABLED FOR TESTING PURPOSES
+    # if: github.repository == 'internetarchive/openlibrary'
     runs-on: ubuntu-latest
 
     steps:
