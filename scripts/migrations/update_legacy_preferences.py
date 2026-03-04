@@ -58,6 +58,8 @@ def update_preferences(keys: list[str]) -> list[str]:
                 del new_prefs['notifications']['rpd']
             username = key.split('/')[2]
             with RunAs(username):
+                # ACTION : ???
+                # moot -- script won't be used again
                 web.ctx.site.save(new_prefs, 'Updating preferences')
         except (infogami.infobase.client.ClientException, KeyError, IndexError):
             retry_list.append(key)

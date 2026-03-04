@@ -340,6 +340,8 @@ class lists_edit(delegate.page):
             list_key = f"/lists/OL{list_num}L"
             list_record.key = (user_key or '') + list_key
 
+        # ACTION : create-list or edit-list
+        # TODO : determine if this endpoint still creates new lists
         web.ctx.site.save(
             list_record.to_thing_json(),
             action="lists",
@@ -494,9 +496,13 @@ class lists_json(delegate.page):
             seeds=seeds,
         )
 
+        # TODO : can this be earlier in the flow?
+        # ^ unrelated to action audit
+        # seems like a lot of processing is happening before this check/raise
         if spamcheck.is_spam(lst):
             raise self.forbidden()
 
+        # ACTION : create-list
         try:
             result = site.save(
                 lst.dict(),

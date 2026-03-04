@@ -746,6 +746,7 @@ def load_data(  # noqa: PLR0912, PLR0915
         comment = (
             "overwrite existing edition" if existing_edition else "import new book"
         )
+        # ACTION : not accurate if overwriting edition
         web.ctx.site.save_many(edits, comment=comment, action='add-book')
 
         # Writes back `openlibrary_edition` and `openlibrary_work` to

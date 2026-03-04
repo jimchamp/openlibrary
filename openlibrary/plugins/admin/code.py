@@ -103,6 +103,8 @@ def revert_all_user_edits(account: Account) -> tuple[int, int]:
     delete_payload = [
         {'key': key, 'type': {'key': '/type/delete'}} for key in keys_to_delete
     ]
+    # ACTION : revent-spam
+    # XXX : hyphens or underscores? Both are used today, and it's confusing
     web.ctx.site.save_many(delete_payload, 'Delete spam')
     return edit_count, len(delete_payload)
 
@@ -744,6 +746,7 @@ class permissions:
         works = self.set_permission("/works", i.perm_records)
         books = self.set_permission("/books", i.perm_records)
         authors = self.set_permission("/authors", i.perm_records)
+        # ACTION : bulk-update-permissions
         web.ctx.site.save_many(
             [root, works, books, authors], comment="Updated edit policy."
         )

@@ -35,6 +35,9 @@ def setup_event_listener():
 @eventer.bind("infobase.all")
 def trigger_subevents(event):
     """Trigger infobase.edit event for edits."""
+    # ACTION : ???
+    # quick check shows that these may only affect entries in memcached (meaning, no change to infobase)
+    # check bound `infobase.edit` function to determine if action is needed
     if event.name in ['save', 'save_many']:
         changeset = event.data['changeset']
 

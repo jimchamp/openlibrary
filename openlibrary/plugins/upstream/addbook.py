@@ -116,12 +116,15 @@ class DocSaveHelper:
     def __init__(self):
         self.docs = []
 
+    # TODO : misleading method name -- nothing is persisted
     def save(self, doc) -> None:
         """Adds the doc to the list of docs to be saved."""
         if not isinstance(doc, dict):  # thing
             doc = doc.dict()
         self.docs.append(doc)
 
+    # ACTION : ???
+    # ensure that action is passed to this method
     def commit(self, **kw) -> None:
         """Saves all the collected docs."""
         if self.docs:
@@ -454,6 +457,8 @@ class addbook(delegate.page):
         saveutil.save(edition)
 
         comment = utils.get_message("comment_add_book")
+        # ACTION : create-work-and-edition
+        # clunky action name...
         saveutil.commit(action="add-book", comment=comment)
 
         raise safe_seeother(edition.url("/edit?mode=add-work"))
@@ -651,7 +656,8 @@ class SaveBookHelper:
 
             self.edition.update(edition_data)
             saveutil.save(self.edition)
-
+        # ACTION : ???
+        # are works also being updated? authors?
         saveutil.commit(comment=comment, action="edit-book")
 
     @staticmethod
@@ -916,6 +922,8 @@ class work_edit(delegate.page):
 
         try:
             helper = SaveBookHelper(work, None)
+            # ACTION : ???
+            # handle here, or in SaveBookHelper.save()?
             helper.save(web.input())
             add_flash_message("info", utils.get_message("flash_catalog_updated"))
             raise safe_seeother(work.url())
@@ -954,12 +962,14 @@ class author_edit(delegate.page):
                 raise web.badrequest()
             elif "_save" in i:
                 author.update(formdata)
+                # ACTION : ???
                 author._save(comment=i._comment)
                 raise safe_seeother(key)
             elif "_delete" in i:
                 author = web.ctx.site.new(
                     key, {"key": key, "type": {"key": "/type/delete"}}
                 )
+                # ACTION : ???
                 author._save(comment=i._comment)
                 raise safe_seeother(key)
         except (ClientException, ValidationException) as e:
@@ -1018,6 +1028,8 @@ class work_identifiers(delegate.view):
             raise web.redirect(web.ctx.path)
         edition.set_identifiers(data)
         saveutil.save(edition)
+        # ACTION : update-edition-isbn
+        # isbn10/isbn13 granularity needed?
         saveutil.commit(comment="Added an %s identifier." % typ, action="edit-book")
         add_flash_message("info", "Thank you very much for improving that record!")
         raise web.redirect(web.ctx.path)

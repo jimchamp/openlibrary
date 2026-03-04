@@ -237,6 +237,9 @@ def sampleload(filename='sampledump.txt.gz'):
     with gzip.open(filename) if filename.endswith('.gz') else open(filename) as file:
         queries = [json.loads(line) for line in file]
 
+    # ACTION : ???
+    # how is this used, if ever?
+    # what gets loaded? anything?
     print(web.ctx.site.save_many(queries))
 
 
@@ -346,6 +349,7 @@ class addauthor(delegate.page):
             return web.badrequest()
         key = web.ctx.site.new_key('/type/author')
         web.ctx.path = key
+        # ACTION : create-author
         web.ctx.site.save(
             {'key': key, 'name': i.name, 'type': {'key': '/type/author'}},
             comment='New Author',
@@ -1289,6 +1293,8 @@ def setup_template_globals():
             'time': time,
             'input': web.input,
             'dumps': json.dumps,
+            'vars': vars,
+            'dir': dir,
         }
     )
 

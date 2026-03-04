@@ -26,6 +26,8 @@ class ConnectionMiddleware:
     def set_auth_token(self, token):
         self.conn.set_auth_token(token)
 
+    # ACTION : ???
+    # are these hitting infogami endpoints?
     def request(self, sitename, path, method='GET', data=None):
         if path == '/get':
             return self.get(sitename, data)

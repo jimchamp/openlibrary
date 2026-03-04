@@ -669,6 +669,8 @@ class work_delete(delegate.page):
 
         editions: list[dict] = self.get_editions_of_work(work)
         keys_to_delete: list = [el.get('key') for el in [*editions, work.dict()]]
+        # ACTION : bulk-delete-book-records
+        # work and associated editions are being deleted
         delete_payload: list[dict] = [
             {'key': key, 'type': {'key': '/type/delete'}} for key in keys_to_delete
         ]
@@ -1065,6 +1067,7 @@ class unlink_ia_ol(delegate.page):
         ]
         if not data['source_records']:
             del data['source_records']
+        # ACTION : remove-ocaid
         web.ctx.site.save(data, 'Remove OCAID: Item no longer available to borrow.')
 
 
