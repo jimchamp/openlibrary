@@ -3,6 +3,7 @@ Open Library Plugin.
 """
 
 import datetime
+import functools
 import gzip
 import json
 import logging
@@ -116,6 +117,7 @@ models.register_types()
 import openlibrary.core.lists.model as list_models
 
 list_models.register_models()
+list_models.register_types()
 
 # Remove movefiles install hook. openlibrary manages its own files.
 infogami._install_hooks = [
@@ -480,7 +482,7 @@ class robotstxt(delegate.page):
         return web.ok(open(f'static/{robots_file}').read())
 
 
-@web.memoize
+@functools.cache
 def fetch_ia_js(filename: str) -> str:
     return requests.get(f'https://archive.org/includes/{filename}').text
 
@@ -1336,11 +1338,6 @@ def setup():
     )
 
     delegate.app.add_processor(web.unloadhook(stats.stats_hook))
-
-    if infogami.config.get('dev_instance') is True:
-        from openlibrary.plugins.openlibrary import dev_instance
-
-        dev_instance.setup()
 
     setup_context_defaults()
     setup_template_globals()

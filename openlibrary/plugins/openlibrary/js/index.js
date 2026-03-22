@@ -81,6 +81,7 @@ jQuery(function () {
 
     const edition = document.getElementById('addWork');
     const autocompleteAuthor = document.querySelector('.multi-input-autocomplete--author');
+    const autocompleteSeries = document.querySelector('.multi-input-autocomplete--series');
     const autocompleteLanguage = document.querySelector('.multi-input-autocomplete--language');
     const autocompleteWorks = document.querySelector('.multi-input-autocomplete--works');
     const autocompleteSeeds = document.querySelector('.multi-input-autocomplete--seeds');
@@ -94,7 +95,7 @@ jQuery(function () {
     // conditionally load for user edit page
     if (
         edition ||
-        autocompleteAuthor || autocompleteLanguage || autocompleteWorks ||
+        autocompleteAuthor || autocompleteSeries || autocompleteLanguage || autocompleteWorks ||
         autocompleteSeeds || autocompleteSubjects ||
         addRowButton || roles || classifications ||
         excerpts || links
@@ -115,6 +116,9 @@ jQuery(function () {
                 }
                 if (autocompleteAuthor) {
                     module.initAuthorMultiInputAutocomplete();
+                }
+                if (autocompleteSeries) {
+                    module.initSeriesMultiInputAutocomplete();
                 }
                 if (roles) {
                     module.initRoleValidation();
@@ -379,7 +383,7 @@ jQuery(function () {
     }
 
     // TODO: Make these selectors a consistent interface
-    const $dialogs = $('.dialog--open,.dialog--close,#noMaster,#confirmMerge,#leave-waitinglist-dialog,.cta-btn--preview');
+    const $dialogs = $('.dialog--open,.dialog--close,#noMaster,#confirmMerge,#leave-waitinglist-dialog,#bookPreview');
     if ($dialogs.length) {
         import(/* webpackChunkName: "dialog" */ './dialog')
             .then(module => module.initDialogs())

@@ -19,7 +19,6 @@
  * and imported directly in one of the entry points that are prefixed
  * with `page-` or `js-`
  */
-@import "legacy-header.css";
 @import "legacy-tools.css";
 @import "legacy-wmd.css";
 
@@ -658,6 +657,10 @@ div.valid {
 /* openlibrary/templates/search/publishers.html */
 /* openlibrary/templates/work_search.html */
 /* openlibrary/templates/search/subjects.html */
+.search-row {
+  margin-bottom: 8px;
+}
+
 div.siteSearch {
   overflow: visible;
   border-radius: 5px;
@@ -963,11 +966,17 @@ div#searchFacets {
 /* openlibrary/templates/work_search.html */
 div.facet {
   margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+div.facet .facetHead {
+  flex-basis: 100%;
 }
 
 div.facetEntry {
-  font-family: var(--font-family-body);
-  margin-bottom: 5px;
+  font-family: var(--body-family);
 }
 
 div.facetEntry a {
@@ -976,8 +985,11 @@ div.facetEntry a {
 }
 
 div.facetMoreLess {
-  font-family: var(--font-family-body);
-  margin-bottom: 5px;
+  flex-basis: 100%;
+  font-family: var(--body-family);
+  position: relative;
+  top: -4px;
+  padding-left: 8px;
 }
 
 div.facetMoreLess a {
@@ -1191,6 +1203,21 @@ div.excerpt .attribution {
 
 .identifiers.authors td {
   background-color: var(--white);
+}
+
+/* openlibrary/templates/books/edit/edition.html */
+.multi-input-autocomplete--series {
+  max-width: 600px;
+  margin-top: 5px;
+}
+.multi-input-autocomplete--series .mia__input + .mia__input {
+  margin-top: 5px;
+}
+.multi-input-autocomplete--series .mias__name {
+  flex: 1;
+}
+.multi-input-autocomplete--series .mias__position {
+  width: 10ch;
 }
 
 /* openlibrary/templates/type/type/view.html */
