@@ -78,6 +78,7 @@ class book_availability(delegate.page):
             return []
 
 
+@deprecated("migrated to fastapi")
 class trending_books_api(delegate.page):
     path = "/trending(/?.*)"
     # path = "/trending/(now|daily|weekly|monthly|yearly|forever)"
