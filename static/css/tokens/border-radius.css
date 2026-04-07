@@ -22,7 +22,7 @@
 :root {
   --border-radius-button: 4px; /* buttons, tabs */
   --border-radius-input: 4px; /* inputs, textareas */
-  --border-radius-thumbnail: 2px; /* small images */
+  --border-radius-thumbnail: 4px; /* small images */
   --border-radius-media: 8px; /* large images, videos */
   --border-radius-card: 8px; /* cards */
   --border-radius-overlay: 12px; /* dialogs, modals */
