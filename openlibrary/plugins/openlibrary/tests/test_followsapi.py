@@ -44,11 +44,9 @@ def test_post_follows_valid_publisher_succeeds():
         patch("openlibrary.core.follows.PubSub.subscribe") as mock_subscribe,
         patch("openlibrary.plugins.openlibrary.api.web.seeother") as mock_seeother,
     ):
-        mock_web_input.side_effect = mock_web_input_func(
-            {'publisher': 'existing_user', 'redir_url': '/', 'state': '0'}
-        )
-        mock_get_current_user.return_value = FakeUser('test_user')
-        mock_find.return_value = FakeUser('existing_user')
+        mock_web_input.side_effect = mock_web_input_func({"publisher": "existing_user", "redir_url": "/", "state": "0"})
+        mock_get_current_user.return_value = FakeUser("test_user")
+        mock_find.return_value = FakeUser("existing_user")
         mock_seeother.return_value = web.HTTPError("303 See Other")
 
         with pytest.raises(web.HTTPError):
