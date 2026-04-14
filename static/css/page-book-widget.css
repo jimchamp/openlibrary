@@ -11,7 +11,7 @@ body {
 }
 
 .widget {
-  padding: 10px 0;
+  padding: var(--spacing-inset-sm) 0;
 }
 
 .open a {
@@ -26,10 +26,10 @@ body {
   border-radius: 3px;
   width: 130px;
   margin: 0 auto;
-  margin-top: 5px;
+  margin-top: var(--spacing-stack-xs);
   text-align: center;
   font-size: 0.9em;
-  padding: 5px 0;
+  padding: var(--spacing-inset-xs) 0;
   cursor: pointer;
 }
 
@@ -64,7 +64,7 @@ img.bookcover {
 
 .title {
   font-family: var(--font-family-title);
-  margin: 7px auto 0;
+  margin: var(--spacing-stack-xs) auto 0;
   color: var(--grey-555);
   font-size: 0.8em;
   width: 130px;
@@ -79,7 +79,7 @@ a.noshow {
   font-size: 0.7em;
   font-weight: normal;
   color: var(--grey);
-  margin: 5px auto 7px;
+  margin: var(--spacing-stack-xs) auto var(--spacing-stack-xs);
   width: 130px;
 }
 
@@ -87,7 +87,7 @@ a.noshow {
   font-family: var(--font-family-body);
   color: var(--light-grey);
   width: 130px;
-  margin: 7px auto;
+  margin: var(--spacing-stack-xs) auto;
   text-align: right;
   font-size: 0.6em;
 }

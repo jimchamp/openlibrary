@@ -5,27 +5,27 @@
  */
 
 .design-pattern-library {
-  padding: 16px;
+  padding: var(--spacing-inset-md);
   max-width: 860px;
 }
 
 .design-pattern-library__layout {
   display: flex;
-  gap: 40px;
+  gap: var(--spacing-inline-4xl);
   align-items: flex-start;
 }
 
 /* Sidebar nav */
 .design-pattern-nav {
   position: sticky;
-  top: 24px;
+  top: var(--spacing-inset-lg);
   flex: 0 0 200px;
   padding: 0;
 }
 
 .design-pattern-nav__title {
   font-size: var(--font-size-body-large);
-  margin: 0 0 12px;
+  margin: 0 0 var(--spacing-stack-sm);
   color: var(--dark-grey);
 }
 
@@ -36,12 +36,12 @@
 }
 
 .design-pattern-nav__list li {
-  margin-bottom: 4px;
+  margin-bottom: var(--spacing-stack-xs);
 }
 
 .design-pattern-nav__list a {
   display: block;
-  padding: 6px 12px;
+  padding: var(--spacing-inset-xs) var(--spacing-inset-sm);
   border-radius: var(--border-radius-card);
   text-decoration: none;
   color: var(--dark-grey);
@@ -61,43 +61,43 @@
 }
 
 .design-pattern {
-  padding-bottom: 24px;
+  padding-bottom: var(--spacing-inset-lg);
   border-bottom: var(--border-divider);
-  margin-bottom: 24px;
+  margin-bottom: var(--spacing-stack-lg);
 }
 
 .design-pattern__title {
   color: var(--dark-grey);
-  margin: 0 0 8px;
+  margin: 0 0 var(--spacing-stack-xs);
 }
 
 .design-pattern__description {
-  margin: 0 0 16px;
+  margin: 0 0 var(--spacing-stack-md);
   font-size: 18px;
   color: var(--mid-grey);
 }
 
 .example {
-  margin-bottom: 48px;
+  margin-bottom: var(--spacing-stack-4xl);
 }
 
 .example__title {
   font-size: var(--font-size-title-medium);
   margin-top: 0;
-  margin-bottom: 6px;
+  margin-bottom: var(--spacing-stack-xs);
   color: var(--dark-grey);
 }
 
 .design-pattern-library p {
   margin-top: 0;
-  margin-bottom: 8px;
+  margin-bottom: var(--spacing-stack-xs);
 }
 
 .example__code {
   display: block;
   background-color: var(--lightest-grey);
-  padding: 12px;
-  margin-bottom: 12px;
+  padding: var(--spacing-inset-sm);
+  margin-bottom: var(--spacing-stack-sm);
   border-radius: var(--border-radius-card);
   font-size: var(--font-size-body-medium);
   font-family: var(--font-family-code);
@@ -107,7 +107,7 @@
 
 @media only screen and (min-width: 768px) {
   .design-pattern-library {
-    padding: 24px;
+    padding: var(--spacing-inset-lg);
   }
 
   .example__code {
@@ -116,19 +116,19 @@
 }
 
 .example__output {
-  margin-bottom: 24px;
+  margin-bottom: var(--spacing-stack-lg);
 }
 
 .color-swatch {
   display: flex;
-  gap: 4px;
+  gap: var(--spacing-inline-xs);
 }
 
 .color-swatch .color-block {
   width: 1em;
   height: 1em;
   display: block;
-  margin: 3px;
+  margin: var(--spacing-inset-xs);
 }
 
 .color-block-primary-cta {

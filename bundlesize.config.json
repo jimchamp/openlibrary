@@ -62,12 +62,12 @@
     },
     {
       "path": "static/build/css/page-admin.css",
-      "maxSize": "26KB"
+      "maxSize": "26.5KB"
 
     },
     {
       "path": "static/build/css/page-book.css",
-      "maxSize": "15.7KB"
+      "maxSize": "15.75KB"
     },
     {
       "path": "static/build/css/page-edit.css",

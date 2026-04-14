@@ -2,7 +2,7 @@
 
 .book-notes-form {
   margin: 1em auto;
-  padding: 0 20px;
+  padding: 0 var(--spacing-inset-lg);
 }
 .book-notes-form p {
   font-size: var(--font-size-title-medium);
@@ -13,7 +13,7 @@
 }
 .book-notes-form div textarea {
   width: 100%;
-  padding: 0.25em;
+  padding: var(--spacing-inset-xs);
   font-size: var(--font-size-title-medium);
   resize: none;
 }
@@ -28,9 +28,9 @@
 }
 .note-form-buttons .update-note-button {
   margin-left: auto;
-  margin-top: 5px;
+  margin-top: var(--spacing-stack-sm);
   font-size: 1.2em;
-  padding: 7px;
+  padding: var(--spacing-inset-sm);
 }
 
 .observation-instructions {

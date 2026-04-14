@@ -34,7 +34,7 @@
   height: 30px;
   margin-left: -125px;
   margin-top: -15px;
-  padding: 14px 0 5px;
+  padding: var(--spacing-inset-sm) 0 var(--spacing-inset-xs);
   border: 1px solid var(--lighter-grey);
   text-align: center;
   color: var(--light-grey);
@@ -51,7 +51,7 @@
   width: 100%;
   font-size: var(--font-size-label-medium);
   color: var(--grey);
-  margin-top: 20px;
+  margin-top: var(--spacing-stack-lg);
 }
 
 .dataTables_paginate {
@@ -71,7 +71,7 @@
 .paginate_enabled_next {
   height: 19px;
   width: 19px;
-  margin-left: 3px;
+  margin-left: var(--spacing-inline-xs);
   float: left;
 }
 
@@ -180,7 +180,7 @@ table.display tr.gradeU {
 
 div.box {
   height: 100px;
-  padding: 10px;
+  padding: var(--spacing-inset-sm);
   overflow: auto;
   border: 1px solid var(--dark-baby-blue);
   background-color: var(--baby-blue);
@@ -191,7 +191,7 @@ div.box {
  */
 .dataTable_wrapper .top,
 .dataTable_wrapper .bottom {
-  padding: 15px;
+  padding: var(--spacing-inset-md);
   background-color: transparent;
   border: none;
 }
@@ -204,7 +204,7 @@ div.box {
   text-align: center;
   font-size: var(--font-size-label-large);
   font-weight: normal;
-  padding: 15px 0;
+  padding: var(--spacing-inset-md) 0;
   color: var(--red);
 }
 
@@ -238,9 +238,9 @@ div.dataTables_filter {
 }
 
 .dataTables_filter input {
-  margin: 0 0 0 5px;
+  margin: 0 0 0 var(--spacing-inline-sm);
   border-radius: var(--border-radius-input);
-  padding: 3px;
+  padding: var(--spacing-inset-xs);
   border: 1px solid var(--grey);
 }
 
@@ -250,7 +250,7 @@ div.dataTables_filter {
 
 .paging_full_numbers {
   width: 100%;
-  margin-top: 15px;
+  margin-top: var(--spacing-stack-md);
   line-height: 20px;
 }
 
@@ -258,8 +258,8 @@ div.dataTables_filter {
 .paging_full_numbers .paginate_active {
   font-family: var(--font-family-body);
   font-size: var(--font-size-label-small);
-  padding: 7px;
-  margin: 0 5px;
+  padding: var(--spacing-inset-sm);
+  margin: 0 var(--spacing-inline-sm);
   color: var(--link-blue);
   cursor: pointer;
 }
@@ -412,10 +412,10 @@ tr.even.gradeU td.sorting_3 {
   div.dataTables_filter {
     float: none;
     text-align: left;
-    margin: 5px 0 0;
+    margin: var(--spacing-stack-sm) 0 0;
   }
   span.number {
     order: 4;
-    margin: 10px;
+    margin: var(--spacing-stack-sm) var(--spacing-inline-lg);
   }
 }

@@ -34,7 +34,7 @@ div#revertLink,
 }
 .column {
   min-height: 90px;
-  margin: 10px;
+  margin: var(--spacing-inset-sm);
   background-image: url(/images/back_sortable.png);
   background-repeat: no-repeat;
 }
@@ -60,12 +60,13 @@ div#revertLink,
   height: 90px;
   overflow: hidden;
   background-color: var(--light-yellow);
-  margin: 0 10px;
+  margin: 0 var(--spacing-inset-sm);
   border-radius: 8px;
   border: 1px solid var(--dark-yellow);
 }
 .portlet {
-  margin: 7px 13px 13px 7px;
+  margin: var(--spacing-stack-xs) var(--spacing-inline-sm)
+    var(--spacing-inline-sm) var(--spacing-stack-xs);
   float: left;
   width: 70px;
   height: 70px;
@@ -104,9 +105,9 @@ div#revertLink,
   font-size: 1.5em;
   font-weight: 700;
   color: var(--black);
-  padding: 6px 0 0 40px;
+  padding: var(--spacing-inset-xs) 0 0 40px;
   min-height: 30px;
-  margin: 25px 0 15px;
+  margin: var(--spacing-stack-lg) 0 var(--spacing-stack-md);
 }
 .saved-image-container {
   display: flex;
@@ -145,16 +146,16 @@ div#revertLink,
 /* Styling for the new cover form accepting Copy/Pasted images */
 
 .ol-cover-form {
-  margin-bottom: 20px;
+  margin-bottom: var(--spacing-stack-lg);
 }
 
 .ol-cover-form .label {
-  margin-bottom: 10px;
+  margin-bottom: var(--spacing-stack-sm);
 }
 
 .ol-cover-form .input {
   display: flex;
-  gap: 10px;
+  gap: var(--spacing-inline-sm);
   align-items: center;
 }
 
@@ -184,7 +185,7 @@ div#revertLink,
 
 .ol-cover-form--clipboard .button-container {
   display: flex;
-  gap: 10px;
+  gap: var(--spacing-inline-sm);
   flex-direction: row;
   align-items: center;
 }
@@ -197,5 +198,5 @@ div#revertLink,
 }
 
 .imageIntro {
-  margin-bottom: 20px;
+  margin-bottom: var(--spacing-stack-lg);
 }

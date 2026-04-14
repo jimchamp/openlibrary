@@ -40,7 +40,7 @@
 .formElement .input .wmd-preview {
   width: 100%;
   min-height: 47px;
-  padding: 5px;
+  padding: var(--spacing-inset-xs);
   clear: both;
 }
 
@@ -50,7 +50,7 @@ form#addAuthor.olform .wmd-preview,
 form.olform.books .formElement.librarian .input .wmd-preview,
 form.olform.books .formElement .input .wmd-preview {
   min-height: 47px;
-  padding: 3px;
+  padding: var(--spacing-inset-xs);
 }
 /* stylelint-enable no-descending-specificity */
 
@@ -60,9 +60,9 @@ form.olform.books .formElement .input .wmd-preview {
 
 .wmd-button-row {
   position: relative;
-  margin-bottom: 5px !important;
+  margin-bottom: var(--spacing-stack-xs) !important;
   margin-left: 0 !important;
-  margin-top: 10px;
+  margin-top: var(--spacing-stack-sm);
   padding: 0;
   height: 20px;
 }
@@ -79,7 +79,7 @@ form.olform.books .formElement .input .wmd-preview {
 .wmd-button {
   width: 20px;
   height: 20px;
-  margin-right: 10px;
+  margin-right: var(--spacing-inline-sm);
   position: absolute;
   background-image: url(/images/wmd-buttons.png);
   background-repeat: no-repeat;
@@ -209,8 +209,8 @@ form.olform.books .formElement .input .wmd-preview {
   .wmd-button-bar li:last-child {
     width: 20px;
     height: 20px;
-    margin-left: 5px;
-    margin-right: 5px;
+    margin-left: var(--spacing-inline-xs);
+    margin-right: var(--spacing-inline-xs);
     position: absolute;
   }
   /* stylelint-disable selector-max-specificity */

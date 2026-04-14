@@ -54,11 +54,11 @@ table {
 }
 
 table.meta {
-  margin-top: 10px;
+  margin-top: var(--spacing-stack-sm);
 }
 
 table.meta td {
-  padding: 0 15px 10px 0;
+  padding: 0 var(--spacing-inline-xl) var(--spacing-stack-sm) 0;
   vertical-align: top;
 }
 
@@ -78,7 +78,7 @@ table.code pre {
 table#pageHistory {
   width: 100%;
   font-family: var(--font-family-body);
-  margin: 10px 0 20px;
+  margin: var(--spacing-stack-sm) 0 var(--spacing-stack-lg);
 }
 
 table#pageHistory td.number {
@@ -97,13 +97,13 @@ table.changeHistory th {
   color: var(--brown);
   text-transform: uppercase !important;
   font-size: 0.6875em;
-  padding: 10px;
+  padding: var(--spacing-inset-sm);
 }
 
 table#pageHistory td,
 table.changeHistory td {
   border-bottom: 1px solid var(--grey-e7e7e7);
-  padding: 10px;
+  padding: var(--spacing-inset-sm);
   font-size: 0.75em;
   color: var(--grey);
 }
@@ -125,12 +125,12 @@ table.changeHistory td.comment {
 table.changeHistory .comment__cover {
   vertical-align: middle;
   height: 72px;
-  margin-left: 10px;
+  margin-left: var(--spacing-inline-sm);
 }
 
 /* https://openlibrary.org/help/markdown */
 table.help {
-  margin: 20px 0;
+  margin: var(--spacing-stack-lg) 0;
   border-top: 1px solid var(--grey-e7e7e7);
 }
 
@@ -139,7 +139,7 @@ table.help th {
   font-family: var(--font-family-body);
   color: var(--grey);
   border-bottom: 1px solid var(--grey-e7e7e7);
-  padding: 5px;
+  padding: var(--spacing-inset-xs);
   vertical-align: top;
   background-color: var(--lightest-grey);
 }
@@ -149,7 +149,7 @@ table.help td {
   font-family: var(--font-family-body);
   color: var(--grey);
   border-bottom: 1px solid var(--grey-e7e7e7);
-  padding: 5px;
+  padding: var(--spacing-inset-xs);
   vertical-align: top;
 }
 
@@ -171,10 +171,10 @@ var {
 
 li span.snippet {
   display: block;
-  margin: 10px 0;
+  margin: var(--spacing-stack-sm) 0;
   background-color: var(--lightest-grey);
   font-size: 0.8em;
-  padding: 20px;
+  padding: var(--spacing-inset-lg);
   font-style: italic;
 }
 
@@ -274,7 +274,7 @@ q:after {
   font-family: var(--font-family-body);
   color: var(--brown);
   font-size: var(--font-size-label-small);
-  padding-bottom: 10px;
+  padding-bottom: var(--spacing-stack-sm);
 }
 
 .fixthis {
@@ -286,7 +286,7 @@ q:after {
 @import "components/widget-box.css";
 
 div.unordered {
-  margin-top: 10px;
+  margin-top: var(--spacing-stack-sm);
   line-height: var(--line-height-list);
 }
 
@@ -294,7 +294,7 @@ div.superNav {
   font-size: 0.6875em;
   font-family: var(--font-family-body);
   color: var(--grey);
-  margin-bottom: 5px;
+  margin-bottom: var(--spacing-stack-xs);
 }
 
 @import "base/headings.css";
@@ -315,20 +315,20 @@ span.tools {
 }
 
 span.tools.sorter {
-  margin-right: 5px;
-  margin-left: 10px;
+  margin-right: var(--spacing-inline-xs);
+  margin-left: var(--spacing-inline-sm);
 }
 
 span.tools span.label {
   background-color: var(--orange);
   color: var(--white);
   font-weight: normal !important;
-  padding: 3px;
+  padding: var(--spacing-inset-xs);
   border-radius: 3px;
 }
 
 span.tools span.list {
-  padding: 3px;
+  padding: var(--spacing-inset-xs);
 }
 
 span.tag {
@@ -341,12 +341,12 @@ span.count {
   font-weight: normal !important;
   font-family: var(--font-family-body);
   color: var(--brown);
-  padding: 5px 5px 0;
+  padding: var(--spacing-inset-xs) var(--spacing-inset-xs) 0;
 }
 
 /* span.merge appears in openlibrary/templates/work_search.html */
 span.merge {
-  padding: 2px 0;
+  padding: var(--spacing-inset-xs) 0;
 }
 
 span.resultTitle {
@@ -376,14 +376,14 @@ span.resultTitle span.details {
 /* openlibrary/templates/form.html */
 span#showpass {
   display: block;
-  margin-top: 5px;
+  margin-top: var(--spacing-stack-xs);
 }
 
 /* openlibrary/templates/form.html */
 span#masker {
   display: block;
   float: left;
-  margin-top: 5px;
+  margin-top: var(--spacing-stack-xs);
   clear: both;
 }
 
@@ -402,8 +402,8 @@ p.alert {
   background-color: var(--light-yellow);
   background-position: 10px 50%;
   background-repeat: no-repeat;
-  margin: 10px auto 0;
-  padding: 15px 52px;
+  margin: var(--spacing-stack-sm) auto 0;
+  padding: var(--spacing-inset-md) var(--spacing-inset-4xl);
 }
 
 p.info {
@@ -424,7 +424,7 @@ textarea {
 
 input[type="text"],
 input[type="email"] {
-  margin: 0 10px 5px 0;
+  margin: 0 var(--spacing-inline-sm) var(--spacing-stack-xs) 0;
 }
 
 input.repeat-add {
@@ -442,15 +442,15 @@ input.highlight {
 
 .format {
   font-size: 0.75em;
-  margin-top: 5px;
+  margin-top: var(--spacing-stack-xs);
 }
 
 /* openlibrary/templates/search/inside.html */
 .search-results-stats {
   display: flex;
-  gap: 10px;
+  gap: var(--spacing-inline-sm);
   align-items: center;
-  padding-bottom: 10px;
+  padding-bottom: var(--spacing-stack-sm);
   font-size: 0.9em;
   white-space: nowrap;
   overflow-x: auto;
@@ -461,8 +461,8 @@ input.highlight {
 .serp-extras {
   border: 1px solid var(--lighter-grey);
   background-color: var(--white);
-  padding: 0 10px 10px;
-  margin-top: 10px;
+  padding: 0 var(--spacing-inline-sm) var(--spacing-stack-sm);
+  margin-top: var(--spacing-stack-sm);
 }
 
 /* LAYOUT */
@@ -505,7 +505,7 @@ div#content div#contentLists {
 
 div#contentHead {
   max-width: 1018px;
-  padding: 20px;
+  padding: var(--spacing-inset-lg);
 }
 
 /* Reset h1 margin set in common.css */
@@ -525,43 +525,47 @@ div.note {
   font-family: var(--font-family-body);
   background-color: var(--light-yellow);
   margin: 0 auto;
-  padding: 10px;
+  padding: var(--spacing-inset-sm);
   text-align: left;
   border: 1px solid var(--dark-yellow);
 }
 
 /* openlibrary/templates/lib/not_logged.html */
 div#noLogin {
-  margin-top: 10px;
+  margin-top: var(--spacing-stack-sm);
   background: var(--light-yellow) url(/images/icons/icon_info.png) no-repeat
     10px 50%;
-  padding: 10px 10px 10px 44px;
+  padding: var(--spacing-inset-sm) var(--spacing-inset-sm)
+    var(--spacing-inset-sm) 44px;
 }
 
 /* openlibrary/templates/type/author/view.html */
 div#preMerge {
   min-height: 32px;
-  padding: 10px 10px 10px 52px;
+  padding: var(--spacing-inset-sm) var(--spacing-inset-sm)
+    var(--spacing-inset-sm) 52px;
   background: transparent url(/images/icons/icon_merge.png) no-repeat 10px 10px;
 }
 
 /* openlibrary/templates/type/author/view.html */
 div#postMerge {
   min-height: 32px;
-  padding: 10px 10px 10px 52px;
+  padding: var(--spacing-inset-sm) var(--spacing-inset-sm)
+    var(--spacing-inset-sm) 52px;
   background: transparent url(/images/icons/icon_check.png) no-repeat 10px 10px;
 }
 
 /* openlibrary/templates/type/author/view.html */
 div#errorMerge {
   min-height: 32px;
-  padding: 10px 10px 10px 52px;
+  padding: var(--spacing-inset-sm) var(--spacing-inset-sm)
+    var(--spacing-inset-sm) 52px;
   background: transparent url(/images/icons/icon_alert.png) no-repeat 10px 10px;
 }
 
 /* FORMS */
 div.formElement {
-  padding-bottom: 8px;
+  padding-bottom: var(--spacing-stack-xs);
 }
 
 div.formElement.bottom {
@@ -581,7 +585,7 @@ div.formElement .input label {
 div.formElement .footnote,
 div.formElement p.tip {
   border-top: 1px solid var(--mid-grey);
-  padding: 5px;
+  padding: var(--spacing-inset-xs);
 }
 
 div.formElement blockquote {
@@ -592,8 +596,8 @@ div.formElement blockquote {
 
 fieldset {
   position: relative;
-  padding: 0 0 20px;
-  margin: 0 0 10px;
+  padding: 0 0 var(--spacing-inset-lg);
+  margin: 0 0 var(--spacing-stack-sm);
 }
 
 fieldset.minor {
@@ -603,7 +607,7 @@ fieldset.minor {
 }
 
 fieldset.major legend {
-  padding: 5px 0;
+  padding: var(--spacing-inset-xs) 0;
   font-family: var(--font-family-body);
   color: var(--teal);
   font-weight: 600;
@@ -633,7 +637,7 @@ fieldset.home legend {
 
 /* openlibrary/templates/account/notifications.html */
 form#notifications input[type="radio"] {
-  margin: 0 10px 0 20px;
+  margin: 0 var(--spacing-inline-sm) 0 var(--spacing-inline-lg);
 }
 
 /* openlibrary/templates/account/verify/failed.html */
@@ -644,7 +648,7 @@ div.valid {
   float: left;
   font-size: 1em !important;
   font-family: var(--font-family-body);
-  padding-top: 5px;
+  padding-top: var(--spacing-stack-xs);
 }
 
 /* SEARCH FORMS */
@@ -658,7 +662,7 @@ div.valid {
 /* openlibrary/templates/work_search.html */
 /* openlibrary/templates/search/subjects.html */
 .search-row {
-  margin-bottom: 8px;
+  margin-bottom: var(--spacing-stack-xs);
 }
 
 div.siteSearch {
@@ -673,7 +677,7 @@ div.siteSearch.darker {
 }
 
 div.siteSearch input[type="submit"] {
-  padding: 11px;
+  padding: var(--spacing-inset-sm);
   font-size: 0.9em;
   background: var(--link-blue);
   color: var(--white);
@@ -684,7 +688,7 @@ div.siteSearch input[type="submit"] {
 div.siteSearch input[type="text"] {
   margin: 0;
   width: 215px;
-  padding: 12px;
+  padding: var(--spacing-inset-sm);
   border-radius: var(--border-radius-input);
   border: 1px solid var(--mid-grey);
 }
@@ -706,11 +710,11 @@ div.siteSearch input[type="text"] {
   font-family: var(--font-family-body);
   font-size: 0.75em;
   color: var(--dark-grey);
-  padding: 15px 0;
+  padding: var(--spacing-inset-md) 0;
 }
 
 .searchPlus a {
-  margin-right: 20px;
+  margin-right: var(--spacing-inline-lg);
 }
 
 /* openlibrary/templates/search/advancedsearch.html */
@@ -732,9 +736,9 @@ div.cclicense {
   font-family: var(--font-family-body);
   font-size: 0.75em;
   min-height: 20px;
-  padding: 3px 0 0 30px;
+  padding: var(--spacing-inset-xs) 0 0 30px;
   color: var(--brown);
-  margin-bottom: 12px;
+  margin-bottom: var(--spacing-stack-sm);
   background: url(/images/logo_CC0-20px.png) 0 0 no-repeat;
 }
 
@@ -755,7 +759,7 @@ div#revertNotice {
   width: 958px;
   height: 45px;
   text-align: center;
-  padding-top: 15px;
+  padding-top: var(--spacing-inset-md);
   background-color: var(--dark-green);
 }
 
@@ -764,7 +768,7 @@ div.alert span,
 div.verify span {
   margin: 0 auto;
   min-height: 25px;
-  padding: 5px 0 5px 32px;
+  padding: var(--spacing-inset-xs) 0 var(--spacing-inset-xs) 32px;
 }
 
 div.alert,
@@ -787,7 +791,7 @@ div.verify span {
 }
 
 .defaultstyling .padtop {
-  margin-top: 10px;
+  margin-top: var(--spacing-stack-sm);
 }
 
 /* openlibrary/templates/account/email/forgot-ia.html */
@@ -796,11 +800,11 @@ div.verify span {
 }
 
 .forgot-email-form {
-  padding: 10px 0;
+  padding: var(--spacing-stack-sm) 0;
 }
 
 .forgot-email-form .form-row {
-  margin-bottom: 10px;
+  margin-bottom: var(--spacing-stack-sm);
 }
 
 .forgot-email-form label {
@@ -820,12 +824,12 @@ div.verify span {
 /* Various templates */
 .contentQuarter {
   min-height: 100px;
-  margin-bottom: 20px;
+  margin-bottom: var(--spacing-stack-lg);
 }
 
 .contentTwothird {
   min-height: 100px;
-  margin-bottom: 20px;
+  margin-bottom: var(--spacing-stack-lg);
 }
 
 .contentTwothird p {
@@ -834,12 +838,12 @@ div.verify span {
 
 .contentOnethird {
   min-height: 100px;
-  margin-bottom: 20px;
+  margin-bottom: var(--spacing-stack-lg);
 }
 
 .contentHalf {
   min-height: 100px;
-  margin-bottom: 20px;
+  margin-bottom: var(--spacing-stack-lg);
 }
 
 .contentSpacer {
@@ -856,7 +860,7 @@ div.verify span {
 /* stylelint-disable selector-max-specificity */
 /* openlibrary/templates/type/list/exports.html */
 #contentHead #listTools ul {
-  margin: 15px 0 0 !important;
+  margin: var(--spacing-inset-md) 0 0 !important;
 }
 /* stylelint-enable selector-max-specificity */
 
@@ -881,7 +885,7 @@ div#searchResults .list-books {
 /* openlibrary/templates/type/author/view.html */
 /* openlibrary/templates/work_search.html */
 div#searchResults .SRPCover {
-  margin: 0 15px 20px 0;
+  margin: 0 var(--spacing-inline-md) var(--spacing-stack-lg) 0;
   vertical-align: middle;
   width: 130px;
   height: 200px;
@@ -895,8 +899,8 @@ div#searchResults .SRPCoverBlank {
   position: relative;
   width: 130px;
   height: 200px;
-  padding: 10px;
-  margin: 0 15px 20px 0;
+  padding: var(--spacing-inset-sm);
+  margin: 0 var(--spacing-inline-md) var(--spacing-stack-lg) 0;
   text-align: center;
   float: left;
   background: var(--lighter-grey);
@@ -923,7 +927,7 @@ div#searchResults .SRPCoverBlank a {
 }
 
 .mode-options input {
-  margin-left: 15px;
+  margin-left: var(--spacing-inline-md);
   margin-right: 4px;
   position: relative;
 }
@@ -940,7 +944,7 @@ div#searchResults .SRPCoverBlank a {
 /* Results on /search/authors */
 /* openlibrary/templates/search/authors.html */
 .authorList {
-  margin-top: 30px;
+  margin-top: var(--spacing-stack-3xl);
 }
 
 .authorList li {
@@ -960,7 +964,7 @@ div#searchResults .SRPCoverBlank a {
 /* openlibrary/templates/search/publishers.html */
 /* openlibrary/templates/search/subjects.html */
 .subjectList ul {
-  margin-top: 30px;
+  margin-top: var(--spacing-stack-3xl);
 }
 
 /* SEARCH FACETS */
@@ -972,12 +976,12 @@ div#searchResults .SRPCoverBlank a {
 /* openlibrary/templates/work_search.html */
 div#searchFacets {
   width: 220px;
-  padding: 0 15px;
+  padding: 0 var(--spacing-inline-md);
 }
 
 /* openlibrary/templates/work_search.html */
 div.facet {
-  margin-bottom: 20px;
+  margin-bottom: var(--spacing-stack-lg);
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
@@ -1001,7 +1005,7 @@ div.facetMoreLess {
   font-family: var(--body-family);
   position: relative;
   top: -4px;
-  padding-left: 8px;
+  padding-left: var(--spacing-inline-sm);
 }
 
 div.facetMoreLess a {
@@ -1015,13 +1019,13 @@ div.facetMoreLess a {
 div.list {
   float: left;
   width: 207px;
-  padding-top: 10px;
+  padding-top: var(--spacing-stack-sm);
 }
 
 div.list .cover {
   float: left;
   width: 42px;
-  padding-right: 10px;
+  padding-right: var(--spacing-inline-sm);
 }
 
 div.list img {
@@ -1037,7 +1041,7 @@ div.list h5 {
   font-family: var(--font-family-serif);
   font-weight: normal;
   color: var(--dark-grey);
-  margin-bottom: 5px;
+  margin-bottom: var(--spacing-stack-xs);
 }
 
 div.list h5 span {
@@ -1049,7 +1053,7 @@ div.list .tags {
   font-family: var(--font-family-body);
   font-size: 0.6875em;
   color: var(--grey);
-  margin-bottom: 5px;
+  margin-bottom: var(--spacing-stack-xs);
 }
 
 div.list .owner {
@@ -1096,9 +1100,9 @@ div.work span.editions {
 }
 
 div.workHelp {
-  padding-top: 10px;
+  padding-top: var(--spacing-stack-sm);
   font-size: 0.8em;
-  margin-bottom: 20px;
+  margin-bottom: var(--spacing-stack-lg);
 }
 
 /* openlibrary/templates/type/work/view.html */
@@ -1115,7 +1119,7 @@ div.workHelp {
 /* openlibrary/templates/books/author-autocomplete.html */
 div.books {
   float: left;
-  padding-top: 20px;
+  padding-top: var(--spacing-stack-lg);
   width: 915px;
 }
 
@@ -1124,7 +1128,7 @@ div.books .coverMagic {
   min-width: 84px;
   min-height: 115px;
   text-align: center;
-  margin: 0 5px 20px 0;
+  margin: 0 var(--spacing-inline-xs) var(--spacing-stack-lg) 0;
   max-width: 100%;
 }
 
@@ -1142,7 +1146,7 @@ div.books .SRPCoverBlank {
   position: relative;
   width: 74px;
   height: 105px;
-  padding: 5px;
+  padding: var(--spacing-inset-xs);
   text-align: center;
   float: left;
   font-size: 0.6875em;
@@ -1171,7 +1175,7 @@ div.books .BookTitle {
 div.books .Author {
   color: var(--grey);
   font-style: italic;
-  padding: 4px 4px 0;
+  padding: var(--spacing-inset-xs) var(--spacing-inset-xs) 0;
   font-size: 0.6875em;
 }
 
@@ -1193,14 +1197,14 @@ div.excerpt {
 }
 
 div.excerpt .text {
-  padding: 15px;
+  padding: var(--spacing-inset-md);
   font-size: 0.875em;
   line-height: 1.25em;
   font-style: italic;
 }
 
 div.excerpt .attribution {
-  padding-left: 15px;
+  padding-left: var(--spacing-inline-md);
   font-family: var(--font-family-body);
   font-size: 0.6875em;
 }
@@ -1210,7 +1214,7 @@ div.excerpt .attribution {
 .identifiers td {
   color: var(--dark-grey);
   border-bottom: 1px solid var(--lighter-grey);
-  padding: 5px;
+  padding: var(--spacing-inset-xs);
 }
 
 .identifiers.authors td {
@@ -1220,10 +1224,10 @@ div.excerpt .attribution {
 /* openlibrary/templates/books/edit/edition.html */
 .multi-input-autocomplete--series {
   max-width: 600px;
-  margin-top: 5px;
+  margin-top: var(--spacing-stack-xs);
 }
 .multi-input-autocomplete--series .mia__input + .mia__input {
-  margin-top: 5px;
+  margin-top: var(--spacing-stack-xs);
 }
 .multi-input-autocomplete--series .mias__name {
   flex: 1;
@@ -1236,7 +1240,7 @@ div.excerpt .attribution {
 ul.booklinks li {
   font-size: var(--font-size-label-medium);
   list-style-type: disc;
-  margin: 0 0 10px 20px;
+  margin: 0 0 var(--spacing-stack-sm) var(--spacing-inline-lg);
 }
 
 ul.booklinks li span {
@@ -1245,7 +1249,8 @@ ul.booklinks li span {
 
 ul.booklinks li div.linkRemove {
   float: right;
-  padding: 0 10px 10px 15px;
+  padding: 0 var(--spacing-inline-sm) var(--spacing-stack-sm)
+    var(--spacing-inline-md);
 }
 
 /* openlibrary/templates/type/user/view.html */
@@ -1311,7 +1316,7 @@ ul.clean li span.resultTitle {
 .Author {
   color: var(--grey);
   font-style: italic;
-  padding: 4px 4px 0;
+  padding: var(--spacing-inset-xs) var(--spacing-inset-xs) 0;
   font-size: var(--font-size-label-small);
 }
 
@@ -1331,7 +1336,7 @@ span.actions a {
   min-width: 35px;
   font-family: var(--font-family-body);
   font-size: 10px;
-  margin-left: 10px;
+  margin-left: var(--spacing-inline-sm);
   font-weight: 700;
   text-decoration: none;
   text-align: center;
@@ -1456,12 +1461,12 @@ ul.list-books span.resultType {
 .list-books--grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  grid-gap: 30px 5px;
-  padding: 10px;
+  grid-gap: var(--spacing-stack-3xl) var(--spacing-inline-xs);
+  padding: var(--spacing-inset-sm);
 }
 
 .list-books--grid .searchResultItem {
-  padding: 0 5px;
+  padding: 0 var(--spacing-inline-xs);
   background: transparent;
   border: 0;
   position: relative;
@@ -1502,8 +1507,8 @@ ul.list-books span.resultType {
 
 .list-books--grid .list-books__note {
   overflow: hidden;
-  padding-top: 8px;
-  margin-top: 4px;
+  padding-top: var(--spacing-stack-xs);
+  margin-top: var(--spacing-stack-xs);
   border-top: var(--border-divider);
   line-height: var(--line-height-blurb);
   display: -webkit-box;
@@ -1520,8 +1525,8 @@ ul.list-books span.resultType {
 div.popAlert {
   display: none;
   width: 550px;
-  padding: 8px 16px;
-  margin-bottom: 15px;
+  padding: var(--spacing-inset-sm) var(--spacing-inset-md);
+  margin-bottom: var(--spacing-stack-md);
   background: url(/images/icons/icon_alert.png) no-repeat;
   font-size: 1.25em;
   color: var(--red);
@@ -1532,8 +1537,8 @@ div.popAlert {
 #wikicode textarea {
   width: 400px;
   height: 200px;
-  padding: 10px;
-  margin: 10px;
+  padding: var(--spacing-inset-sm);
+  margin: var(--spacing-inset-sm);
   font-family: var(--font-family-body);
   font-size: 0.75em;
   overflow: auto;
@@ -1544,7 +1549,7 @@ div.popAlert {
 }
 
 #wikicode p {
-  margin: 10px 10px 0;
+  margin: var(--spacing-inset-sm) var(--spacing-inset-sm) 0;
   padding: 0;
   font-family: var(--font-family-body);
   font-size: 0.75em;
@@ -1566,7 +1571,7 @@ div.popAlert {
   /* openlibrary/templates/type/list/editions.html */
   .historyPager {
     text-align: center;
-    margin: 20px 0;
+    margin: var(--spacing-stack-lg) 0;
     width: 848px;
   }
 }
@@ -1581,7 +1586,7 @@ div.popAlert {
   /* openlibrary/templates/type/list/editions.html */
   .historyPager {
     text-align: center;
-    margin: 20px 0;
+    margin: var(--spacing-stack-lg) 0;
     width: 100%;
   }
 }
@@ -1594,8 +1599,8 @@ div.popAlert {
 /* openlibrary/templates/search/authors.html */
 div.mergeThis {
   display: inline;
-  padding: 15px 0 0 45px;
-  margin-left: 15px;
+  padding: var(--spacing-inset-md) 0 0 var(--spacing-inset-4xl);
+  margin-left: var(--spacing-inline-md);
   background: url(/images/icons/icon_merge.png) no-repeat 0 0;
 }
 
@@ -1606,12 +1611,12 @@ div.mergeThis {
 /* openlibrary/templates/recentchanges/undo/view.html */
 #mergeHead {
   background-color: var(--lightest-grey);
-  padding: 15px;
+  padding: var(--spacing-inset-md);
 }
 
 /* stylelint-disable selector-max-specificity */
 #mergeHead #recordMaster {
-  margin-bottom: 15px;
+  margin-bottom: var(--spacing-stack-md);
 }
 /* stylelint-enable selector-max-specificity */
 
@@ -1627,12 +1632,12 @@ div.postSubmit {
   font-size: 0.75em;
   color: var(--grey);
   font-family: var(--font-family-body);
-  margin: 0 0 20px !important;
+  margin: 0 0 var(--spacing-stack-lg) !important;
 }
 
 #listTools li {
   list-style-type: none !important;
-  padding-bottom: 20px;
+  padding-bottom: var(--spacing-stack-lg);
 }
 
 #listTools li span.icon {
@@ -1640,7 +1645,7 @@ div.postSubmit {
   float: left;
   width: 28px;
   height: 28px;
-  margin-right: 15px;
+  margin-right: var(--spacing-inline-md);
   background-image: url(/images/icons/icons_lists.png);
   background-repeat: no-repeat;
 }
@@ -1677,7 +1682,7 @@ div#subjectLists ul.listLists li {
   float: left;
   width: 282px;
   font-family: var(--font-family-body);
-  padding-bottom: 10px;
+  padding-bottom: var(--spacing-stack-sm);
   padding-top: 0;
   display: flex;
 }
@@ -1703,7 +1708,7 @@ div#subjectLists p {
   font-size: 0.6875em;
   font-family: var(--font-family-body);
   padding-left: 42px;
-  margin-bottom: 5px !important;
+  margin-bottom: var(--spacing-stack-xs) !important;
 }
 
 /* SEARCH INSIDE */
@@ -1725,12 +1730,12 @@ div#subjectLists p {
 }
 
 .editionCover .illustration {
-  margin-bottom: 5px;
+  margin-bottom: var(--spacing-stack-xs);
 }
 
 /* openlibrary/macros/databarWork.html */
 #read.panel {
-  margin-bottom: 10px;
+  margin-bottom: var(--spacing-stack-sm);
 }
 
 /* openlibrary/macros/SearchResultsWork.html */
@@ -1742,7 +1747,7 @@ div#subjectLists p {
   padding: 0;
   color: var(--link-blue);
   border-bottom: 1px solid var(--link-blue);
-  margin-bottom: 15px;
+  margin-bottom: var(--spacing-stack-md);
 }
 
 /* My books ... */
@@ -1771,7 +1776,7 @@ div#subjectLists p {
   }
   /* inlined from components/header-bar--tablet.css */
   .header-bar {
-    padding-top: 5px;
+    padding-top: var(--spacing-stack-xs);
   }
 
   /* The width and height attributes of logo-icon should be equal to */
@@ -1850,7 +1855,7 @@ div#subjectLists p {
   div#editTools,
   div.editButton,
   div#editHistory {
-    padding: 2px 5px 0 10px;
+    padding: 2px var(--spacing-inline-xs) 0 var(--spacing-inline-sm);
     margin-top: -5px;
     float: right;
   }
@@ -1869,7 +1874,7 @@ div#subjectLists p {
 @media all and (min-width: 960px) {
   /* inlined from components/header-bar--desktop.css */
   .header-bar {
-    margin: 20px auto;
+    margin: var(--spacing-stack-lg) auto;
     padding-top: 0;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
@@ -1885,7 +1890,7 @@ div#subjectLists p {
 
   .header-bar .logo-component {
     /* border-right: 1px solid var(--dark-beige); */
-    padding-right: 15px;
+    padding-right: var(--spacing-inline-md);
   }
 
   .header-bar .navigation-component {
@@ -1972,12 +1977,12 @@ div#subjectLists p {
     float: left;
     clear: left;
     width: 610px;
-    padding-right: 38px;
+    padding-right: var(--spacing-inset-3xl);
   }
   .contentTwothird {
     float: left;
     width: 675px;
-    padding-right: 38px;
+    padding-right: var(--spacing-inset-3xl);
   }
   .contentOnethird {
     float: left;
