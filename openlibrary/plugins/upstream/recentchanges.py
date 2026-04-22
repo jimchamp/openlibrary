@@ -200,8 +200,11 @@ class history(delegate.mode):
         page = web.ctx.site.get(path)
         if not page:
             raise web.seeother(path)
-        i = web.input(page=0)
-        offset = 20 * safeint(i.page)
+        i = web.input(page=1)
         limit = 20
-        history = get_changes({"key": path, "limit": limit, "offset": offset})
-        return render.history(page, history)
+        # Clamp so legacy ?page=0 links resolve to the first page instead of a negative offset.
+        offset = limit * max(0, safeint(i.page) - 1)
+        # Fetch one extra item so has_next can be computed without a separate count query.
+        history = get_changes({"key": path, "limit": limit + 1, "offset": offset})
+        has_next = len(history) > limit
+        return render.history(page, history[:limit], has_next)
