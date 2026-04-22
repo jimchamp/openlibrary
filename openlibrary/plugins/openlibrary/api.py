@@ -1117,7 +1117,10 @@ class link_ia_ol(delegate.page):
         msg = i.msg
 
         try:
-            HMACToken.verify(digest, msg, "ia_sync_secret", unix_time=True)
+            if not HMACToken.verify(digest, msg, "ia_sync_secret", unix_time=True):
+                raise web.HTTPError(
+                    "401 Unauthorized", {"Content-Type": "application/json"}
+                )
         except (ValueError, ExpiredTokenError):
             raise web.HTTPError(
                 "401 Unauthorized", {"Content-Type": "application/json"}
