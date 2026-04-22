@@ -1144,9 +1144,7 @@ class link_ia_ol(delegate.page):
         try:
             self.link(edition, ocaid)
         except ClientException as e:
-            logger.error(
-                f"Failed to associate {ocaid} with {olid}", exc_info=True
-            )
+            logger.error(f"Failed to associate {ocaid} with {olid}", exc_info=True)
             raise web.HTTPError(
                 "500 Internal Server Error",
                 {"Content-Type": "application/json"},
@@ -1160,7 +1158,9 @@ class link_ia_ol(delegate.page):
         data = edition.dict()
         data["ocaid"] = ocaid
         with accounts.RunAs("ImportBot"):
-            web.ctx.site.save(data, "Associate OCAID with record", action="edit-edition-ocaid")
+            web.ctx.site.save(
+                data, "Associate OCAID with record", action="edit-edition-ocaid"
+            )
 
 
 class monthly_logins(delegate.page):
