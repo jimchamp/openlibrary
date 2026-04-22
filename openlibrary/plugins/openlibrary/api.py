@@ -1136,7 +1136,7 @@ class link_ia_ol(delegate.page):
         ocaid, olid, ts = parts
 
         # Fetch affected edition
-        edition = web.ctx.site.get(f'/books/{ocaid}')
+        edition = web.ctx.site.get(f'/books/{olid}')
         if not edition:
             raise web.HTTPError("404 Not Found", {"Content-Type": "application/json"})
 
