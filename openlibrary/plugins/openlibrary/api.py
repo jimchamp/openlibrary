@@ -1158,6 +1158,7 @@ class link_ia_ol(delegate.page):
         data = edition.dict()
         data["ocaid"] = ocaid
         with accounts.RunAs("ImportBot"):
+            web.ctx.ip = web.ctx.ip or '127.0.0.1'
             web.ctx.site.save(
                 data, "Associate OCAID with record", action="edit-edition-ocaid"
             )
