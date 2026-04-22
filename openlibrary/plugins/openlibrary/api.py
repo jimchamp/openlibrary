@@ -1155,9 +1155,6 @@ class link_ia_ol(delegate.page):
     def link(edition, ocaid):
         data = edition.dict()
         data["ocaid"] = ocaid
-        if not data["source_records"]:
-            data["source_records"] = []
-        data["source_records"].append(f"ia:{ocaid}")
         web.ctx.site.save(data, "Associate OCAID with record", action="edit-edition-ocaid")
 
 
