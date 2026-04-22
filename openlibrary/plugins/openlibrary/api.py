@@ -1159,7 +1159,8 @@ class link_ia_ol(delegate.page):
     def link(edition, ocaid):
         data = edition.dict()
         data["ocaid"] = ocaid
-        web.ctx.site.save(data, "Associate OCAID with record", action="edit-edition-ocaid")
+        with accounts.RunAs("ImportBot"):
+            web.ctx.site.save(data, "Associate OCAID with record", action="edit-edition-ocaid")
 
 
 class monthly_logins(delegate.page):
