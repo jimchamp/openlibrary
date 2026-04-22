@@ -1133,7 +1133,7 @@ class link_ia_ol(delegate.page):
                 {"Content-Type": "application/json"},
                 data=json.dumps({"error": "Invalid inputs"}),
             )
-        ocaid, olid, ts = parts
+        ocaid, olid, _ts = parts
 
         # Fetch affected edition
         edition = web.ctx.site.get(f'/books/{olid}')
