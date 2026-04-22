@@ -1107,6 +1107,60 @@ class unlink_ia_ol(delegate.page):
         web.ctx.site.save(data, "Disassociate OCAID", action="edit-edition-ocaid")
 
 
+class link_ia_ol(delegate.page):
+    path = "/api/link"
+    encoding = "json"
+
+    def POST(self):
+        i = web.input(digest="", msg="")
+        digest = i.digest
+        msg = i.msg
+
+        try:
+            HMACToken.verify(digest, msg, "ia_sync_secret", unix_time=True)
+        except (ValueError, ExpiredTokenError):
+            raise web.HTTPError(
+                "401 Unauthorized", {"Content-Type": "application/json"}
+            )
+
+        ocaid, olid, ts = msg.split("|")
+        if not all([ocaid, olid, ts]):
+            raise web.HTTPError(
+                "400 Bad Request",
+                {"Content-Type": "application/json"},
+                data=json.dumps({"error": "Invalid inputs"}),
+            )
+
+        # Fetch affected edition
+        edition = web.ctx.site.get(f'/books/{ocaid}')
+        if not edition:
+            raise web.HTTPError("404 Not Found", {"Content-Type": "application/json"})
+
+        # Update record
+        try:
+            self.link(edition, ocaid)
+        except ClientException as e:
+            logger.error(
+                f"Failed to associate {ocaid} with {olid}", exc_info=True
+            )
+            raise web.HTTPError(
+                "500 Internal Server Error",
+                {"Content-Type": "application/json"},
+                data=json.dumps({"error": str(e)}),
+            )
+
+        return delegate.RawText(json.dumps({"status": "ok"}))
+
+    @staticmethod
+    def link(edition, ocaid):
+        data = edition.dict()
+        data["ocaid"] = ocaid
+        if not data["source_records"]:
+            data["source_records"] = []
+        data["source_records"].append(f"ia:{ocaid}")
+        web.ctx.site.save(data, "Associate OCAID with record", action="edit-edition-ocaid")
+
+
 class monthly_logins(delegate.page):
     path = "/api/monthly_logins"
     encoding = "json"
