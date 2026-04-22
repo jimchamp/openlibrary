@@ -1126,13 +1126,14 @@ class link_ia_ol(delegate.page):
                 "401 Unauthorized", {"Content-Type": "application/json"}
             )
 
-        ocaid, olid, ts = msg.split("|")
-        if not all([ocaid, olid, ts]):
+        parts = msg.split("|", maxsplit=2)
+        if len(parts) != 3 or not all(parts):
             raise web.HTTPError(
                 "400 Bad Request",
                 {"Content-Type": "application/json"},
                 data=json.dumps({"error": "Invalid inputs"}),
             )
+        ocaid, olid, ts = parts
 
         # Fetch affected edition
         edition = web.ctx.site.get(f'/books/{ocaid}')
