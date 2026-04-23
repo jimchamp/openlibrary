@@ -176,12 +176,8 @@ def fix_records(keys_path: str, config_path: str, dry_run: bool = False) -> None
 
         if updates and not dry_run:
             data.update(updates)
-            with RunAs('ImportBot'):
-                web.ctx.site.save(
-                    data,
-                    comment="Fix HTML entity encoding in Unicode fields",
-                    action="unicode-fixup"
-                )
+            with RunAs("ImportBot"):
+                web.ctx.site.save(data, comment="Fix HTML entity encoding in Unicode fields", action="unicode-fixup")
 
         records_processed += 1
 
