@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 One-time script to fix HTML entity encoding errors in Open Library records.
 
