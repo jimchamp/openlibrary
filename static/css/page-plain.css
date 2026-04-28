@@ -109,7 +109,7 @@ p.help {
   font-size: var(--font-size-label-large);
 }
 div.alert {
-  background: var(--light-yellow) url(/images/icons/icon_alert-gold.png)
+  background: var(--light-yellow) url(/static/images/icons/icon_alert-gold.png)
     no-repeat 15px 50% !important;
   margin-bottom: var(--spacing-stack-sm);
   margin-top: var(--spacing-stack-lg);

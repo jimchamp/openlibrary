@@ -407,11 +407,11 @@ p.alert {
 }
 
 p.info {
-  background-image: url(/images/icons/icon_info.png);
+  background-image: url(/static/images/icons/icon_info.png);
 }
 
 p.thanks {
-  background-image: url(/images/icons/icon_check.png);
+  background-image: url(/static/images/icons/icon_check.png);
 }
 
 input[type="text"],
@@ -499,7 +499,7 @@ div#content div#contentLists {
   float: left;
   position: relative;
   border-top: 1px solid var(--lighter-grey);
-  background: var(--white) url(/images/back_results.png) repeat-x;
+  background: var(--white) url(/static/images/back_results.png) repeat-x;
 }
 /* stylelint-enable selector-max-specificity */
 
@@ -778,11 +778,11 @@ div.verify {
 
 /* openlibrary/templates/account/verify/failed.html */
 div.alert span {
-  background: url(/images/icons/icon_alert.png) no-repeat;
+  background: url(/static/images/icons/icon_alert.png) no-repeat;
 }
 
 div.verify span {
-  background: url(/images/icons/icon_check.png) no-repeat;
+  background: url(/static/images/icons/icon_check.png) no-repeat;
 }
 
 /* openlibrary/templates/account/email/forgot-ia.html */
@@ -1348,7 +1348,7 @@ span.actions a span.image {
   height: 24px;
   margin: 0 auto;
   padding: 0;
-  background-image: url(/images/icons/icons_sprite-sm.png);
+  background-image: url(/static/images/icons/icons_sprite-sm.png);
   background-repeat: no-repeat;
 }
 
