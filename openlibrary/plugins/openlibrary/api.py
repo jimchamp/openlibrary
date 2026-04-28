@@ -8,6 +8,7 @@ import io
 import json
 import logging
 from collections import defaultdict
+from typing import Any, Literal
 
 import qrcode
 import web
@@ -46,7 +47,8 @@ from openlibrary.i18n import gettext as _
 from openlibrary.plugins.openlibrary.code import can_write
 from openlibrary.plugins.openlibrary.home import get_cached_featured_subjects
 from openlibrary.utils import extract_numeric_id_from_olid
-from openlibrary.utils.isbn import isbn_10_to_isbn_13, normalize_isbn
+from openlibrary.utils.isbn import normalize_isbn
+from openlibrary.utils.request_context import site
 from openlibrary.views.loanstats import get_trending_books
 
 logger = logging.getLogger(__name__)
@@ -463,64 +465,42 @@ class author_works(delegate.page):
         return {"links": links, "size": size, "entries": works}
 
 
-class price_api(delegate.page):
-    path = r"/prices"
+async def get_price_data_async(isbn: str, asin: str) -> dict[str, Any]:
+    id_type_short: Literal['asin', 'isbn'] = "asin" if asin else "isbn"
+    id_ = asin or (normalize_isbn(isbn) or isbn)
 
-    @jsonapi
-    def GET(self):
-        i = web.input(isbn="", asin="")
-        if not (i.isbn or i.asin):
-            return json.dumps({"error": "isbn or asin required"})
+    metadata: dict = {
+        "amazon": get_amazon_metadata(id_, id_type=id_type_short) or {},
+        "betterworldbooks": {},
+    }
+    if id_type_short == 'isbn':
+        metadata["betterworldbooks"] = await get_betterworldbooks_metadata(id_)
 
-        metadata = self.get_price_data(i.isbn, i.asin)
-        return json.dumps(metadata)
-
-    @staticmethod
-    def get_price_data(isbn, asin):
-        id_ = asin or normalize_isbn(isbn)
-        id_type = "asin" if asin else "isbn_" + ("13" if len(id_) == 13 else "10")
-
-        metadata = {
-            "amazon": get_amazon_metadata(id_, id_type=id_type[:4]) or {},
-            "betterworldbooks": (
-                get_betterworldbooks_metadata(id_)
-                if id_type.startswith("isbn_")
-                else {}
-            ),
+    # fetch book by isbn if it exists
+    # TODO: perform existing OL lookup by ASIN if supplied, if possible
+    id_type_long = "asin" if asin else "isbn_13" if len(id_) == 13 else "isbn_10"
+    matches = site.get().things(
+        {
+            "type": "/type/edition",
+            id_type_long: id_,
         }
-        # if user supplied isbn_{n} fails for amazon, we may want to check the alternate isbn
+    )
 
-        # if bwb fails and isbn10, try again with isbn13
-        if id_type == "isbn_10" and metadata["betterworldbooks"].get("price") is None:
-            isbn_13 = isbn_10_to_isbn_13(id_)
-            metadata["betterworldbooks"] = (
-                isbn_13 and get_betterworldbooks_metadata(isbn_13)
-            ) or {}
+    book_key = matches[0] if matches else None
 
-        # fetch book by isbn if it exists
-        # TODO: perform existing OL lookup by ASIN if supplied, if possible
-        matches = web.ctx.site.things(
-            {
-                "type": "/type/edition",
-                id_type: id_,
-            }
-        )
+    # if no OL edition for isbn, attempt to create
+    if (not book_key) and metadata.get("amazon"):
+        book_key = create_edition_from_amazon_metadata(id_, id_type=id_type_short)
 
-        book_key = matches[0] if matches else None
+    # include ol edition metadata in response, if available
+    if book_key:
+        ed = site.get().get(book_key)
+        if ed:
+            metadata["key"] = ed.key
+            if getattr(ed, "ocaid"):  # noqa: B009
+                metadata["ocaid"] = ed.ocaid
 
-        # if no OL edition for isbn, attempt to create
-        if (not book_key) and metadata.get("amazon"):
-            book_key = create_edition_from_amazon_metadata(id_, id_type[:4])
-
-        # include ol edition metadata in response, if available
-        if book_key:
-            ed = web.ctx.site.get(book_key)
-            if ed:
-                metadata["key"] = ed.key
-                if getattr(ed, "ocaid"):  # noqa: B009
-                    metadata["ocaid"] = ed.ocaid
-
-        return metadata
+    return metadata
 
 
 class patrons_follows_json(delegate.page):
