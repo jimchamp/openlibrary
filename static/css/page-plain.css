@@ -25,7 +25,7 @@ div.contentSpacer {
   height: 15px;
 }
 div.nav {
-  margin: var(--spacing-stack-5xl) 0;
+  margin: 50px 0;
   font-size: var(--font-size-label-large);
 }
 /* Specific to borrowTable component */
@@ -70,7 +70,7 @@ div.nav {
 div.message {
   padding: var(--spacing-inset-lg) var(--spacing-inset-lg)
     var(--spacing-inset-lg) 55px;
-  margin-bottom: var(--spacing-stack-5xl);
+  margin-bottom: 50px;
   background: var(--light-yellow) url(/images/icons/icon_lock-msg.png) no-repeat
     15px 50%;
 }
@@ -88,7 +88,7 @@ div.message p {
 }
 
 ul.link {
-  margin-bottom: var(--spacing-stack-5xl);
+  margin-bottom: 50px;
 }
 ul.link li {
   font-size: 1.125em;
@@ -117,13 +117,13 @@ div.alert {
 div.stop {
   background: var(--light-yellow) url(/images/icons/icon_stop.png) no-repeat
     15px 50% !important;
-  margin-bottom: var(--spacing-stack-4xl);
+  margin-bottom: 45px;
   margin-top: var(--spacing-stack-lg);
 }
 div.info {
   background: var(--light-yellow) url(/images/icons/icon_info.png) no-repeat
     17px 50% !important;
-  margin-bottom: var(--spacing-stack-4xl);
+  margin-bottom: 45px;
   margin-top: var(--spacing-stack-lg);
 }
 h1 {
@@ -131,13 +131,13 @@ h1 {
   margin: 0 0 var(--spacing-stack-md);
 }
 div.navBorrow {
-  margin: var(--spacing-stack-5xl) 0 var(--spacing-stack-sm);
+  margin: 50px 0 var(--spacing-stack-sm);
   font-size: 0.75em;
 }
 .panel {
   background-color: var(--white);
   border: 1px solid var(--beige-two);
-  padding: var(--spacing-inset-3xl) var(--spacing-inset-lg);
+  padding: 30px var(--spacing-inset-lg);
   margin-bottom: var(--spacing-stack-lg);
 }
 .formElement {

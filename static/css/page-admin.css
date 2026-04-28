@@ -149,7 +149,7 @@ div.siteSearch.darker {
 }
 /* stylelint-disable selector-max-specificity */
 div#contentHead {
-  padding-bottom: var(--spacing-stack-3xl);
+  padding-bottom: 30px;
 }
 /* stylelint-enable selector-max-specificity */
 
@@ -176,7 +176,7 @@ div.sparkDisplay {
   div#uniqueIps {
     float: left;
     width: 918px;
-    margin: var(--spacing-stack-lg) 0 var(--spacing-stack-3xl);
+    margin: var(--spacing-stack-lg) 0 30px;
   }
 
   /* openlibrary/admin/templates/admin/index.html */

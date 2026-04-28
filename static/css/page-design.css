@@ -11,7 +11,7 @@
 
 .design-pattern-library__layout {
   display: flex;
-  gap: var(--spacing-inline-4xl);
+  gap: 40px;
   align-items: flex-start;
 }
 
@@ -78,7 +78,7 @@
 }
 
 .example {
-  margin-bottom: var(--spacing-stack-4xl);
+  margin-bottom: 48px;
 }
 
 .example__title {

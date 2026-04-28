@@ -403,7 +403,7 @@ p.alert {
   background-position: 10px 50%;
   background-repeat: no-repeat;
   margin: var(--spacing-stack-sm) auto 0;
-  padding: var(--spacing-inset-md) var(--spacing-inset-4xl);
+  padding: var(--spacing-inset-md) 52px;
 }
 
 p.info {
@@ -944,7 +944,7 @@ div#searchResults .SRPCoverBlank a {
 /* Results on /search/authors */
 /* openlibrary/templates/search/authors.html */
 .authorList {
-  margin-top: var(--spacing-stack-3xl);
+  margin-top: 30px;
 }
 
 .authorList li {
@@ -964,7 +964,7 @@ div#searchResults .SRPCoverBlank a {
 /* openlibrary/templates/search/publishers.html */
 /* openlibrary/templates/search/subjects.html */
 .subjectList ul {
-  margin-top: var(--spacing-stack-3xl);
+  margin-top: 30px;
 }
 
 /* SEARCH FACETS */
@@ -1461,7 +1461,7 @@ ul.list-books span.resultType {
 .list-books--grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  grid-gap: var(--spacing-stack-3xl) var(--spacing-inline-xs);
+  grid-gap: 30px var(--spacing-inline-xs);
   padding: var(--spacing-inset-sm);
 }
 
@@ -1599,7 +1599,7 @@ div.popAlert {
 /* openlibrary/templates/search/authors.html */
 div.mergeThis {
   display: inline;
-  padding: var(--spacing-inset-md) 0 0 var(--spacing-inset-4xl);
+  padding: var(--spacing-inset-md) 0 0 45px;
   margin-left: var(--spacing-inline-md);
   background: url(/images/icons/icon_merge.png) no-repeat 0 0;
 }
@@ -1977,12 +1977,12 @@ div#subjectLists p {
     float: left;
     clear: left;
     width: 610px;
-    padding-right: var(--spacing-inset-3xl);
+    padding-right: 38px;
   }
   .contentTwothird {
     float: left;
     width: 675px;
-    padding-right: var(--spacing-inset-3xl);
+    padding-right: 38px;
   }
   .contentOnethird {
     float: left;
