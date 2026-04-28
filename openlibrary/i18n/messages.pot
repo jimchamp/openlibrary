@@ -3620,6 +3620,52 @@ msgid ""
 "your inbox for a note from us."
 msgstr ""
 
+#: account/security/check_email.html
+msgid "Account Security Check — 2026-04-28T18Z"
+msgstr ""
+
+#: account/security/check_email.html
+msgid "Account Security Check"
+msgstr ""
+
+#: account/security/check_email.html
+msgid "Incident date: 2026-04-28T18Z"
+msgstr ""
+
+#: account/security/check_email.html
+msgid ""
+"Check whether your Open Library account was in a set of accounts "
+"requiring attention."
+msgstr ""
+
+#: account/security/check_email.html
+msgid ""
+"Please <a "
+"href=\"/account/login?redirect=/account/security/2026-04-28T18\">log "
+"in</a> to check whether your account was affected."
+msgstr ""
+
+#: account/security/check_email.html
+msgid "Your account is in the affected set."
+msgstr ""
+
+#: account/security/check_email.html
+msgid ""
+"Your account was found in our affected accounts list. Please review any "
+"recent communications from Open Library and consider updating your "
+"password."
+msgstr ""
+
+#: account/security/check_email.html
+msgid "Your account is <em>not</em> in the affected set."
+msgstr ""
+
+#: account/security/check_email.html
+msgid ""
+"Your account was <em>not</em> found in the affected accounts list. No "
+"action is required."
+msgstr ""
+
 #: account/verify/activated.html
 msgid "Account already activated"
 msgstr ""
