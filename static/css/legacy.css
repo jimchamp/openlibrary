@@ -58,7 +58,7 @@ table.meta {
 }
 
 table.meta td {
-  padding: 0 var(--spacing-inline-xl) var(--spacing-stack-sm) 0;
+  padding: 0 15px 10px 0;
   vertical-align: top;
 }
 
@@ -78,7 +78,7 @@ table.code pre {
 table#pageHistory {
   width: 100%;
   font-family: var(--font-family-body);
-  margin: var(--spacing-stack-sm) 0 var(--spacing-stack-lg);
+  margin: 10px 0 20px;
 }
 
 table#pageHistory td.number {
@@ -125,12 +125,12 @@ table.changeHistory td.comment {
 table.changeHistory .comment__cover {
   vertical-align: middle;
   height: 72px;
-  margin-left: var(--spacing-inline-sm);
+  margin-left: 10px;
 }
 
 /* https://openlibrary.org/help/markdown */
 table.help {
-  margin: var(--spacing-stack-lg) 0;
+  margin: 20px 0;
   border-top: 1px solid var(--grey-e7e7e7);
 }
 
@@ -174,7 +174,7 @@ li span.snippet {
   margin: var(--spacing-stack-sm) 0;
   background-color: var(--lightest-grey);
   font-size: 0.8em;
-  padding: var(--spacing-inset-lg);
+  padding: 20px;
   font-style: italic;
 }
 
@@ -274,7 +274,7 @@ q:after {
   font-family: var(--font-family-body);
   color: var(--brown);
   font-size: var(--font-size-label-small);
-  padding-bottom: var(--spacing-stack-sm);
+  padding-bottom: 10px;
 }
 
 .fixthis {
@@ -316,7 +316,7 @@ span.tools {
 
 span.tools.sorter {
   margin-right: var(--spacing-inline-xs);
-  margin-left: var(--spacing-inline-sm);
+  margin-left: 10px;
 }
 
 span.tools span.label {
@@ -424,7 +424,7 @@ textarea {
 
 input[type="text"],
 input[type="email"] {
-  margin: 0 var(--spacing-inline-sm) var(--spacing-stack-xs) 0;
+  margin: 0 10px 5px 0;
 }
 
 input.repeat-add {
@@ -448,9 +448,9 @@ input.highlight {
 /* openlibrary/templates/search/inside.html */
 .search-results-stats {
   display: flex;
-  gap: var(--spacing-inline-sm);
+  gap: 10px;
   align-items: center;
-  padding-bottom: var(--spacing-stack-sm);
+  padding-bottom: 10px;
   font-size: 0.9em;
   white-space: nowrap;
   overflow-x: auto;
@@ -461,7 +461,7 @@ input.highlight {
 .serp-extras {
   border: 1px solid var(--lighter-grey);
   background-color: var(--white);
-  padding: 0 var(--spacing-inline-sm) var(--spacing-stack-sm);
+  padding: 0 10px 10px;
   margin-top: var(--spacing-stack-sm);
 }
 
@@ -505,7 +505,7 @@ div#content div#contentLists {
 
 div#contentHead {
   max-width: 1018px;
-  padding: var(--spacing-inset-lg);
+  padding: 20px;
 }
 
 /* Reset h1 margin set in common.css */
@@ -533,8 +533,8 @@ div.note {
 /* openlibrary/templates/lib/not_logged.html */
 div#noLogin {
   margin-top: var(--spacing-stack-sm);
-  background: var(--light-yellow) url(/images/icons/icon_info.png) no-repeat
-    10px 50%;
+  background: var(--light-yellow) url(/static/images/icons/icon_info.png)
+    no-repeat 10px 50%;
   padding: var(--spacing-inset-sm) var(--spacing-inset-sm)
     var(--spacing-inset-sm) 44px;
 }
@@ -544,7 +544,8 @@ div#preMerge {
   min-height: 32px;
   padding: var(--spacing-inset-sm) var(--spacing-inset-sm)
     var(--spacing-inset-sm) 52px;
-  background: transparent url(/images/icons/icon_merge.png) no-repeat 10px 10px;
+  background: transparent url(/static/images/icons/icon_merge.png) no-repeat
+    10px 10px;
 }
 
 /* openlibrary/templates/type/author/view.html */
@@ -552,7 +553,8 @@ div#postMerge {
   min-height: 32px;
   padding: var(--spacing-inset-sm) var(--spacing-inset-sm)
     var(--spacing-inset-sm) 52px;
-  background: transparent url(/images/icons/icon_check.png) no-repeat 10px 10px;
+  background: transparent url(/static/images/icons/icon_check.png) no-repeat
+    10px 10px;
 }
 
 /* openlibrary/templates/type/author/view.html */
@@ -560,12 +562,13 @@ div#errorMerge {
   min-height: 32px;
   padding: var(--spacing-inset-sm) var(--spacing-inset-sm)
     var(--spacing-inset-sm) 52px;
-  background: transparent url(/images/icons/icon_alert.png) no-repeat 10px 10px;
+  background: transparent url(/static/images/icons/icon_alert.png) no-repeat
+    10px 10px;
 }
 
 /* FORMS */
 div.formElement {
-  padding-bottom: var(--spacing-stack-xs);
+  padding-bottom: 8px;
 }
 
 div.formElement.bottom {
@@ -596,7 +599,7 @@ div.formElement blockquote {
 
 fieldset {
   position: relative;
-  padding: 0 0 var(--spacing-inset-lg);
+  padding: 0 0 20px;
   margin: 0 0 var(--spacing-stack-sm);
 }
 
@@ -637,7 +640,7 @@ fieldset.home legend {
 
 /* openlibrary/templates/account/notifications.html */
 form#notifications input[type="radio"] {
-  margin: 0 var(--spacing-inline-sm) 0 var(--spacing-inline-lg);
+  margin: 0 10px 0 20px;
 }
 
 /* openlibrary/templates/account/verify/failed.html */
@@ -648,7 +651,7 @@ div.valid {
   float: left;
   font-size: 1em !important;
   font-family: var(--font-family-body);
-  padding-top: var(--spacing-stack-xs);
+  padding-top: 5px;
 }
 
 /* SEARCH FORMS */
@@ -662,7 +665,7 @@ div.valid {
 /* openlibrary/templates/work_search.html */
 /* openlibrary/templates/search/subjects.html */
 .search-row {
-  margin-bottom: var(--spacing-stack-xs);
+  margin-bottom: 8px;
 }
 
 div.siteSearch {
@@ -688,7 +691,7 @@ div.siteSearch input[type="submit"] {
 div.siteSearch input[type="text"] {
   margin: 0;
   width: 215px;
-  padding: var(--spacing-inset-sm);
+  padding: 12px;
   border-radius: var(--border-radius-input);
   border: 1px solid var(--mid-grey);
 }
@@ -714,7 +717,7 @@ div.siteSearch input[type="text"] {
 }
 
 .searchPlus a {
-  margin-right: var(--spacing-inline-lg);
+  margin-right: 20px;
 }
 
 /* openlibrary/templates/search/advancedsearch.html */
@@ -738,8 +741,8 @@ div.cclicense {
   min-height: 20px;
   padding: var(--spacing-inset-xs) 0 0 30px;
   color: var(--brown);
-  margin-bottom: var(--spacing-stack-sm);
-  background: url(/images/logo_CC0-20px.png) 0 0 no-repeat;
+  margin-bottom: 12px;
+  background: url(/static/images/logo_CC0-20px.png) 0 0 no-repeat;
 }
 
 /* TOOLS ACCORDION */
@@ -800,7 +803,7 @@ div.verify span {
 }
 
 .forgot-email-form {
-  padding: var(--spacing-stack-sm) 0;
+  padding: 10px 0;
 }
 
 .forgot-email-form .form-row {
@@ -824,12 +827,12 @@ div.verify span {
 /* Various templates */
 .contentQuarter {
   min-height: 100px;
-  margin-bottom: var(--spacing-stack-lg);
+  margin-bottom: 20px;
 }
 
 .contentTwothird {
   min-height: 100px;
-  margin-bottom: var(--spacing-stack-lg);
+  margin-bottom: 20px;
 }
 
 .contentTwothird p {
@@ -838,12 +841,12 @@ div.verify span {
 
 .contentOnethird {
   min-height: 100px;
-  margin-bottom: var(--spacing-stack-lg);
+  margin-bottom: 20px;
 }
 
 .contentHalf {
   min-height: 100px;
-  margin-bottom: var(--spacing-stack-lg);
+  margin-bottom: 20px;
 }
 
 .contentSpacer {
@@ -860,7 +863,7 @@ div.verify span {
 /* stylelint-disable selector-max-specificity */
 /* openlibrary/templates/type/list/exports.html */
 #contentHead #listTools ul {
-  margin: var(--spacing-inset-md) 0 0 !important;
+  margin: 15px 0 0 !important;
 }
 /* stylelint-enable selector-max-specificity */
 
@@ -885,7 +888,7 @@ div#searchResults .list-books {
 /* openlibrary/templates/type/author/view.html */
 /* openlibrary/templates/work_search.html */
 div#searchResults .SRPCover {
-  margin: 0 var(--spacing-inline-md) var(--spacing-stack-lg) 0;
+  margin: 0 15px 20px 0;
   vertical-align: middle;
   width: 130px;
   height: 200px;
@@ -900,7 +903,7 @@ div#searchResults .SRPCoverBlank {
   width: 130px;
   height: 200px;
   padding: var(--spacing-inset-sm);
-  margin: 0 var(--spacing-inline-md) var(--spacing-stack-lg) 0;
+  margin: 0 15px 20px 0;
   text-align: center;
   float: left;
   background: var(--lighter-grey);
@@ -927,7 +930,7 @@ div#searchResults .SRPCoverBlank a {
 }
 
 .mode-options input {
-  margin-left: var(--spacing-inline-md);
+  margin-left: 15px;
   margin-right: 4px;
   position: relative;
 }
@@ -976,12 +979,12 @@ div#searchResults .SRPCoverBlank a {
 /* openlibrary/templates/work_search.html */
 div#searchFacets {
   width: 220px;
-  padding: 0 var(--spacing-inline-md);
+  padding: 0 15px;
 }
 
 /* openlibrary/templates/work_search.html */
 div.facet {
-  margin-bottom: var(--spacing-stack-lg);
+  margin-bottom: 20px;
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
@@ -1005,7 +1008,7 @@ div.facetMoreLess {
   font-family: var(--body-family);
   position: relative;
   top: -4px;
-  padding-left: var(--spacing-inline-sm);
+  padding-left: 8px;
 }
 
 div.facetMoreLess a {
@@ -1019,13 +1022,13 @@ div.facetMoreLess a {
 div.list {
   float: left;
   width: 207px;
-  padding-top: var(--spacing-stack-sm);
+  padding-top: 10px;
 }
 
 div.list .cover {
   float: left;
   width: 42px;
-  padding-right: var(--spacing-inline-sm);
+  padding-right: 10px;
 }
 
 div.list img {
@@ -1100,9 +1103,9 @@ div.work span.editions {
 }
 
 div.workHelp {
-  padding-top: var(--spacing-stack-sm);
+  padding-top: 10px;
   font-size: 0.8em;
-  margin-bottom: var(--spacing-stack-lg);
+  margin-bottom: 20px;
 }
 
 /* openlibrary/templates/type/work/view.html */
@@ -1119,7 +1122,7 @@ div.workHelp {
 /* openlibrary/templates/books/author-autocomplete.html */
 div.books {
   float: left;
-  padding-top: var(--spacing-stack-lg);
+  padding-top: 20px;
   width: 915px;
 }
 
@@ -1128,7 +1131,7 @@ div.books .coverMagic {
   min-width: 84px;
   min-height: 115px;
   text-align: center;
-  margin: 0 var(--spacing-inline-xs) var(--spacing-stack-lg) 0;
+  margin: 0 5px 20px 0;
   max-width: 100%;
 }
 
@@ -1204,7 +1207,7 @@ div.excerpt .text {
 }
 
 div.excerpt .attribution {
-  padding-left: var(--spacing-inline-md);
+  padding-left: 15px;
   font-family: var(--font-family-body);
   font-size: 0.6875em;
 }
@@ -1240,7 +1243,7 @@ div.excerpt .attribution {
 ul.booklinks li {
   font-size: var(--font-size-label-medium);
   list-style-type: disc;
-  margin: 0 0 var(--spacing-stack-sm) var(--spacing-inline-lg);
+  margin: 0 0 10px 20px;
 }
 
 ul.booklinks li span {
@@ -1249,8 +1252,7 @@ ul.booklinks li span {
 
 ul.booklinks li div.linkRemove {
   float: right;
-  padding: 0 var(--spacing-inline-sm) var(--spacing-stack-sm)
-    var(--spacing-inline-md);
+  padding: 0 10px 10px 15px;
 }
 
 /* openlibrary/templates/type/user/view.html */
@@ -1336,7 +1338,7 @@ span.actions a {
   min-width: 35px;
   font-family: var(--font-family-body);
   font-size: 10px;
-  margin-left: var(--spacing-inline-sm);
+  margin-left: 10px;
   font-weight: 700;
   text-decoration: none;
   text-align: center;
@@ -1466,7 +1468,7 @@ ul.list-books span.resultType {
 }
 
 .list-books--grid .searchResultItem {
-  padding: 0 var(--spacing-inline-xs);
+  padding: 0 5px;
   background: transparent;
   border: 0;
   position: relative;
@@ -1507,7 +1509,7 @@ ul.list-books span.resultType {
 
 .list-books--grid .list-books__note {
   overflow: hidden;
-  padding-top: var(--spacing-stack-xs);
+  padding-top: 8px;
   margin-top: var(--spacing-stack-xs);
   border-top: var(--border-divider);
   line-height: var(--line-height-blurb);
@@ -1527,7 +1529,7 @@ div.popAlert {
   width: 550px;
   padding: var(--spacing-inset-sm) var(--spacing-inset-md);
   margin-bottom: var(--spacing-stack-md);
-  background: url(/images/icons/icon_alert.png) no-repeat;
+  background: url(/static/images/icons/icon_alert.png) no-repeat;
   font-size: 1.25em;
   color: var(--red);
   text-align: center;
@@ -1538,7 +1540,7 @@ div.popAlert {
   width: 400px;
   height: 200px;
   padding: var(--spacing-inset-sm);
-  margin: var(--spacing-inset-sm);
+  margin: 10px;
   font-family: var(--font-family-body);
   font-size: 0.75em;
   overflow: auto;
@@ -1549,7 +1551,7 @@ div.popAlert {
 }
 
 #wikicode p {
-  margin: var(--spacing-inset-sm) var(--spacing-inset-sm) 0;
+  margin: 10px 10px 0;
   padding: 0;
   font-family: var(--font-family-body);
   font-size: 0.75em;
@@ -1571,7 +1573,7 @@ div.popAlert {
   /* openlibrary/templates/type/list/editions.html */
   .historyPager {
     text-align: center;
-    margin: var(--spacing-stack-lg) 0;
+    margin: 20px 0;
     width: 848px;
   }
 }
@@ -1586,7 +1588,7 @@ div.popAlert {
   /* openlibrary/templates/type/list/editions.html */
   .historyPager {
     text-align: center;
-    margin: var(--spacing-stack-lg) 0;
+    margin: 20px 0;
     width: 100%;
   }
 }
@@ -1600,8 +1602,8 @@ div.popAlert {
 div.mergeThis {
   display: inline;
   padding: var(--spacing-inset-md) 0 0 45px;
-  margin-left: var(--spacing-inline-md);
-  background: url(/images/icons/icon_merge.png) no-repeat 0 0;
+  margin-left: 15px;
+  background: url(/static/images/icons/icon_merge.png) no-repeat 0 0;
 }
 
 @import "components/merge-form.css";
@@ -1632,12 +1634,12 @@ div.postSubmit {
   font-size: 0.75em;
   color: var(--grey);
   font-family: var(--font-family-body);
-  margin: 0 0 var(--spacing-stack-lg) !important;
+  margin: 0 0 20px !important;
 }
 
 #listTools li {
   list-style-type: none !important;
-  padding-bottom: var(--spacing-stack-lg);
+  padding-bottom: 20px;
 }
 
 #listTools li span.icon {
@@ -1645,8 +1647,8 @@ div.postSubmit {
   float: left;
   width: 28px;
   height: 28px;
-  margin-right: var(--spacing-inline-md);
-  background-image: url(/images/icons/icons_lists.png);
+  margin-right: 15px;
+  background-image: url(/static/images/icons/icons_lists.png);
   background-repeat: no-repeat;
 }
 
@@ -1682,7 +1684,7 @@ div#subjectLists ul.listLists li {
   float: left;
   width: 282px;
   font-family: var(--font-family-body);
-  padding-bottom: var(--spacing-stack-sm);
+  padding-bottom: 10px;
   padding-top: 0;
   display: flex;
 }
@@ -1776,7 +1778,7 @@ div#subjectLists p {
   }
   /* inlined from components/header-bar--tablet.css */
   .header-bar {
-    padding-top: var(--spacing-stack-xs);
+    padding-top: 5px;
   }
 
   /* The width and height attributes of logo-icon should be equal to */
@@ -1855,7 +1857,7 @@ div#subjectLists p {
   div#editTools,
   div.editButton,
   div#editHistory {
-    padding: 2px var(--spacing-inline-xs) 0 var(--spacing-inline-sm);
+    padding: 2px 5px 0 10px;
     margin-top: -5px;
     float: right;
   }
@@ -1874,7 +1876,7 @@ div#subjectLists p {
 @media all and (min-width: 960px) {
   /* inlined from components/header-bar--desktop.css */
   .header-bar {
-    margin: var(--spacing-stack-lg) auto;
+    margin: 20px auto;
     padding-top: 0;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
@@ -1890,7 +1892,7 @@ div#subjectLists p {
 
   .header-bar .logo-component {
     /* border-right: 1px solid var(--dark-beige); */
-    padding-right: var(--spacing-inline-md);
+    padding-right: 15px;
   }
 
   .header-bar .navigation-component {

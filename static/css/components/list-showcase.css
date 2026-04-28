@@ -64,7 +64,7 @@ a.list-card {
 
   display: flex;
   align-items: center;
-  padding: 0 var(--spacing-inset-md);
+  padding: 0 20px;
 }
 
 .list-card__covers img {

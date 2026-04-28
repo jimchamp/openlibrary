@@ -63,7 +63,7 @@
 
 #list-edit .multi-input-autocomplete--seeds .seed--controls {
   display: flex;
-  gap: var(--spacing-inline-sm);
+  gap: 10px;
 }
 
 #list-edit .multi-input-autocomplete--seeds .mia__reorder {
@@ -101,7 +101,7 @@
 }
 
 #list-edit .multi-input-autocomplete--seeds .mia__preview .ac_work .cover {
-  margin-right: var(--spacing-inline-sm);
+  margin-right: 9px;
 }
 
 #list-edit .mia__input {

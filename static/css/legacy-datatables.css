@@ -34,7 +34,7 @@
   height: 30px;
   margin-left: -125px;
   margin-top: -15px;
-  padding: var(--spacing-inset-sm) 0 var(--spacing-inset-xs);
+  padding: 14px 0 5px;
   border: 1px solid var(--lighter-grey);
   text-align: center;
   color: var(--light-grey);
@@ -51,7 +51,7 @@
   width: 100%;
   font-size: var(--font-size-label-medium);
   color: var(--grey);
-  margin-top: var(--spacing-stack-lg);
+  margin-top: 20px;
 }
 
 .dataTables_paginate {

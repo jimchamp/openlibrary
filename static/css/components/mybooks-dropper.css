@@ -86,7 +86,7 @@
   background: var(--white);
   max-height: 250px;
   overflow-y: auto;
-  padding: var(--spacing-inset-sm) var(--spacing-inset-xl);
+  padding: 10px 15px;
 }
 
 /* stylelint-disable selector-max-specificity */

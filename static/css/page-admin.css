@@ -66,7 +66,7 @@ table.services td.node {
 #adminHistory {
   border-top: 1px solid var(--admin-table-border);
   font-family: var(--font-family-body);
-  margin: 0 0 var(--spacing-stack-lg);
+  margin: 0 0 20px;
 }
 #adminHistory th {
   background-color: var(--lightest-grey);
@@ -113,7 +113,7 @@ div#prolific span {
 
 /* openlibrary/admin/templates/admin/index.html */
 div.measurements .caption {
-  padding-top: var(--spacing-stack-lg);
+  padding-top: 20px;
 }
 div.measurements .measure {
   font-size: 0.875em;
@@ -176,7 +176,7 @@ div.sparkDisplay {
   div#uniqueIps {
     float: left;
     width: 918px;
-    margin: var(--spacing-stack-lg) 0 30px;
+    margin: 20px 0 30px;
   }
 
   /* openlibrary/admin/templates/admin/index.html */
@@ -193,14 +193,14 @@ div.sparkDisplay {
     clear: left;
     width: 439px;
     min-height: 100px;
-    padding-right: var(--spacing-inline-lg);
+    padding-right: 20px;
   }
   div.contentRight {
     float: left;
     clear: right;
     width: 439px;
     min-height: 100px;
-    padding-left: var(--spacing-inline-lg);
+    padding-left: 20px;
   }
 }
 

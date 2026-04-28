@@ -14,7 +14,7 @@
   background: var(--grey-fafafa);
   box-shadow: inset -4px 0 10px var(--lightest-grey);
   padding: 0;
-  padding-top: var(--spacing-inset-sm);
+  padding-top: 13px;
   position: sticky;
   height: 100vh;
   top: 0;
@@ -70,12 +70,12 @@
 }
 
 .mybooks-menu ul li:not(.section-header) a {
-  padding: var(--spacing-inset-xs) var(--spacing-inset-xl);
+  padding: 4px 15px;
 }
 
 @media (pointer: coarse) {
   .mybooks-menu ul li:not(.section-header) a {
-    padding: var(--spacing-inset-sm) var(--spacing-inset-xl);
+    padding: 8px 15px;
   }
 }
 
@@ -86,7 +86,7 @@
 /* stylelint-enable selector-max-specificity */
 
 .mybooks-menu ul li.section-header {
-  padding: var(--spacing-inset-xs) var(--spacing-inset-xl);
+  padding: 4px 15px;
   text-transform: uppercase;
   font-weight: bold;
   font-size: 0.8em;
@@ -129,13 +129,12 @@
 
 /* stylelint-disable selector-max-specificity */
 .mybooks-menu .section-header.section-header-split > :first-child {
-  padding: var(--spacing-inset-xs) var(--spacing-inset-xl);
+  padding: 4px 15px;
   display: inline-block;
 }
 
 .mybooks-menu .section-header.section-header-split > a {
-  padding: var(--spacing-inset-xs) var(--spacing-inset-xl)
-    var(--spacing-inset-xs) var(--spacing-inline-xs);
+  padding: 4px 15px 4px 1px;
 }
 /* stylelint-enable selector-max-specificity */
 
@@ -180,7 +179,7 @@
     border-radius: var(--border-radius-card) 0 0 var(--border-radius-card);
     background: var(--white);
     padding: 0;
-    padding-top: var(--spacing-inset-sm);
+    padding-top: 13px;
     position: sticky;
     top: 0;
     overflow-y: visible;
@@ -197,7 +196,7 @@
 
   /* all uls */
   .mybooks-menu-mobile .sidebar-section {
-    margin: 0 0 var(--spacing-stack-lg);
+    margin: 0 0 20px;
     border-bottom: 1px solid var(--light-mid-grey);
   }
 
@@ -227,7 +226,7 @@
 
   .mybooks-menu-mobile .carousel-section-header {
     display: block;
-    padding: var(--spacing-inset-sm) var(--spacing-inset-xl);
+    padding: 10px 15px;
   }
 
   /* stylelint-disable selector-max-specificity */
@@ -237,7 +236,7 @@
   /* stylelint-enable selector-max-specificity */
 
   .mybooks-menu-mobile ul li.section-header {
-    padding: var(--spacing-inset-xs) var(--spacing-inset-xl);
+    padding: 4px 15px;
     text-transform: uppercase;
     font-weight: bold;
     font-size: 0.8em;
@@ -263,13 +262,12 @@
 
   /* stylelint-disable selector-max-specificity */
   .mybooks-menu-mobile .section-header.section-header-split > :first-child {
-    padding: var(--spacing-inset-xs) var(--spacing-inset-xl);
+    padding: 4px 15px;
     display: inline-block;
   }
 
   .mybooks-menu-mobile .section-header.section-header-split > a {
-    padding: var(--spacing-inset-xs) var(--spacing-inset-xl)
-      var(--spacing-inset-xs) var(--spacing-inline-xs);
+    padding: 4px 15px 4px 1px;
   }
   /* stylelint-enable selector-max-specificity */
 
@@ -294,7 +292,7 @@
 
 @media (pointer: coarse) {
   .mybooks-menu-mobile .carousel-section-header {
-    padding: var(--spacing-inset-sm) var(--spacing-inset-xl);
+    padding: 8px 15px;
   }
 }
 

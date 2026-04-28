@@ -27,13 +27,13 @@
 .table-header {
   display: flex;
   align-items: center;
-  gap: var(--spacing-inline-xl);
+  gap: 24px;
   height: 42px;
   background-color: var(--grey-f4f4f4);
   font-size: 13px;
   box-sizing: border-box;
   padding-left: var(--spacing-inset-md);
-  padding-right: var(--spacing-inset-xl);
+  padding-right: 27px;
 }
 
 .table-header a {
@@ -184,7 +184,7 @@
   border-radius: 10px;
   width: 10px;
   height: 10px;
-  margin-right: var(--spacing-inline-xl);
+  margin-right: 22px;
 }
 
 .mr-info .dot--open {

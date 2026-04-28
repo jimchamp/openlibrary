@@ -1,5 +1,5 @@
 .header-bar {
-  margin: var(--spacing-stack-lg) auto;
+  margin: 20px auto;
   padding-top: 0;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;

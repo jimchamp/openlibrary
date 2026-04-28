@@ -6,12 +6,12 @@
 }
 
 .list-follow-showcase .list-follow-card {
-  margin-right: var(--spacing-inline-xl);
+  margin-right: 24px;
   flex-shrink: 0;
 }
 
 .list-follow-showcase__see-all {
-  margin-right: var(--spacing-inline-xl);
+  margin-right: 24px;
   align-self: center;
   width: auto;
 }
@@ -211,7 +211,7 @@ a.list-follow-card__username-link {
 
   display: flex;
   align-items: center;
-  padding: 0 var(--spacing-inset-lg);
+  padding: 0 20px;
 }
 
 .list-follow-card__covers img {

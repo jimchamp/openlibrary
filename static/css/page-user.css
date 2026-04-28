@@ -102,7 +102,7 @@ th.toggle-all {
 }
 
 .div-class {
-  margin-top: var(--spacing-stack-lg);
+  margin-top: 20px;
   display: inline-block;
   height: 360px;
   overflow: auto;
@@ -137,7 +137,7 @@ th.toggle-all {
   flex-direction: column;
 }
 .import-export__section {
-  padding: 0 var(--spacing-inline-sm);
+  padding: 0 10px;
 }
 
 #myProgress {
@@ -179,15 +179,15 @@ tr.table-row.selected {
 }
 
 .olform--decoration {
-  margin: var(--spacing-stack-lg) 0;
+  margin: 20px 0;
   border: 2px solid var(--lightest-grey);
-  padding: var(--spacing-inset-lg);
+  padding: 20px;
   border-radius: 5px;
 }
 
 .login-big-or {
   display: flex;
-  gap: var(--spacing-inline-sm);
+  gap: 10px;
   margin-top: var(--spacing-stack-sm);
   max-width: 600px;
 }

@@ -39,7 +39,7 @@ div.tutorial__item a {
 
 div.tutorial__item img {
   position: relative;
-  margin: var(--spacing-inset-xs);
+  margin: 5px;
   float: left;
   height: 5rem;
   opacity: 80%;
@@ -116,7 +116,7 @@ div.chartHome a:hover,
   min-width: 300px;
   max-width: 439px;
   min-height: 100px;
-  margin-bottom: var(--spacing-stack-lg);
+  margin-bottom: 20px;
   font-family: var(--font-family-serif);
 }
 
@@ -132,7 +132,7 @@ div.chartHome a:hover,
 /* stylelint-enable selector-max-specificity */
 
 .card__text {
-  margin: var(--spacing-inset-xs);
+  margin: 5px;
 }
 
 .home-resource-section {
@@ -140,7 +140,7 @@ div.chartHome a:hover,
   font-size: 13px;
   min-width: 150px;
   min-height: 100px;
-  margin-bottom: var(--spacing-stack-lg);
+  margin-bottom: 20px;
   padding: 0 var(--spacing-inset-sm);
 }
 

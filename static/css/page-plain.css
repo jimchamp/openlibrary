@@ -42,13 +42,13 @@ div.nav {
 
 .borrow-table table {
   width: 690px;
-  margin-bottom: var(--spacing-stack-lg);
+  margin-bottom: 20px;
 }
 
 .borrow-table table th {
   border-bottom: 1px solid var(--beige-three);
   vertical-align: bottom;
-  padding-bottom: var(--spacing-stack-sm);
+  padding-bottom: 10px;
 }
 
 .borrow-table table th.expires {
@@ -71,8 +71,8 @@ div.message {
   padding: var(--spacing-inset-lg) var(--spacing-inset-lg)
     var(--spacing-inset-lg) 55px;
   margin-bottom: 50px;
-  background: var(--light-yellow) url(/images/icons/icon_lock-msg.png) no-repeat
-    15px 50%;
+  background: var(--light-yellow) url(/static/images/icons/icon_lock-msg.png)
+    no-repeat 15px 50%;
 }
 div.message h2 {
   font-weight: normal;
@@ -112,19 +112,19 @@ div.alert {
   background: var(--light-yellow) url(/static/images/icons/icon_alert-gold.png)
     no-repeat 15px 50% !important;
   margin-bottom: var(--spacing-stack-sm);
-  margin-top: var(--spacing-stack-lg);
+  margin-top: 20px;
 }
 div.stop {
-  background: var(--light-yellow) url(/images/icons/icon_stop.png) no-repeat
-    15px 50% !important;
+  background: var(--light-yellow) url(/static/images/icons/icon_stop.png)
+    no-repeat 15px 50% !important;
   margin-bottom: 45px;
-  margin-top: var(--spacing-stack-lg);
+  margin-top: 20px;
 }
 div.info {
-  background: var(--light-yellow) url(/images/icons/icon_info.png) no-repeat
-    17px 50% !important;
+  background: var(--light-yellow) url(/static/images/icons/icon_info.png)
+    no-repeat 17px 50% !important;
   margin-bottom: 45px;
-  margin-top: var(--spacing-stack-lg);
+  margin-top: 20px;
 }
 h1 {
   font-size: 1.5em;
@@ -137,8 +137,8 @@ div.navBorrow {
 .panel {
   background-color: var(--white);
   border: 1px solid var(--beige-two);
-  padding: 30px var(--spacing-inset-lg);
-  margin-bottom: var(--spacing-stack-lg);
+  padding: 30px 20px;
+  margin-bottom: 20px;
 }
 .formElement {
   float: none;
@@ -148,7 +148,7 @@ div.navBorrow {
 }
 
 #borrowThis {
-  margin-bottom: var(--spacing-stack-lg);
+  margin-bottom: 20px;
 }
 
 .borrow span.book {

@@ -22,7 +22,7 @@
 }
 
 .iaBar .ghost-btn {
-  margin-right: var(--spacing-inline-xl);
+  margin-right: 20px;
 }
 
 /* Changes color of heart unicode character */

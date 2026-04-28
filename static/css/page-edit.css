@@ -33,7 +33,7 @@ div#content {
 /* stylelint-enable selector-max-specificity */
 /* stylelint-disable selector-max-specificity */
 div#editTools {
-  padding: var(--spacing-inset-lg);
+  padding: 20px;
   max-width: 300px;
 }
 /* stylelint-enable selector-max-specificity */
@@ -41,7 +41,7 @@ div#editTools {
 div#revertLink {
   position: absolute;
   top: 60px;
-  right: var(--spacing-inline-lg);
+  right: 20px;
   font-size: 0.75em;
   font-family: var(--font-family-body);
 }
@@ -78,7 +78,7 @@ textarea {
 table.code {
   border: 1px solid var(--grey-e7e7e7);
   width: 100%;
-  margin-right: var(--spacing-inline-sm);
+  margin-right: 10px;
   margin-bottom: 40px;
 }
 table.code td {
@@ -91,7 +91,7 @@ table.code td {
 /* stylelint-disable selector-max-specificity */
 div#databar {
   padding: var(--spacing-inset-sm);
-  margin: var(--spacing-stack-lg) var(--spacing-inline-lg) 0;
+  margin: 20px 20px 0;
   background-color: var(--light-yellow);
 }
 div#databar a {
@@ -100,7 +100,7 @@ div#databar a {
 /* stylelint-enable selector-max-specificity */
 /* stylelint-disable selector-max-specificity */
 #editHead {
-  background: url(/images/logo_OL-sm.png) 20px 15px no-repeat;
+  background: url(/static/images/logo_OL-sm.png) 20px 15px no-repeat;
   padding: var(--spacing-inset-lg) 0 45px 140px;
   white-space: nowrap;
   clear: left;
@@ -137,7 +137,7 @@ div#bottom,
 
 /* Defined in openlibrary/macros/EditButtons.html */
 div.adminDelete {
-  margin-top: var(--spacing-stack-xs);
+  margin-top: 8px;
   font-size: var(--font-size-label-medium);
   color: var(--grey);
 }

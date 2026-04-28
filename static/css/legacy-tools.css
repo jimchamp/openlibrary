@@ -65,7 +65,7 @@
 }
 
 .Tools .check-availability p {
-  padding-top: var(--spacing-stack-xs);
+  padding-top: 7px;
 }
 
 .Tools .check-availability p.check-other-editions {
@@ -191,14 +191,14 @@
 }
 
 .Tools h3 span.head {
-  padding-left: var(--spacing-inline-sm);
+  padding-left: 10px;
   font-size: 1.125em;
   font-weight: 700;
   color: var(--black);
 }
 
 .Tools h3 span.subhead {
-  padding-left: var(--spacing-inline-sm);
+  padding-left: 10px;
   font-size: 0.6875em;
   color: var(--light-grey);
 }
@@ -275,7 +275,7 @@
   left: 0;
   width: 157px;
   top: 0;
-  padding: 0 var(--spacing-inline-sm);
+  padding: 0 10px;
 }
 
 /* stylelint-disable selector-max-specificity */

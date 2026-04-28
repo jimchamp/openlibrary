@@ -24,7 +24,7 @@
 
 .modal-links .icon-link__text {
   font-size: var(--font-size-label-medium);
-  line-height: var(--spacing-stack-sm);
+  line-height: 12px;
 }
 
 .modal-links .icon-link__image {
@@ -50,7 +50,7 @@
   }
 
   .modal-links .icon-link__text {
-    padding-top: var(--spacing-stack-xs);
+    padding-top: 3px;
   }
 
   .modal-links .stars {

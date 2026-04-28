@@ -2,7 +2,7 @@
 
 .book-notes-form {
   margin: 1em auto;
-  padding: 0 var(--spacing-inset-lg);
+  padding: 0 20px;
 }
 .book-notes-form p {
   font-size: var(--font-size-title-medium);

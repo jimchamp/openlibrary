@@ -2,7 +2,7 @@
 div#footer-content {
   max-width: 1060px;
   margin: var(--spacing-stack-xs) auto;
-  padding: var(--spacing-inset-lg);
+  padding: 20px;
 }
 
 div#footer-links {
@@ -40,7 +40,7 @@ footer h2 {
 footer hr {
   border: 0;
   border-top: 1px solid var(--dark-beige);
-  margin: var(--spacing-stack-lg) 0;
+  margin: 20px 0;
 }
 
 footer ul {
@@ -73,7 +73,7 @@ footer ul li {
 }
 
 #footer-links div {
-  margin: var(--spacing-stack-lg) 0;
+  margin: 20px 0;
   padding: 0;
 }
 

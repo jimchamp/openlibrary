@@ -37,16 +37,16 @@
 }
 
 .mybooks-list .yearly-goal-section {
-  margin-bottom: var(--spacing-stack-xl);
+  margin-bottom: 28px;
 }
 
 .mybooks-list {
   overflow-wrap: anywhere;
-  margin-bottom: var(--spacing-stack-sm);
+  margin-bottom: 12px;
 }
 
 .chip-group + .mybooks-list {
-  margin-top: var(--spacing-stack-lg);
+  margin-top: 20px;
 }
 
 .mybooks-list .search-results-stats {
@@ -61,7 +61,7 @@
 
 .mybooks-list--clean h3 {
   display: inline;
-  padding-right: var(--spacing-inline-lg);
+  padding-right: 10px;
   font-family: var(--font-family-body);
   font-size: 1em;
   font-weight: normal;

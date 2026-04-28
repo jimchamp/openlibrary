@@ -48,7 +48,7 @@
 
 @media (pointer: coarse) {
   .ac_results .ac_language {
-    padding: var(--spacing-inset-sm) var(--spacing-inset-xs);
+    padding: 12px 5px;
     min-height: 44px;
   }
 }

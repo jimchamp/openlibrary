@@ -90,7 +90,7 @@
   flex-direction: column;
   align-items: flex-start;
   gap: var(--spacing-inline-sm);
-  padding-bottom: var(--spacing-inset-lg);
+  padding-bottom: 20px;
 }
 
 .olform .links-form .links-form__inputs {
@@ -167,7 +167,7 @@
 }
 
 .olform.books .TitleAuthor {
-  margin-bottom: var(--spacing-stack-lg);
+  margin-bottom: 20px;
 }
 
 /* stylelint-disable selector-max-specificity */

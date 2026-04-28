@@ -567,7 +567,7 @@
 .header-bar .search-component .search-facet-selector {
   display: none;
   margin-top: var(--spacing-stack-xs);
-  padding: var(--spacing-inset-sm) var(--spacing-inset-sm) 0;
+  padding: 13px 10px 0;
   font-size: var(--font-size-label-large);
 }
 
