@@ -28,13 +28,7 @@ TAG_TYPES = SUBJECT_SUB_TYPES + ["collection"]
 
 
 def validate_tag(tag):
-    return (
-        tag.get("name", "")
-        and tag.get("tag_description", "")
-        and tag.get("tag_type", "") in get_tag_types()
-        and tag.get("body")
-        and tag.get("slugs")
-    )
+    return tag.get("name", "") and tag.get("tag_description", "") and tag.get("tag_type", "") in get_tag_types() and tag.get("body") and tag.get("slugs")
 
 
 def validate_subject_tag(tag):
@@ -48,8 +42,7 @@ def parse_slugs(name: str, slugs_input: str) -> list[str]:
     slugs from slugs_input are normalized and appended (deduped).
     """
     slugs: list[str] = []
-    name_slug = Tag.normalize(name)
-    if name_slug:
+    if name_slug := Tag.normalize(name):
         slugs.append(name_slug)
     for raw in slugs_input.split(","):
         s = Tag.normalize(raw)

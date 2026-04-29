@@ -49,9 +49,8 @@ from infogami.utils.view import (
 )
 from openlibrary.core import cache
 from openlibrary.core.helpers import commify, parse_datetime, truncate
-from openlibrary.utils import normalize_subject_name
 from openlibrary.core.middleware import GZipMiddleware
-from openlibrary.utils import request_context
+from openlibrary.utils import normalize_subject_name, request_context
 
 if TYPE_CHECKING:
     from openlibrary.plugins.upstream.models import (

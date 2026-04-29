@@ -29,7 +29,7 @@ def test_tag_normalize(name, expected):
         ("Computer Science", "cs", ["computer_science", "cs"]),
         ("Horror", "horror, scary", ["horror", "scary"]),
         ("Horror", "HORROR", ["horror"]),  # deduped after normalize
-        ("Horror", "  ", ["horror"]),      # whitespace-only input ignored
+        ("Horror", "  ", ["horror"]),  # whitespace-only input ignored
     ],
 )
 def test_parse_slugs(name, slugs_input, expected):

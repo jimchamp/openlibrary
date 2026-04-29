@@ -525,6 +525,7 @@ Note: In reality, since the DB always wraps dicts in a `Thing` object,
 this will be a `Thing` not a raw dict.
 """
 
+
 class Work(Thing):
     """Class to represent /type/work objects in OL."""
 
