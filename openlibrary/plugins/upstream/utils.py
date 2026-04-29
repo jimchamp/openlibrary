@@ -49,6 +49,7 @@ from infogami.utils.view import (
 )
 from openlibrary.core import cache
 from openlibrary.core.helpers import commify, parse_datetime, truncate
+from openlibrary.utils import normalize_subject_name
 from openlibrary.core.middleware import GZipMiddleware
 from openlibrary.utils import request_context
 
@@ -1691,10 +1692,9 @@ def get_location_and_publisher(loc_pub: str) -> tuple[list[str], list[str]]:
 
 @public
 def subject_name_to_key(subject: str, prefix='') -> str:
-    # TODO: DRY with scripts/solr_builder/solr_builder/index_subjects.py
     if prefix:
         prefix = prefix.rstrip(':') + ':'
-    return f'/subjects/{prefix}{subject.lower().replace(' ', '_').replace(',', '').replace('/', '')}'
+    return f'/subjects/{prefix}{normalize_subject_name(subject)}'
 
 
 def setup_requests(config=config) -> None:

@@ -2428,7 +2428,7 @@ msgstr ""
 msgid "Download Link"
 msgstr ""
 
-#: showmarc.html
+#: showmarc.html type/tag/index.html
 msgid "Next"
 msgstr ""
 
@@ -2785,7 +2785,7 @@ msgstr ""
 msgid "Role:"
 msgstr ""
 
-#: about/index.html lib/nav_head.html
+#: about/index.html lib/nav_head.html type/tag/index.html
 msgid "All"
 msgstr ""
 
@@ -8629,8 +8629,32 @@ msgstr ""
 msgid "Add this tag now"
 msgstr ""
 
+#: type/tag/index.html
+msgid "Tags"
+msgstr ""
+
+#: type/tag/index.html
+msgid "Tags curated by Open Library librarians."
+msgstr ""
+
+#: type/tag/index.html
+msgid "View subject page"
+msgstr ""
+
+#: type/tag/index.html
+msgid "Previous"
+msgstr ""
+
+#: type/tag/index.html
+msgid "No tags found."
+msgstr ""
+
 #: type/tag/tag_form_inputs.html
 msgid "Tag Name"
+msgstr ""
+
+#: type/tag/tag_form_inputs.html
+msgid "Will be saved as lowercase (e.g. \"horror\", \"science fiction\")"
 msgstr ""
 
 #: type/tag/tag_form_inputs.html
