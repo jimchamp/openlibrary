@@ -414,7 +414,7 @@
   -webkit-box-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  margin-left: var(--spacing-inline-sm);
+  margin-left: 5px;
   -ms-flex-item-align: center;
   align-self: center;
 }
@@ -473,14 +473,14 @@
 .header-bar .search-component .vertical-separator {
   border-left: 1px solid var(--light-grey);
   height: 34px;
-  margin: auto var(--spacing-inline-sm) auto 0;
+  margin: auto 5px auto 0;
 }
 
 .header-bar .search-component .search-by-barcode-submit {
   background: url(/static/images/icons/barcode_scanner.svg) center no-repeat;
   background-size: 26px;
   width: 28px;
-  margin-right: var(--spacing-inline-md);
+  margin-right: 8px;
 }
 
 .header-bar .search-component .search-bar-component {
@@ -678,7 +678,7 @@ div.search-facet:focus-within {
 }
 
 .search-component .search-bar-advanced-btn {
-  margin: var(--spacing-stack-sm);
+  margin: 10px;
   border: 0 none;
   width: 40px;
   padding: 0;
@@ -708,12 +708,11 @@ div.search-facet:focus-within {
 /* stylelint-disable selector-max-specificity */
 .search-component .search-bar-input input[type="text"] {
   min-width: 0;
-  margin: var(--spacing-stack-xs);
+  margin: 3px;
   -webkit-box-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  padding: var(--spacing-inset-xs) 0 var(--spacing-inset-xs)
-    var(--spacing-inset-xs);
+  padding: 5px 0 2px 3px;
   font-size: 1em;
   font-weight: 500;
   border: 0 none;
@@ -745,14 +744,14 @@ div.search-facet:focus-within {
 
 @media only screen and (max-width: 25em) {
   .search-bar-component {
-    margin-right: var(--spacing-inline-xl);
+    margin-right: 15px;
   }
 }
 
 /* We should review this media query to determine if it is in fact needed. */
 @media only screen and (min-width: 25em) {
   .header-bar .search-bar-component {
-    margin-right: var(--spacing-inline-xl);
+    margin-right: 15px;
   }
 
   .header-bar .navigation-component .dropdown-menu {
