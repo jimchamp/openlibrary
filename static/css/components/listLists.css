@@ -47,7 +47,7 @@ ul.listLists li .meta,
 ul.listLists li .owner {
   font-size: 0.6875em;
   line-height: 1.125em;
-  margin: var(--spacing-stack-sm) 0;
+  margin: 5px 0;
 }
 ul.listLists .list-overview-loading-indicator {
   font-size: 8px;

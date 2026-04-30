@@ -28,7 +28,7 @@
 }
 .note-form-buttons .update-note-button {
   margin-left: auto;
-  margin-top: var(--spacing-stack-sm);
+  margin-top: 5px;
   font-size: 1.2em;
   padding: var(--spacing-inset-sm);
 }

@@ -212,7 +212,7 @@
 .mr-details__request-title {
   font-weight: bold;
   font-size: 1rem;
-  margin-bottom: var(--spacing-stack-sm);
+  margin-bottom: 5px;
 }
 
 .mr-details__comment-preview {
@@ -289,7 +289,7 @@
   display: flex;
   justify-content: center;
   color: var(--primary-blue);
-  margin-top: var(--spacing-stack-xl);
+  margin-top: 35px;
 }
 
 .mr-review-actions__unassign {

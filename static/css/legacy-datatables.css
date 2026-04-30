@@ -412,7 +412,7 @@ tr.even.gradeU td.sorting_3 {
   div.dataTables_filter {
     float: none;
     text-align: left;
-    margin: var(--spacing-stack-sm) 0 0;
+    margin: 5px 0 0;
   }
   span.number {
     order: 4;

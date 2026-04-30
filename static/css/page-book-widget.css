@@ -64,7 +64,7 @@ img.bookcover {
 
 .title {
   font-family: var(--font-family-title);
-  margin: var(--spacing-stack-xs) auto 0;
+  margin: 7px auto 0;
   color: var(--grey-555);
   font-size: 0.8em;
   width: 130px;
@@ -79,7 +79,7 @@ a.noshow {
   font-size: 0.7em;
   font-weight: normal;
   color: var(--grey);
-  margin: var(--spacing-stack-xs) auto var(--spacing-stack-xs);
+  margin: 5px auto 7px;
   width: 130px;
 }
 
@@ -87,7 +87,7 @@ a.noshow {
   font-family: var(--font-family-body);
   color: var(--light-grey);
   width: 130px;
-  margin: var(--spacing-stack-xs) auto;
+  margin: 7px auto;
   text-align: right;
   font-size: 0.6em;
 }

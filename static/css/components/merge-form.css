@@ -53,7 +53,7 @@ div.merge .input {
 }
 
 div.merge .record ul {
-  margin-top: var(--spacing-stack-sm);
+  margin-top: 5px;
   margin-bottom: 0 !important;
 }
 
@@ -109,11 +109,11 @@ div.merge .count {
 
 .merge-feedback input {
   width: 100%;
-  margin-top: var(--spacing-stack-sm);
+  margin-top: 5px;
 }
 
 .merge-feedback__buttons {
-  margin-top: var(--spacing-stack-sm);
+  margin-top: 5px;
   display: flex;
   justify-content: space-between;
 }

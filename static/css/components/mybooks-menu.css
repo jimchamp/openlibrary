@@ -81,7 +81,7 @@
 
 /* stylelint-disable selector-max-specificity */
 .mybooks-menu ul li:not(.section-header) a.selected {
-  padding: var(--spacing-inset-xs) var(--spacing-inset-sm);
+  padding: 4px 11px;
 }
 /* stylelint-enable selector-max-specificity */
 
@@ -147,7 +147,7 @@
   position: relative;
   float: right;
   font-size: 0.9em;
-  margin-top: var(--spacing-stack-xs);
+  margin-top: 1px;
   color: var(--count-blue-grey);
   margin-left: var(--spacing-inline-sm);
 }
@@ -231,7 +231,7 @@
 
   /* stylelint-disable selector-max-specificity */
   .mybooks-menu-mobile .carousel-section-header.selected {
-    padding: var(--spacing-inset-xs) var(--spacing-inset-sm);
+    padding: 4px 11px;
   }
   /* stylelint-enable selector-max-specificity */
 
@@ -280,7 +280,7 @@
   .mybooks-menu-mobile .li-count {
     float: right;
     font-size: 0.9em;
-    margin-top: var(--spacing-stack-xs);
+    margin-top: 1px;
     color: var(--count-blue-grey);
     margin-left: var(--spacing-inline-sm);
   }
