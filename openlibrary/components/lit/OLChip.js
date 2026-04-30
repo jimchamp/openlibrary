@@ -114,6 +114,16 @@ export class OLChip extends LitElement {
             height: var(--chip-icon-size);
         }
 
+        /* Label wrapper keeps slotted content (which may include <em>
+           highlights and surrounding text nodes) in a single inline
+           layout context. Without this wrapper, each slotted node
+           becomes its own flex item and the inter-item whitespace is
+           collapsed, causing missing spaces around bolded highlights. */
+        .label {
+            display: inline;
+            white-space: normal;
+        }
+
         /* Count */
         .count {
             margin-inline-start: 4px;
@@ -174,7 +184,7 @@ export class OLChip extends LitElement {
     render() {
         const content = html`
             ${this._renderIcons()}
-            <slot></slot>
+            <span class="label"><slot></slot></span>
             ${this._renderCount()}
         `;
 
