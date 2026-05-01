@@ -4,6 +4,7 @@ import functools
 import json
 import logging
 import os
+import re
 import socket
 import subprocess
 import sys
@@ -148,7 +149,7 @@ class admin(delegate.page):
             return self.handle(admin_index)
 
         for t in admin_tasks:
-            m = web.re_compile('^' + t.path + '$').match(web.ctx.path)
+            m = re.compile('^' + t.path + '$').match(web.ctx.path)
             if m:
                 return self.handle(t.cls, m.groups(), librarians=t.librarians)
         raise web.notfound()
