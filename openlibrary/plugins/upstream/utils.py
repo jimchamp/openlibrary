@@ -271,7 +271,6 @@ def render_cached_macro(name: str, args: tuple, **kwargs):
         return '<span>Failed to render macro</span>'
 
 
-@public
 def get_message(name: str, *args) -> str:
     """Return message with given name from messages.tmpl template"""
     return get_message_from_template("messages", name, args)
@@ -636,7 +635,6 @@ def urlencode(dict_or_list_of_tuples: dict | list[tuple[str, Any]], plus=True) -
     return og_urlencode(params, quote_via=quote_plus if plus else quote)
 
 
-@public
 def entity_decode(text: str) -> str:
     return unescape(text)
 
@@ -1393,7 +1391,6 @@ _get_recent_changes2 = web.memoize(
 )
 
 
-@public
 def _get_blog_feeds():
     url = "https://blog.openlibrary.org/feed/"
     try:
@@ -1473,7 +1470,6 @@ def item_image(image_path: str | None, default: str | None = None) -> str | None
     return "https:" + image_path
 
 
-@public
 def get_blog_feeds() -> list[Storage]:
     def process(post):
         post = Storage(post)
