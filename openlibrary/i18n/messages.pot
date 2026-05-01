@@ -6502,6 +6502,11 @@ msgstr ""
 msgid "Review what's changed in from the previous revision"
 msgstr ""
 
+#: RecentChanges.html RecentChangesAdmin.html RecentChangesUsers.html
+#: recentchanges/default/path.html recentchanges/updated_records.html
+msgid "diff"
+msgstr ""
+
 #: recentchanges/add-book/path.html recentchanges/default/path.html
 #: recentchanges/edit-book/path.html recentchanges/merge/path.html
 msgid "expand"

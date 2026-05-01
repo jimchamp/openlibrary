@@ -150,8 +150,8 @@ def extract_templetor(fileobj, keywords, comment_tags, options):
 
 
 def extract_messages(sources: list[str], verbose: bool, skip_untracked: bool):
-    # The creation date is fixed to prevent merge conflicts on this line as a result of i18n auto-updates
-    # Update the date below to keep it vaguely in sync with reality
+    # The creation date is hard-coded to prevent merge conflicts from i18n auto-updates.
+    # Occasional manual bumps (like this PR) are fine; just update the date below when doing so.
     fixed_creation_date = datetime.fromisoformat("2026-04-28 18:58-0400")
     catalog = Catalog(
         project="Open Library",
