@@ -85,7 +85,7 @@
     "vue-multiselect": "^3.5.0",
     "webpack": "^5.106.2",
     "webpack-cli": "^5.1.4",
-    "workbox-webpack-plugin": "^7.3.0"
+    "workbox-webpack-plugin": "^7.4.1"
   },
   "engines": {
     "node": "^24.0.0"
