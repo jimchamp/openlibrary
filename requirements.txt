@@ -32,7 +32,7 @@ PyYAML==6.0.3
 qrcode==7.4.2
 requests==2.33.1
 sentry-sdk[fastapi]==2.59.0
-simplejson==3.19.1
+simplejson==3.20.2
 statsd==4.0.1
 uvicorn[standard]==0.30.6
 validate_email==1.3
