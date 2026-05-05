@@ -270,6 +270,10 @@ msgstr ""
 msgid "Popover"
 msgstr ""
 
+#: design.html
+msgid "Select Popover"
+msgstr ""
+
 #: design.html type/edition/view.html type/work/view.html
 msgid "Read More"
 msgstr ""
