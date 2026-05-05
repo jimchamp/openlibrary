@@ -8,7 +8,7 @@ $ }
 
 $ subscriber = ctx.user and ctx.user.key
 $ custom_request_path = request_path if request_path != '' else request.fullpath
-$ link_track_attr = 'data-ol-link-track="%s"' % link_track if link_track else ''
+$ link_track_attr = 'data-ol-link-track="%s"' % link_track.replace('"', '&quot;') if link_track else ''
 <div>
   $if ctx.user:
     <form class="follow-form" id="follow_$fid" method="POST" action="$(subscriber)/follows.json"
