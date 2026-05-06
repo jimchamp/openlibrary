@@ -270,10 +270,6 @@ msgstr ""
 msgid "Popover"
 msgstr ""
 
-#: design.html design/select-popover.html
-msgid "Select Popover"
-msgstr ""
-
 #: design.html type/edition/view.html type/work/view.html
 msgid "Read More"
 msgstr ""
@@ -4998,70 +4994,6 @@ msgstr ""
 
 #: design/popover.html
 msgid "top-center"
-msgstr ""
-
-#: design/select-popover.html
-msgid ""
-"The ol-select-popover component pairs a trigger button with a popover "
-"containing a multi-select list and an optional filter input. Selected "
-"items group above unselected ones; group order stays stable while open "
-"and re-sorts when reopened."
-msgstr ""
-
-#: design/select-popover.html
-msgid "Default usage with auto-search (12 items)"
-msgstr ""
-
-#: design/select-popover.html
-#, python-format
-msgid ""
-"With more than %(threshold)s items, a filter input renders automatically."
-" Selected items move to a SELECTED group on next open."
-msgstr ""
-
-#: design/select-popover.html
-msgid "Selected:"
-msgstr ""
-
-#: design/select-popover.html
-msgid "(none)"
-msgstr ""
-
-#: design/select-popover.html
-msgid "Small list, no search input"
-msgstr ""
-
-#: design/select-popover.html
-#, python-format
-msgid ""
-"With %(threshold)s items or fewer, the filter input is hidden by default."
-" Set %(attr)s to a different number to override (use %(always)s to always"
-" show, a large value to always hide)."
-msgstr ""
-
-#: design/select-popover.html
-msgid "Custom trigger via slot"
-msgstr ""
-
-#: design/select-popover.html
-#, python-format
-msgid ""
-"Provide your own trigger element with %(slot)s. The component handles "
-"open/close and ARIA wiring."
-msgstr ""
-
-#: design/select-popover.html
-msgid "Pick a genre"
-msgstr ""
-
-#: design/select-popover.html
-msgid "With ol-chip-group showing selections"
-msgstr ""
-
-#: design/select-popover.html
-msgid ""
-"Selected items render as chips in an ol-chip-group next to the trigger. "
-"Clicking a chip's close icon removes that selection from the popover."
 msgstr ""
 
 #: email/case_created.html

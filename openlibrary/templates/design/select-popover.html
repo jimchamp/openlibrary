@@ -1,12 +1,12 @@
 $def with()
 
 <article class="design-pattern" id="select-popover">
-    <h2 class="design-pattern__title">$_("Select Popover")</h2>
-    <p class="design-pattern__description">$_("The ol-select-popover component pairs a trigger button with a popover containing a multi-select list and an optional filter input. Selected items group above unselected ones; group order stays stable while open and re-sorts when reopened.")</p>
+    <h2 class="design-pattern__title">Select Popover</h2>
+    <p class="design-pattern__description">The ol-select-popover component pairs a trigger button with a popover containing a multi-select list and an optional filter input. Selected items group above unselected ones; group order stays stable while open and re-sorts when reopened.</p>
 
     <section class="example">
-      <h3 class="example__title">$_("Default usage with auto-search (12 items)")</h3>
-      <p>$:_("With more than %(threshold)s items, a filter input renders automatically. Selected items move to a SELECTED group on next open.", threshold="<code>8</code>")</p>
+      <h3 class="example__title">Default usage with auto-search (12 items)</h3>
+      <p>With more than <code>8</code> items, a filter input renders automatically. Selected items move to a SELECTED group on next open.</p>
       <pre class="example__code"><code class="language-html">&lt;ol-select-popover
   label="Language"
   placeholder="Filter languages…"
@@ -22,7 +22,7 @@ $def with()
           aria-label="Language filter"
         ></ol-select-popover>
         <p style="margin-top: 12px; font-size: 13px;">
-          $_("Selected:") <strong id="demo-select-langs-out">$_("(none)")</strong>
+          Selected: <strong id="demo-select-langs-out">(none)</strong>
         </p>
       </div>
       <script>
@@ -53,8 +53,8 @@ $def with()
     </section>
 
     <section class="example">
-      <h3 class="example__title">$_("Small list, no search input")</h3>
-      <p>$:_("With %(threshold)s items or fewer, the filter input is hidden by default. Set %(attr)s to a different number to override (use %(always)s to always show, a large value to always hide).", threshold="<code>8</code>", attr="<code>search-threshold</code>", always="<code>0</code>")</p>
+      <h3 class="example__title">Small list, no search input</h3>
+      <p>With <code>8</code> items or fewer, the filter input is hidden by default. Set <code>search-threshold</code> to a different number to override (use <code>0</code> to always show, a large value to always hide).</p>
       <pre class="example__code"><code class="language-html">&lt;ol-select-popover
   label="Layout"
   unselected-heading="LAYOUTS"
@@ -81,8 +81,8 @@ $def with()
     </section>
 
     <section class="example">
-      <h3 class="example__title">$_("Custom trigger via slot")</h3>
-      <p>$:_("Provide your own trigger element with %(slot)s. The component handles open/close and ARIA wiring.", slot="<code>slot=\"trigger\"</code>")</p>
+      <h3 class="example__title">Custom trigger via slot</h3>
+      <p>Provide your own trigger element with <code>slot="trigger"</code>. The component handles open/close and ARIA wiring.</p>
       <pre class="example__code"><code class="language-html">&lt;ol-select-popover label="Genre" items="..."&gt;
   &lt;a slot="trigger" href="#"&gt;Pick a genre&lt;/a&gt;
 &lt;/ol-select-popover&gt;</code></pre>
@@ -99,7 +99,7 @@ $def with()
             role="button"
             style="color: var(--link-blue); text-decoration: underline; cursor: pointer; font: inherit;"
             onclick="event.preventDefault();"
-          >$_("Pick a genre")</a>
+          >Pick a genre</a>
         </ol-select-popover>
       </div>
       <script>
@@ -117,8 +117,8 @@ $def with()
     </section>
 
     <section class="example">
-      <h3 class="example__title">$_("With ol-chip-group showing selections")</h3>
-      <p>$_("Selected items render as chips in an ol-chip-group next to the trigger. Clicking a chip's close icon removes that selection from the popover.")</p>
+      <h3 class="example__title">With ol-chip-group showing selections</h3>
+      <p>Selected items render as chips in an ol-chip-group next to the trigger. Clicking a chip's close icon removes that selection from the popover.</p>
       <pre class="example__code"><code class="language-html">&lt;div class="row"&gt;
   &lt;ol-select-popover label="Language" ...&gt;&lt;/ol-select-popover&gt;
   &lt;ol-chip-group&gt;
