@@ -871,11 +871,9 @@ class unlink_ia_ol(delegate.page):
         ocaid, _ts = parts
 
         # Fetch affected editions
-        if not (
-            edition_keys := web.ctx.site.things(
-                {"type": "/type/edition", "ocaid": ocaid}
-            )
-        ):
+        edition_keys = web.ctx.site.things({"type": "/type/edition", "ocaid": ocaid})
+        edition_keys.extend(web.ctx.site.things({"type": "/type/edition", "source_records": f"ia:{ocaid}"}))
+        if not edition_keys:
             raise web.HTTPError("404 Not Found", {"Content-Type": "application/json"})
 
         editions = [web.ctx.site.get(key) for key in edition_keys]
@@ -908,7 +906,8 @@ class unlink_ia_ol(delegate.page):
     @staticmethod
     def make_dark(edition, ocaid):
         data = edition.dict()
-        del data["ocaid"]
+        if data.get("ocaid", ""):
+            del data["ocaid"]
         source_records = data.get("source_records", [])
         data["source_records"] = [rec for rec in source_records if rec != f"ia:{ocaid}"]
         if not data["source_records"]:
