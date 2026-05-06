@@ -922,6 +922,63 @@ class unlink_ia_ol(delegate.page):
             )
 
 
+class link_ia_ol(delegate.page):
+    path = "/api/link"
+    encoding = "json"
+
+    def POST(self):
+        i = web.input(digest="", msg="")
+        digest = i.digest
+        msg = i.msg
+
+        try:
+            if not HMACToken.verify(digest, msg, "ia_sync_secret", unix_time=True):
+                raise web.HTTPError(
+                    "401 Unauthorized", {"Content-Type": "application/json"}
+                )
+        except (ValueError, ExpiredTokenError):
+            raise web.HTTPError(
+                "401 Unauthorized", {"Content-Type": "application/json"}
+            )
+
+        parts = msg.split("|", maxsplit=2)
+        if len(parts) != 3 or not all(parts):
+            raise web.HTTPError(
+                "400 Bad Request",
+                {"Content-Type": "application/json"},
+                data=json.dumps({"error": "Invalid inputs"}),
+            )
+        ocaid, olid, _ts = parts
+
+        # Fetch affected edition
+        edition = web.ctx.site.get(f'/books/{olid}')
+        if not edition:
+            raise web.HTTPError("404 Not Found", {"Content-Type": "application/json"})
+
+        # Update record
+        try:
+            self.link(edition, ocaid)
+        except ClientException as e:
+            logger.error(f"Failed to associate {ocaid} with {olid}", exc_info=True)
+            raise web.HTTPError(
+                "500 Internal Server Error",
+                {"Content-Type": "application/json"},
+                data=json.dumps({"error": str(e)}),
+            )
+
+        return delegate.RawText(json.dumps({"status": "ok"}))
+
+    @staticmethod
+    def link(edition, ocaid):
+        data = edition.dict()
+        data["ocaid"] = ocaid
+        with accounts.RunAs("ImportBot"):
+            web.ctx.ip = web.ctx.ip or '127.0.0.1'
+            web.ctx.site.save(
+                data, "Associate OCAID with record", action="edit-edition-ocaid"
+            )
+
+
 class monthly_logins(delegate.page):
     path = "/api/monthly_logins"
     encoding = "json"
