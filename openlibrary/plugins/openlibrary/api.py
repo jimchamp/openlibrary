@@ -872,7 +872,11 @@ class unlink_ia_ol(delegate.page):
 
         # Fetch affected editions
         edition_keys = web.ctx.site.things({"type": "/type/edition", "ocaid": ocaid})
-        edition_keys.extend(web.ctx.site.things({"type": "/type/edition", "source_records": f"ia:{ocaid}"}))
+        edition_keys.extend(
+            web.ctx.site.things(
+                {"type": "/type/edition", "source_records": f"ia:{ocaid}"}
+            )
+        )
         edition_keys = list(set(edition_keys))
         if not edition_keys:
             raise web.HTTPError("404 Not Found", {"Content-Type": "application/json"})
