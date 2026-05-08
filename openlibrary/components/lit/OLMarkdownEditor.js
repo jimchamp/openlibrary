@@ -320,6 +320,10 @@ export class OLMarkdownEditor extends LitElement {
       display: contents;
     }
 
+    .toolbar-right-slot {
+      display: contents;
+    }
+
     .toolbar-formatting {
       display: contents;
     }
@@ -637,6 +641,7 @@ export class OLMarkdownEditor extends LitElement {
           ${this.enableCode ? this._renderButton({ title: 'Inline Code', icon: ICONS.codeInline, action: this.formatInlineCode.bind(this), isActive: this._isActive('code') }) : ''}
           ${this.enableCode ? this._renderButton({ title: 'Code Block', icon: ICONS.codeBlock, action: this.formatCodeBlock.bind(this), isActive: this._isActive('codeBlock') }) : ''}
           ${this.enableHtmlBlock ? this._renderButton({ title: 'HTML Block', icon: ICONS.code, action: this.insertHtmlBlock.bind(this) }) : ''}
+          ${this.enableSource && !this.showSource ? this._renderButton({ title: 'View source', icon: ICONS.source, action: () => { this.showOverflowMenu = false; this._toggleSource(); } }) : ''}
         `;
 
         return html`
@@ -695,9 +700,11 @@ export class OLMarkdownEditor extends LitElement {
             </div>
           </div>
           ${this.enableSource ? html`
-            <div class="toolbar-spacer"></div>
-            <div class="toolbar-divider"></div>
-            ${this._renderButton({ title: this.showSource ? 'View formatted' : 'View source', icon: ICONS.source, action: this._toggleSource.bind(this), isActive: this.showSource })}
+            <span class="${this.showSource ? 'toolbar-right-slot' : 'overflow-secondary'}">
+              <div class="toolbar-spacer"></div>
+              <div class="toolbar-divider"></div>
+              ${this._renderButton({ title: this.showSource ? 'View formatted' : 'View source', icon: ICONS.source, action: this._toggleSource.bind(this), isActive: this.showSource })}
+            </span>
           ` : ''}
         </div>
 
