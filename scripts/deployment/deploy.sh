@@ -101,6 +101,12 @@ check_for_local_changes() {
         return
     fi
 
+    # Not a git repo yet (e.g. partial failure before git init) -- skip check
+    if ! ssh $SERVER "test -d $REPO_DIR/.git"; then
+        echo "✓ ($REPO_DIR exists but is not a git repo yet)"
+        return
+    fi
+
     OUTPUT=$(ssh $SERVER "cd $REPO_DIR; sudo git status --porcelain --untracked-files=all")
 
     if [ -z "$OUTPUT" ]; then
@@ -317,6 +323,7 @@ tag_deploy() {
     local REPO_DIR="${DEPLOY_DIR}/openlibrary"
     if [ ! -d "$REPO_DIR/.git" ]; then
         REPO_DIR="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel)"
+        echo "[Warning] Deploy clone not found; tagging from local repo at $REPO_DIR (HEAD: $(git -C "$REPO_DIR" rev-parse --short HEAD))"
     fi
     if ! git -C "$REPO_DIR" rev-parse "$DEPLOY_TAG" >/dev/null 2>&1; then
         echo "[Info] Tagging deploy as $DEPLOY_TAG"
@@ -335,6 +342,7 @@ tag_release() {
     local REPO_DIR="${DEPLOY_DIR}/openlibrary"
     if [ ! -d "$REPO_DIR/.git" ]; then
         REPO_DIR="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel)"
+        echo "[Warning] Deploy clone not found; reading tags from local repo at $REPO_DIR"
     fi
     LATEST_TAG_NAME=$(git -C "$REPO_DIR" describe --tags --abbrev=0)
     echo "[Now] Generate release: https://github.com/internetarchive/openlibrary/releases/new?tag=$LATEST_TAG_NAME"
@@ -420,7 +428,7 @@ deploy_openlibrary() {
     cp -r openlibrary/conf openlibrary_new
     tar -czf openlibrary_new.tar.gz openlibrary_new
 
-    if [[ -z "$SKIP_TRANSFER" ]]; then
+    if [[ "$SKIP_TRANSFER" != "1" ]]; then
         if ! copy_to_servers "$DEPLOY_DIR/openlibrary_new.tar.gz" "/opt/openlibrary" "openlibrary_new"; then
             cleanup "${DEPLOY_DIR}/openlibrary"
             exit 1
