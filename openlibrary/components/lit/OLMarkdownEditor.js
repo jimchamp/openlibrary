@@ -345,7 +345,7 @@ export class OLMarkdownEditor extends LitElement {
       background: var(--white);
       color: var(--dark-grey);
       font-family: monospace;
-      font-size: 0.85rem;
+      font-size: 0.75rem;
       line-height: 1.5;
       resize: vertical;
       outline: none;
