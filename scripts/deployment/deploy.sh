@@ -314,22 +314,29 @@ date_to_timestamp() {
 }
 
 tag_deploy() {
-    # Check if tag does NOT exist
-    if ! git -C "${DEPLOY_DIR}/openlibrary" rev-parse "$DEPLOY_TAG" >/dev/null 2>&1; then
+    local REPO_DIR="${DEPLOY_DIR}/openlibrary"
+    if [ ! -d "$REPO_DIR/.git" ]; then
+        REPO_DIR="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel)"
+    fi
+    if ! git -C "$REPO_DIR" rev-parse "$DEPLOY_TAG" >/dev/null 2>&1; then
         echo "[Info] Tagging deploy as $DEPLOY_TAG"
-        git -C "${DEPLOY_DIR}/openlibrary" tag "$DEPLOY_TAG"
-        git -C "${DEPLOY_DIR}/openlibrary" push git@github.com:internetarchive/openlibrary.git "$DEPLOY_TAG"
+        git -C "$REPO_DIR" tag "$DEPLOY_TAG"
+        git -C "$REPO_DIR" push git@github.com:internetarchive/openlibrary.git "$DEPLOY_TAG"
     else
         echo "[Info] Tag '$DEPLOY_TAG' already exists. Skipping creation."
     fi
 
     # Always update and push the 'production' tag
-    git -C "${DEPLOY_DIR}/openlibrary" tag -f production
-    git -C "${DEPLOY_DIR}/openlibrary" push -f git@github.com:internetarchive/openlibrary.git production
+    git -C "$REPO_DIR" tag -f production
+    git -C "$REPO_DIR" push -f git@github.com:internetarchive/openlibrary.git production
 }
 
 tag_release() {
-    LATEST_TAG_NAME=$(git -C "${DEPLOY_DIR}/openlibrary" describe --tags --abbrev=0)
+    local REPO_DIR="${DEPLOY_DIR}/openlibrary"
+    if [ ! -d "$REPO_DIR/.git" ]; then
+        REPO_DIR="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel)"
+    fi
+    LATEST_TAG_NAME=$(git -C "$REPO_DIR" describe --tags --abbrev=0)
     echo "[Now] Generate release: https://github.com/internetarchive/openlibrary/releases/new?tag=$LATEST_TAG_NAME"
 }
 
@@ -412,35 +419,37 @@ deploy_openlibrary() {
     cp -r openlibrary/scripts openlibrary_new
     cp -r openlibrary/conf openlibrary_new
     tar -czf openlibrary_new.tar.gz openlibrary_new
-    if ! copy_to_servers "$DEPLOY_DIR/openlibrary_new.tar.gz" "/opt/openlibrary" "openlibrary_new"; then
-        cleanup "${DEPLOY_DIR}/openlibrary"
-        exit 1
+
+    if [[ -z "$SKIP_TRANSFER" ]]; then
+        if ! copy_to_servers "$DEPLOY_DIR/openlibrary_new.tar.gz" "/opt/openlibrary" "openlibrary_new"; then
+            cleanup "${DEPLOY_DIR}/openlibrary"
+            exit 1
+        fi
+        echo ""
+        # Fix file ownership + Make into a git repo so can easily track local mods
+        for SERVER in $FQDNS; do
+            ssh $SERVER "
+                set -e
+                sudo chown -R root:staff /opt/openlibrary
+                sudo chmod -R g+rwX /opt/openlibrary
+                cd /opt/openlibrary
+                sudo git init 2>&1 > /dev/null
+                sudo git add . > /dev/null
+                sudo git commit -m 'Deployed openlibrary' > /dev/null
+            "
+        done
+
+        if ! prune_docker image; then
+            cleanup "${DEPLOY_DIR}/openlibrary"
+            exit 1
+        fi
+
+        echo ""
+        echo "Pull the latest docker images..."
+        deploy_images
     fi
-    echo ""
 
-    # Fix file ownership + Make into a git repo so can easily track local mods
-    for SERVER in $FQDNS; do
-        ssh $SERVER "
-            set -e
-            sudo chown -R root:staff /opt/openlibrary
-            sudo chmod -R g+rwX /opt/openlibrary
-            cd /opt/openlibrary
-            sudo git init 2>&1 > /dev/null
-            sudo git add . > /dev/null
-            sudo git commit -m 'Deployed openlibrary' > /dev/null
-        "
-    done
-
-    if ! prune_docker image; then
-        cleanup "${DEPLOY_DIR}/openlibrary"
-        exit 1
-    fi
-
-    echo ""
-    echo "Pull the latest docker images..."
-    deploy_images
-
-
+    tag_deploy
 
     echo "Finished production deployment at $(date)"
     echo "To reboot the servers, please run scripts/deployments/restart_all_servers.sh"
@@ -667,9 +676,6 @@ deploy_wizard() {
         fi
     fi
 
-    echo "Creating git tag for deploy... "
-    tag_deploy
-
     read -p "[Now] Restart services? [N/y]..." answer
     answer=${answer:-N}
     if [[ "$answer" =~ ^[Yy]$ ]]; then
@@ -683,7 +689,6 @@ deploy_wizard() {
         time tag_release
         read -p "Press Enter to continue..."
 
-        LATEST_TAG_NAME=$(git -C "${DEPLOY_DIR}/openlibrary" describe --tags --abbrev=0)
         echo "[Now] Deploy complete, announce in #openlibrary-g, #openlibrary, and #open-librarians-g:"
         echo ""
         echo "The Open Library weekly deploy is now complete. See changes here: https://github.com/internetarchive/openlibrary/releases/tag/$LATEST_TAG_NAME. Please respond in this thread if anything seems broken or delightful!"
