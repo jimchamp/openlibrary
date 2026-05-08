@@ -452,6 +452,27 @@ The response includes `title`, `authors`, and a `description` field formatted as
         </section>
 
         <section class="example">
+          <h3 class="example__title">$_("Source toggle")</h3>
+          <p>$:_("Add the %(attr)s attribute to expose a toolbar toggle that swaps the WYSIWYG surface for a raw markdown textarea. Useful for editors of pages with heavy inline HTML where WYSIWYG round-trips are awkward.", attr="<code>enable-source</code>")</p>
+          <pre class="example__code"><code class="language-html">&lt;ol-markdown-editor
+  target-id="my-input"
+  enable-source&gt;
+&lt;/ol-markdown-editor&gt;</code></pre>
+          <div class="example__output">
+            <textarea id="demo-editor-source" style="display:none;">## Mixed content
+
+A paragraph with **bold** and *italic*.
+
+<div class="custom-callout">
+  <strong>Note:</strong> This block is raw HTML.
+</div>
+
+Another paragraph after the HTML block.</textarea>
+            <ol-markdown-editor target-id="demo-editor-source" enable-html-block enable-source></ol-markdown-editor>
+          </div>
+        </section>
+
+        <section class="example">
           <h3 class="example__title">$_("Change event")</h3>
           <p>$:_("The editor fires an %(event)s event on every change. The raw Markdown string is available in %(detail)s.", event="<code>ol-markdown-editor-change</code>", detail="<code>event.detail.value</code>")</p>
           <pre class="example__code"><code class="language-html">&lt;ol-markdown-editor

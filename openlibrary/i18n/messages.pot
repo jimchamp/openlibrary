@@ -632,6 +632,18 @@ msgid ""
 msgstr ""
 
 #: design.html
+msgid "Source toggle"
+msgstr ""
+
+#: design.html
+#, python-format
+msgid ""
+"Add the %(attr)s attribute to expose a toolbar toggle that swaps the "
+"WYSIWYG surface for a raw markdown textarea. Useful for editors of pages "
+"with heavy inline HTML where WYSIWYG round-trips are awkward."
+msgstr ""
+
+#: design.html
 msgid "Change event"
 msgstr ""
 
