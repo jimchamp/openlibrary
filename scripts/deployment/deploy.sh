@@ -428,7 +428,7 @@ deploy_openlibrary() {
     cp -r openlibrary/conf openlibrary_new
     tar -czf openlibrary_new.tar.gz openlibrary_new
 
-    if [[ "$SKIP_TRANSFER" != "1" ]]; then
+    if [[ "$SKIP_OL_TRANSFER_CODE" != "1" ]]; then
         if ! copy_to_servers "$DEPLOY_DIR/openlibrary_new.tar.gz" "/opt/openlibrary" "openlibrary_new"; then
             cleanup "${DEPLOY_DIR}/openlibrary"
             exit 1
@@ -451,7 +451,9 @@ deploy_openlibrary() {
             cleanup "${DEPLOY_DIR}/openlibrary"
             exit 1
         fi
+    fi
 
+    if [[ "$SKIP_OL_TRANSFER_IMAGES" != "1" ]]; then
         echo ""
         echo "Pull the latest docker images..."
         deploy_images
@@ -668,9 +670,17 @@ deploy_wizard() {
     read -p "[Info] Skipping clone_booklending_utils, run manually if needed. Press Enter to continue..." answer
     echo ""
 
-    read -p "[Now] Run openlibrary deploy & audit now? [Y/n]..." answer
+    read -p "[Now] Run openlibrary deploy? [Y/n]..." answer
     answer=${answer:-Y}
     if [[ "$answer" =~ ^[Yy]$ ]]; then
+        read -p "[Now] Transfer codebase to servers? [Y/n]..." answer
+        answer=${answer:-Y}
+        [[ "$answer" =~ ^[Nn]$ ]] && SKIP_OL_TRANSFER_CODE=1
+
+        read -p "[Now] Transfer docker images to servers? [Y/n]..." answer
+        answer=${answer:-Y}
+        [[ "$answer" =~ ^[Nn]$ ]] && SKIP_OL_TRANSFER_IMAGES=1
+
         time deploy_openlibrary
         echo ""
         time check_servers_in_sync
@@ -734,6 +744,8 @@ elif [ "$1" == "" ]; then  # If this works to detect empty
 else
     echo "Usage: $0 [olsystem|openlibrary|review|prune|rebuild|images|check_server_storage]"
     echo "e.g: time SERVER_SUFFIX='.us.archive.org' ./scripts/deployment/deploy.sh [command]"
+    echo "Env vars: SKIP_OL_TRANSFER_CODE=1  skip SCP+git-init+prune step"
+    echo "          SKIP_OL_TRANSFER_IMAGES=1 skip docker image pull step"
     exit 1
 fi
 
