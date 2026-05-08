@@ -593,7 +593,9 @@ msgstr ""
 #: design.html
 msgid ""
 "The ol-markdown-editor component is a WYSIWYG editor built on Tiptap that"
-" outputs Markdown. It syncs its content to a hidden target textarea."
+" outputs Markdown. It syncs its content to a hidden target textarea. A "
+"'View source' toolbar toggle is always available so editors can drop into"
+" a raw markdown textarea when WYSIWYG round-trips are awkward."
 msgstr ""
 
 #: design.html
@@ -629,18 +631,6 @@ msgid ""
 "Add the %(attr)s attribute to expose the inline code and code block "
 "buttons in the toolbar. Code support is off by default because only the "
 "wiki page renderer is guaranteed to render fenced code blocks."
-msgstr ""
-
-#: design.html
-msgid "Source toggle"
-msgstr ""
-
-#: design.html
-#, python-format
-msgid ""
-"Add the %(attr)s attribute to expose a toolbar toggle that swaps the "
-"WYSIWYG surface for a raw markdown textarea. Useful for editors of pages "
-"with heavy inline HTML where WYSIWYG round-trips are awkward."
 msgstr ""
 
 #: design.html

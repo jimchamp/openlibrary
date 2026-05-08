@@ -11,7 +11,6 @@ import { LitElement, html, css } from 'lit';
  * @prop {String} targetId - The ID of the DOM element to sync the Markdown output with.
  * @prop {String} placeholder - Text to display when the editor is empty (default: 'Write something...').
  * @prop {String} height - Minimum height of the editor area, e.g. '100px' (default: '200px'). The editor grows beyond this as content is added.
- * @prop {Boolean} enableSource - When set, adds a "View source" toolbar toggle that swaps the WYSIWYG surface for a raw markdown textarea.
  *
  * @fires ol-markdown-editor-change - Dispatched whenever the editor content changes. `e.detail.value` contains the raw markdown string.
  *
@@ -64,8 +63,7 @@ export class OLMarkdownEditor extends LitElement {
         showOverflowMenu: { state: true },
         showSource: { state: true },
         enableHtmlBlock: { type: Boolean, attribute: 'enable-html-block' },
-        enableCode: { type: Boolean, attribute: 'enable-code' },
-        enableSource: { type: Boolean, attribute: 'enable-source' }
+        enableCode: { type: Boolean, attribute: 'enable-code' }
     };
 
     static styles = css`
@@ -641,7 +639,7 @@ export class OLMarkdownEditor extends LitElement {
           ${this.enableCode ? this._renderButton({ title: 'Inline Code', icon: ICONS.codeInline, action: this.formatInlineCode.bind(this), isActive: this._isActive('code') }) : ''}
           ${this.enableCode ? this._renderButton({ title: 'Code Block', icon: ICONS.codeBlock, action: this.formatCodeBlock.bind(this), isActive: this._isActive('codeBlock') }) : ''}
           ${this.enableHtmlBlock ? this._renderButton({ title: 'HTML Block', icon: ICONS.code, action: this.insertHtmlBlock.bind(this) }) : ''}
-          ${this.enableSource && !this.showSource ? this._renderButton({ title: 'View source', icon: ICONS.source, action: () => { this.showOverflowMenu = false; this._toggleSource(); } }) : ''}
+          ${!this.showSource ? this._renderButton({ title: 'View source', icon: ICONS.source, action: () => { this.showOverflowMenu = false; this._toggleSource(); } }) : ''}
         `;
 
         return html`
@@ -699,13 +697,11 @@ export class OLMarkdownEditor extends LitElement {
               ` : ''}
             </div>
           </div>
-          ${this.enableSource ? html`
-            <span class="${this.showSource ? 'toolbar-right-slot' : 'overflow-secondary'}">
-              <div class="toolbar-spacer"></div>
-              <div class="toolbar-divider"></div>
-              ${this._renderButton({ title: this.showSource ? 'View formatted' : 'View source', icon: ICONS.source, action: this._toggleSource.bind(this), isActive: this.showSource })}
-            </span>
-          ` : ''}
+          <span class="${this.showSource ? 'toolbar-right-slot' : 'overflow-secondary'}">
+            <div class="toolbar-spacer"></div>
+            <div class="toolbar-divider"></div>
+            ${this._renderButton({ title: this.showSource ? 'View formatted' : 'View source', icon: ICONS.source, action: this._toggleSource.bind(this), isActive: this.showSource })}
+          </span>
         </div>
 
         <div id="editor-root" class="editor-input ${this.showSource ? 'is-hidden' : ''}" style="${this.height ? `min-height:${this.height}` : ''}" @click="${this._focusEditor}">

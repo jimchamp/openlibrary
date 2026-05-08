@@ -379,7 +379,7 @@ $ _x = ctx.setdefault('cssfile', 'design')
 
       <article class="design-pattern" id="markdown-editor">
         <h2 class="design-pattern__title">$_("Markdown Editor")</h2>
-        <p class="design-pattern__description">$_("The ol-markdown-editor component is a WYSIWYG editor built on Tiptap that outputs Markdown. It syncs its content to a hidden target textarea.")</p>
+        <p class="design-pattern__description">$_("The ol-markdown-editor component is a WYSIWYG editor built on Tiptap that outputs Markdown. It syncs its content to a hidden target textarea. A 'View source' toolbar toggle is always available so editors can drop into a raw markdown textarea when WYSIWYG round-trips are awkward.")</p>
 
         <section class="example">
           <h3 class="example__title">$_("Basic usage")</h3>
@@ -448,27 +448,6 @@ print(work["title"])
 
 The response includes `title`, `authors`, and a `description` field formatted as Markdown.</textarea>
             <ol-markdown-editor target-id="demo-editor-code" enable-code></ol-markdown-editor>
-          </div>
-        </section>
-
-        <section class="example">
-          <h3 class="example__title">$_("Source toggle")</h3>
-          <p>$:_("Add the %(attr)s attribute to expose a toolbar toggle that swaps the WYSIWYG surface for a raw markdown textarea. Useful for editors of pages with heavy inline HTML where WYSIWYG round-trips are awkward.", attr="<code>enable-source</code>")</p>
-          <pre class="example__code"><code class="language-html">&lt;ol-markdown-editor
-  target-id="my-input"
-  enable-source&gt;
-&lt;/ol-markdown-editor&gt;</code></pre>
-          <div class="example__output">
-            <textarea id="demo-editor-source" style="display:none;">## Mixed content
-
-A paragraph with **bold** and *italic*.
-
-<div class="custom-callout">
-  <strong>Note:</strong> This block is raw HTML.
-</div>
-
-Another paragraph after the HTML block.</textarea>
-            <ol-markdown-editor target-id="demo-editor-source" enable-html-block enable-source></ol-markdown-editor>
           </div>
         </section>
 
