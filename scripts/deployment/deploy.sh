@@ -459,7 +459,9 @@ deploy_openlibrary() {
         deploy_images
     fi
 
-    tag_deploy
+    if [[ "$TAG_DEPLOY" == "1" ]]; then
+        tag_deploy
+    fi
 
     echo "Finished production deployment at $(date)"
     echo "To reboot the servers, please run scripts/deployments/restart_all_servers.sh"
@@ -677,9 +679,13 @@ deploy_wizard() {
         answer=${answer:-Y}
         [[ "$answer" =~ ^[Nn]$ ]] && SKIP_OL_TRANSFER_CODE=1
 
-        read -p "[Now] Transfer docker images to servers? [Y/n]..." answer
+        read -p "[Now] Deploy Docker Images? [Y/n]..." answer
         answer=${answer:-Y}
         [[ "$answer" =~ ^[Nn]$ ]] && SKIP_OL_TRANSFER_IMAGES=1
+
+        read -p "[Now] Tag deploy? [Y/n]..." answer
+        answer=${answer:-Y}
+        [[ "$answer" =~ ^[Yy]$ ]] && TAG_DEPLOY=1
 
         time deploy_openlibrary
         echo ""
@@ -746,6 +752,7 @@ else
     echo "e.g: time SERVER_SUFFIX='.us.archive.org' ./scripts/deployment/deploy.sh [command]"
     echo "Env vars: SKIP_OL_TRANSFER_CODE=1  skip SCP+git-init+prune step"
     echo "          SKIP_OL_TRANSFER_IMAGES=1 skip docker image pull step"
+    echo "          TAG_DEPLOY=1              tag this commit as the deploy (set automatically by wizard)"
     exit 1
 fi
 
