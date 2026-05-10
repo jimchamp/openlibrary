@@ -366,7 +366,7 @@
   height: 100%;
 }
 
-.list-books--grid .searchResultItem .bookcover img {
+.list-books--grid .searchResultItem .bookcover :where(img) {
   height: 180px;
   object-fit: contain;
   object-position: bottom;
