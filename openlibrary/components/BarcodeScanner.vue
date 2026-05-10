@@ -51,13 +51,15 @@ export default {
     data() {
         let returnTo = new URLSearchParams(location.search).get('returnTo');
         // Only allow same-origin redirects to prevent open redirect attacks.
-        // Resolving against window.location.origin rejects javascript: URIs and
-        // off-origin https:// URLs that the old regex-only check allowed through.
-        try {
-            const url = new URL(returnTo, window.location.origin);
-            returnTo = url.origin === window.location.origin ? url.href : null;
-        } catch (_) {
-            returnTo = null;
+        // Guard for null first: new URL(null, base) coerces to the string "null"
+        // and would create a same-origin URL https://<origin>/null.
+        if (returnTo) {
+            try {
+                const url = new URL(returnTo, window.location.origin);
+                returnTo = url.origin === window.location.origin ? url.href : null;
+            } catch (_) {
+                returnTo = null;
+            }
         }
         return {
             disableISBNTextButton: false,
