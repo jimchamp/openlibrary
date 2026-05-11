@@ -323,7 +323,16 @@ tag_deploy() {
     local REPO_DIR="${DEPLOY_DIR}/openlibrary"
     if [ ! -d "$REPO_DIR/.git" ]; then
         REPO_DIR="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel)"
-        echo "[Warning] Deploy clone not found; tagging from local repo at $REPO_DIR (HEAD: $(git -C "$REPO_DIR" rev-parse --short HEAD))"
+        local HEAD_SHA
+        HEAD_SHA="$(git -C "$REPO_DIR" rev-parse --short HEAD)"
+        echo "[Warning] Deploy clone not found; fallback to local repo at $REPO_DIR"
+        echo "          Local HEAD is $HEAD_SHA — confirm this matches what was deployed."
+        read -p "Tag production as $HEAD_SHA from the local repo? [y/N]..." confirm
+        confirm=${confirm:-N}
+        if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
+            echo "[Abort] Cancelled. Verify the correct commit is checked out before re-running."
+            return 1
+        fi
     fi
     if ! git -C "$REPO_DIR" rev-parse "$DEPLOY_TAG" >/dev/null 2>&1; then
         echo "[Info] Tagging deploy as $DEPLOY_TAG"
