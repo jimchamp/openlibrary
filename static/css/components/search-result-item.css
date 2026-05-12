@@ -360,7 +360,7 @@
   }
 }
 
-/* Normalize cover image height so CTA buttons align across all cards in a   */
+/* Normalize cover image height so CTA buttons align across all cards in a row. */
 .list-books--grid .searchResultItem:not(.sri--w-main),
 .list-books--grid .searchResultItem .sri__main {
   height: 100%;
