@@ -593,7 +593,9 @@ msgstr ""
 #: design.html
 msgid ""
 "The ol-markdown-editor component is a WYSIWYG editor built on Tiptap that"
-" outputs Markdown. It syncs its content to a hidden target textarea."
+" outputs Markdown. It syncs its content to a hidden target textarea. A "
+"'View source' toolbar toggle is always available so editors can drop into"
+" a raw markdown textarea when WYSIWYG round-trips are awkward."
 msgstr ""
 
 #: design.html
