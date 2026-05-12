@@ -98,9 +98,9 @@ def is_safe_redirect(url: str) -> bool:
     parsed = urlparse(url)
     if parsed.netloc or parsed.scheme:
         return False
-    if not re.match(r"^/[^/\\]", parsed.path):
+    if not re.match(r"^/[^/\\]", parsed.path):  # noqa: SIM103
         return False
-    return True
+    return True  # noqa: SIM103
 
 
 class availability(delegate.page):
