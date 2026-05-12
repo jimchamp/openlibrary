@@ -371,4 +371,5 @@
   object-fit: contain;
   object-position: bottom;
   display: block;
+  margin-bottom: var(--spacing-stack-sm);
 }
