@@ -100,7 +100,7 @@ def is_safe_redirect(url: str) -> bool:
         return False
     if not re.match(r"^/[^/\\]", parsed.path):  # noqa: SIM103
         return False
-    return True  # noqa: SIM103
+    return True
 
 
 class availability(delegate.page):
