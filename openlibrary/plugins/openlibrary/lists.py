@@ -814,6 +814,25 @@ class ListEditionsModel(BaseModel):
     links: ListEditionsLinks
 
 
+class ListSubjectEntry(BaseModel):
+    name: str
+    count: int
+    url: str
+
+
+class ListSubjectsLinks(BaseModel):
+    self: str
+    list: str
+
+
+class ListSubjectsModel(BaseModel):
+    subjects: list[ListSubjectEntry]
+    places: list[ListSubjectEntry]
+    people: list[ListSubjectEntry]
+    times: list[ListSubjectEntry]
+    links: ListSubjectsLinks
+
+
 def get_list_editions(
     key: str,
     url: URL,
@@ -883,42 +902,42 @@ class list_editions_yaml(list_editions_json):
     content_type = 'text/yaml; charset="utf-8"'
 
 
+@deprecated("migrated to fastapi")
 class list_subjects_json(delegate.page):
     path = r"((?:/people/[^/]+)?/(?:lists|series)/OL\d+L)/subjects"
     encoding = "json"
     content_type = "application/json"
 
     def GET(self, key):
-        lst = cast(List | None, web.ctx.site.get(key))
-        if not lst:
+        data = get_list_subjects(key, limit=h.safeint(web.input(limit=20).limit, 20))
+        if not data:
             raise web.notfound()
-
-        i = web.input(limit=20)
-        limit = h.safeint(i.limit, 20)
-
-        data = self.get_subjects_data(lst, key, limit=limit)
-
-        text = formats.dump(data, self.encoding)
+        text = formats.dump(data.dict(), self.encoding)
         return delegate.RawText(text, content_type=self.content_type)
 
-    @staticmethod
-    def get_subjects_data(lst, key, limit):
-        data = lst.get_subjects(limit=limit)
-        for sub_key, subjects_ in data.items():
-            data[sub_key] = [list_subjects_json._process_subject(s) for s in subjects_]
 
-        data = dict(data)
-        data["links"] = {"self": key + "/subjects", "list": key}
-        return data
+def _process_subject(s: dict) -> ListSubjectEntry:
+    key = s["key"]
+    if key.startswith("subject:"):
+        key = "/subjects/" + key.removeprefix("subject:")
+    else:
+        key = "/subjects/" + key
+    return ListSubjectEntry(name=s["name"], count=s["count"], url=key)
 
-    @staticmethod
-    def _process_subject(s):
-        key = s["key"]
-        if key.startswith("subject:"):
-            key = "/subjects/" + key.removeprefix("subject:")
-        else:
-            key = "/subjects/" + key
-        return {"name": s["name"], "count": s["count"], "url": key}
+
+def get_list_subjects(key: str, limit: int = 20) -> ListSubjectsModel | None:
+    lst = cast(List | None, site.get().get(key))
+    if not lst or getattr(getattr(lst, "type", None), "key", None) == "/type/delete":
+        return None
+
+    data = lst.get_subjects(limit=limit)
+    return ListSubjectsModel(
+        subjects=[_process_subject(s) for s in data.get("subjects", [])],
+        places=[_process_subject(s) for s in data.get("places", [])],
+        people=[_process_subject(s) for s in data.get("people", [])],
+        times=[_process_subject(s) for s in data.get("times", [])],
+        links=ListSubjectsLinks(self=key + "/subjects", list=key),
+    )
 
 
 class list_subjects_yaml(list_subjects_json):
