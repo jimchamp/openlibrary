@@ -220,7 +220,7 @@ async def login(
         login_code,
         max_age=expires,
         httponly=True,
-        secure=True,
+        secure=request.url.scheme == "https",
         samesite="lax",
     )
 
