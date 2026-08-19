@@ -35,8 +35,10 @@ jobs:
 
             const daysSinceEpoch = Math.floor(Date.now() / 86400000);
             const weekIndex = Math.floor(daysSinceEpoch / 7);
-            const lead = personnel[weekIndex % personnel.length].slackId;
-            const secondary = personnel[(weekIndex + 1) % personnel.length].slackId;
+            let lead = personnel[weekIndex % personnel.length].slackId;
+            let secondary = personnel[(weekIndex + 1) % personnel.length].slackId;
+
+            const isWorkflowDispatch = (context.eventName === 'workflow_dispatch')
 
             const isWorkflowDispatch = (context.eventName === 'workflow_dispatch')
 
@@ -45,6 +47,8 @@ jobs:
 
             if (isWorkflowDispatch) {
               dow = inputs.dayOfWeek
+              lead = personnel[1]
+              secondary = personnel[1]
             }
             if (dow === 'monday') {
               return `${lead} is on-call this week.  ${secondary} is the back-up.`;
