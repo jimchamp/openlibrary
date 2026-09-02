@@ -78,11 +78,7 @@ ALTER TABLE store_index DROP COLUMN id_old;
 ALTER TABLE store_index DROP CONSTRAINT new_id_not_null;
 ```
 
-8. **[BLOCKED]** Remove residual data from disk using `pg_repack`
+8. Remove residual data from disk using `pg_repack`
 
 The data stored by the old `id` column remains on the disk, despite the column having been dropped.  Running something like `VACUUM FULL` may cause a rewrite that could
 lock the entire table.  To avoid this, use `pg_repack` to clean things up while the database is online.
-
-**Why is this blocked?**
-As of writing (1 September 2026), `pg_repack` has no PostgreSQL 18 support.  You can check the [release notes](https://reorg.github.io/pg_repack/#releases) to determine when support
-for our version of PostgreSQL has been added.
