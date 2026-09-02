@@ -1,4 +1,11 @@
-# Open Library `store_index` pkey update
+# Open Library `store_index` primary key column update
+
+Running an `ALTER COLUMN` query on `store_index.id` will lock the table for the duration of the rewrite.  Since this table stores account data,
+updating the table in this way could prevent patrons from logging in for quite some time.
+
+Luckily, this can be avoided by adding and backfilling a new `bigint` ID column, deleting the old column, and renaming the new ID column (it's a bit more complicated than that -- see the full plan, below).
+
+More details about this problem and the outlined solution can be found in this plainly written [article](https://boringsql.com/posts/how-not-to-change-postgresql-column-type/).
 
 ## The Plan
 
@@ -35,6 +42,8 @@ docker exec openlibrary-cron-jobs-1 python -c _backfill_store_index.py -c /path/
 CREATE UNIQUE INDEX CONCURRENTLY new_id_unique_idx ON store_index(new_id);
 ```
 
+**Note:** This will likely incur some extra CPU and I/O utilization during the indexing (see [documentation](https://www.postgresql.org/docs/current/sql-createindex.html#SQL-CREATEINDEX-CONCURRENTLY).
+
 5. Add `NOT NULL` constraint
 
 ```sql
@@ -68,3 +77,12 @@ COMMIT;
 ALTER TABLE store_index DROP COLUMN id_old;
 ALTER TABLE store_index DROP CONSTRAINT new_id_not_null;
 ```
+
+8. **[BLOCKED]** Remove residual data from disk using `pg_repack`
+
+The data stored by the old `id` column remains on the disk, despite the column having been dropped.  Running something like `VACUUM FULL` may cause a rewrite that could
+lock the entire table.  To avoid this, use `pg_repack` to clean things up while the database is online.
+
+**Why is this blocked?**
+As of writing (1 September 2026), `pg_repack` has no PostgreSQL 18 support.  You can check the [release notes](https://reorg.github.io/pg_repack/#releases) to determine when support
+for our version of PostgreSQL has been added.
